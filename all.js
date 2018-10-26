@@ -3273,21 +3273,23 @@ var Question = function (_Component) {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
       if (this.state.answered !== undefined) {
-        var block = this.code.querySelectorAll('span')[this.state.answered];
+        var blocks = this.code.querySelectorAll('span');
 
         var msg = document.createElement('div');
         msg.classList.add('psb-code__msg');
 
         if (this.state.answered === this.question.correct) {
-          block.classList.add('is-correct');
+          blocks[this.state.answered].classList.add('is-correct');
           msg.classList.add('is-correct');
           msg.innerHTML = this.question.correctMsg;
         } else {
+          blocks[this.state.answered].classList.add('is-active');
+          blocks[this.question.correct].classList.add('is-correct');
           msg.classList.add('is-incorrect');
           msg.innerHTML = this.question.incorrectMsg;
         }
 
-        block.appendChild(msg);
+        blocks[this.state.answered].appendChild(msg);
       }
     }
   }, {
