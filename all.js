@@ -6247,12 +6247,12 @@ var Question = function (_Component) {
             left: correctBlock.offsetLeft + 10 + 'px'
           };
 
-          window.scrollBy({
+          window.scroll({
             top: correctBlock.offsetTop,
             left: null,
             behavior: 'smooth'
           });
-          this.codeContainer.scrollBy({
+          this.codeContainer.scroll({
             top: null,
             left: correctBlock.offsetLeft,
             behavior: 'smooth'
@@ -6318,9 +6318,22 @@ var Question = function (_Component) {
         this.heatmapInstance = null;
       }
 
-      window.scrollTo(0, this.props.test.params.container.offsetTop);
+      // window.scrollTo(0,this.props.test.params.container.offsetTop);
+      // if (this.codeContainer) {
+      //   this.codeContainer.scrollTo(0,0);
+      // }
+
+      window.scroll({
+        top: this.props.test.params.container.offsetTop,
+        left: 0,
+        behavior: 'smooth'
+      });
       if (this.codeContainer) {
-        this.codeContainer.scrollTo(0, 0);
+        this.codeContainer.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
       }
 
       this.setState({
