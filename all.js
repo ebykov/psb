@@ -6261,6 +6261,7 @@ var Question = function (_Component) {
         } else {
           var blocks = this.code.querySelectorAll('span');
           var correctBlock = blocks[this.props.test.question.correct];
+          var rectCorrectBlock = correctBlock.getBoundingClientRect();
           // if (answeredIndex > this.props.test.question.correct / 2) {
           //   this.body.style.minHeight = this.body.offsetHeight + 200 + 'px';
           // }
@@ -6278,8 +6279,9 @@ var Question = function (_Component) {
             };
           }
 
+          // console.log(rectCorrectBlock);
           window.scroll({
-            top: correctBlock.offsetTop,
+            top: rectCorrectBlock.y - window.innerHeight / 2,
             left: null,
             behavior: 'smooth'
           });
