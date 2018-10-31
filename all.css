@@ -42,9 +42,10 @@
   left: 0;
   right: 0;
   background: #000;
+}
+.psb__bg--q {
+  background-image: url("https://leonardo.osnova.io/6b760a9e-6b97-a76c-4851-05bcf62b0b90/");
   background-size: cover;
-  -webkit-transition: background-image 0.2s;
-  transition: background-image 0.2s;
 }
 .psb.is-feed .psb__bg {
   position: absolute;
@@ -98,8 +99,7 @@ a.psb__logo:hover,
   right: 0;
   width: 100%;
   height: 15px;
-  background: -webkit-gradient(linear, left top, right top, from(#52ff00), color-stop(12.71%, #60f5ff), color-stop(25.41%, #ff79fa), color-stop(38.12%, #ff1083), color-stop(50.28%, #ffec3f), color-stop(61.33%, #a2ff69), color-stop(72.38%, #94f9ff), color-stop(83.98%, #4b72ff), to(#28ff98)), #ff1083;
-  background: linear-gradient(90deg, #52ff00 0%, #60f5ff 12.71%, #ff79fa 25.41%, #ff1083 38.12%, #ffec3f 50.28%, #a2ff69 61.33%, #94f9ff 72.38%, #4b72ff 83.98%, #28ff98 100%), #ff1083;
+  background: #fff;
 }
 .psb-enter__frame--1 {
   z-index: -1;
@@ -157,8 +157,7 @@ a.psb__logo:hover,
           align-items: center;
   height: 45px;
   padding-right: 16px;
-  background: -webkit-gradient(linear, left top, right top, from(#52ff00), color-stop(12.71%, #60f5ff), color-stop(25.41%, #ff79fa), color-stop(38.12%, #ff1083), color-stop(50.28%, #ffec3f), color-stop(61.33%, #a2ff69), color-stop(72.38%, #94f9ff), color-stop(83.98%, #4b72ff), to(#28ff98)), #52ff00;
-  background: linear-gradient(90deg, #52ff00 0%, #60f5ff 12.71%, #ff79fa 25.41%, #ff1083 38.12%, #ffec3f 50.28%, #a2ff69 61.33%, #94f9ff 72.38%, #4b72ff 83.98%, #28ff98 100%), #52ff00;
+  background: #fff;
 }
 .psb-enter__body {
   padding: 25px 15px 20px;
@@ -247,8 +246,7 @@ a.psb__logo:hover,
   right: 0;
   width: 100%;
   height: 45px;
-  background: -webkit-gradient(linear, left top, right top, from(#52ff00), color-stop(12.71%, #60f5ff), color-stop(25.41%, #ff79fa), color-stop(38.12%, #ff1083), color-stop(50.28%, #ffec3f), color-stop(61.33%, #a2ff69), color-stop(72.38%, #94f9ff), color-stop(83.98%, #4b72ff), to(#28ff98)), #52ff00;
-  background: linear-gradient(90deg, #52ff00 0%, #60f5ff 12.71%, #ff79fa 25.41%, #ff1083 38.12%, #ffec3f 50.28%, #a2ff69 61.33%, #94f9ff 72.38%, #4b72ff 83.98%, #28ff98 100%), #52ff00;
+  background: #fff;
 }
 .psb-q__bg > div:nth-child(1) {
   z-index: 5;
@@ -294,16 +292,12 @@ a.psb__logo:hover,
           align-items: center;
   height: 45px;
   padding: 0 15px;
-  background: -webkit-gradient(linear, left top, right top, from(#52ff00), color-stop(12.71%, #60f5ff), color-stop(25.41%, #ff79fa), color-stop(38.12%, #ff1083), color-stop(50.28%, #ffec3f), color-stop(61.33%, #a2ff69), color-stop(72.38%, #94f9ff), color-stop(83.98%, #4b72ff), to(#28ff98)), #52ff00;
-  background: linear-gradient(90deg, #52ff00 0%, #60f5ff 12.71%, #ff79fa 25.41%, #ff1083 38.12%, #ffec3f 50.28%, #a2ff69 61.33%, #94f9ff 72.38%, #4b72ff 83.98%, #28ff98 100%), #52ff00;
+  background: #fff;
 }
 @media (min-width: 680px) {
   .psb-q__header {
     padding: 0 16px 0 45px;
   }
-}
-.psb-q__pager {
-  color: #fff;
 }
 .psb-q__head {
   position: relative;
@@ -315,6 +309,11 @@ a.psb__logo:hover,
   .psb-q__head {
     padding: 45px 45px 40px;
   }
+}
+.psb-q__body {
+  position: relative;
+  z-index: 2;
+  background-color: #fff;
 }
 .psb-q__text {
   width: 600px;
@@ -366,20 +365,82 @@ a.psb__logo:hover,
 .psb-q__code-wrapper {
   position: relative;
   display: inline-block;
-  padding: 20px 15px;
+  width: 100%;
 }
 @media (min-width: 680px) {
   .psb-q__code-wrapper {
-    padding: 40px 50px 40px 40px;
+    padding: 20px 35px 20px 25px;
   }
 }
 .psb-q__code-inner {
   position: relative;
+  padding: 20px 15px;
 }
 .psb-q__code-pre {
   position: relative;
   z-index: 1;
   line-height: 1.786em;
+}
+.psb-q__ui {
+  position: relative;
+  z-index: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 35px 0 60px;
+  background-color: #fff;
+}
+.psb-q-phone {
+  position: relative;
+}
+.psb-q-phone__img {
+  position: absolute !important;
+  top: 57px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 224px;
+  height: 394px;
+  cursor: pointer;
+}
+.psb-q-phone__img canvas {
+  z-index: 1;
+}
+.psb-q-phone__answer {
+  position: absolute;
+  top: 285px;
+  left: 28px;
+  width: 167px;
+  height: 50px;
+  border: 2px solid #ff5656;
+  background-color: rgba(255,86,86,0.2);
+}
+.psb-q-phone__answer.is-correct {
+  background-color: rgba(5,160,1,0.1);
+  border-color: #059e02;
+}
+.psb-q__msg {
+  position: absolute;
+  z-index: 4;
+  width: 320px;
+  padding: 20px;
+  color: #000;
+  line-height: 1.357em;
+  white-space: normal;
+  border: 2px solid #000;
+  background-color: #fff;
+}
+.psb-q__msg.is-correct > div > span {
+  color: #059e02;
+}
+.psb-q__msg.is-incorrect > div > span {
+  color: #ff5656;
 }
 .psb-code {
   position: relative;
@@ -442,7 +503,7 @@ a.psb__logo:hover,
   bottom: calc(100% + 20px);
 }
 .psb-code__msg.is-correct > span {
-  color: #28ff98;
+  color: #059e02;
 }
 .psb-code__msg.is-incorrect > span {
   color: #ff5656;
@@ -458,6 +519,44 @@ a.psb__logo:hover,
     min-height: 600px;
   }
 }
+.psb-result__frame {
+  position: absolute;
+  bottom: -30px;
+  left: -80px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 320px;
+  height: 150px;
+  padding-top: 10px;
+  background-color: #ff5656;
+  -webkit-box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+          box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+}
+.psb-result__frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 15px;
+  background: #fff;
+}
+.psb-result__frame::after {
+  content: 'ERROR';
+  color: #ffaeae;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.5em;
+}
 .psb-result__header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -470,8 +569,7 @@ a.psb__logo:hover,
           align-items: center;
   height: 45px;
   padding-right: 16px;
-  background: -webkit-gradient(linear, left top, right top, from(#52ff00), color-stop(12.71%, #60f5ff), color-stop(25.41%, #ff79fa), color-stop(38.12%, #ff1083), color-stop(50.28%, #ffec3f), color-stop(61.33%, #a2ff69), color-stop(72.38%, #94f9ff), color-stop(83.98%, #4b72ff), to(#28ff98)), #52ff00;
-  background: linear-gradient(90deg, #52ff00 0%, #60f5ff 12.71%, #ff79fa 25.41%, #ff1083 38.12%, #ffec3f 50.28%, #a2ff69 61.33%, #94f9ff 72.38%, #4b72ff 83.98%, #28ff98 100%), #52ff00;
+  background: #fff;
 }
 .psb-result__body {
   position: relative;

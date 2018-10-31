@@ -82,7 +82,7 @@ var PSB =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3166,8 +3166,7 @@ var testReducer = function testReducer() {
       var index = state.activeIndex + 1;
       return _extends({}, state, {
         question: _data2.default.questions[index],
-        activeIndex: index,
-        bg: _data2.default.questions[index].bg
+        activeIndex: index
       });
     case 'TEST_RESTART':
       return _extends({}, state, restartTestState);
@@ -3196,28 +3195,50 @@ exports.default = {
   description: 'Вас случайно приняли на работу тестировщиком, не проверив скиллы. Чтобы никто ничего не заподозрил — попробуйте продержаться на новой работе как можно дольше. Внимательно читайте задания и ищите ошибки в коде.',
   questions: [{
     text: '<p>Эта программа определяет, есть ли у человека право запросить кредит. Вот правила, по которым она работает:</p><p>человек должен быть не моложе 21 года.<br/>мужчина должен быть моложе 65 лет на момент прекращения срока кредита.<br/>женщина должна быть моложе 60 лет на момент прекращения срока кредита.</p><p><b>Найдите ошибку в коде программы.</b></p>',
-    bg: 'images/bgs/1.png',
     correct: 16,
     correctMsg: '<span>Правильно</span> — эта строчка разрешает давать кредит человеку младше 21 года. А это совсем не то, что вам нужно.',
     incorrectMsg: '<span>Ну нет.</span> Ошибка в строчке, выделенной черным, — она разрешает давать кредит человеку младше 21 года. Правильно было бы написать «else if (age < 21)».'
   }, {
     text: '<p>Эта программа вычисляет сумму заработка работника исходя из следующих параметров: месячная зарплата, кол-во рабочих дней в месяце, кол-во дней отсутствия на работе, кол-во дней на больничном.</p><p>Если работник болел менее трех дней в месяц, то компенсация за больничный ему не полагается, а если три дня или более — то оплачивается только 80% от его зарплаты. Итоговую сумму необходимо округлить до двух знаков после запятой.</p><p><b>Найдите ошибку в коде программы.</b></p>',
-    bg: 'images/bgs/2.png',
     correct: 13,
     correctMsg: '<span>Верно.</span> Эта строчка не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше.',
     incorrectMsg: '<span>Нет.</span> Ошибка в строчке, выделенной чёрным, — она не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше, чем нужно.'
   }, {
-    text: '<p>Найдите ошибку в коде.</p><p><b>В базе данных есть две таблицы.</b></p><p><b>Первая таблица - "Клиенты" (Customers):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;Name (Text)<br>&nbsp;&nbsp;Phone (Text)<br>&nbsp;&nbsp;Birthday (Date)</b></p><p><b>Вторая таблица - "Счета" (Accounts):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;CustomerId (int, foreign key to table Customers)<br>&nbsp;&nbsp;Currency (Text)<br>&nbsp;&nbsp;Balance (Double)</b></p><p><b>Поле Currency может принимать три значения: RUB, USD, EUR.</b></p><p>Требуется вывести Id, имя и капитализацию клиента (сумма всех счетов клиента) в рублях в соответствие с текущими курсами обмена валют.</p>',
-    bg: 'images/bgs/3.png',
+    text: '<p>Найдите ошибку в коде.</p><p><b>В базе данных есть две таблицы.</b></p><p><b>Первая таблица — «Клиенты» (Customers):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;Name (Text)<br>&nbsp;&nbsp;Phone (Text)<br>&nbsp;&nbsp;Birthday (Date)</b></p><p><b>Вторая таблица — «Счета» (Accounts):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;CustomerId (int, foreign key to table Customers)<br>&nbsp;&nbsp;Currency (Text)<br>&nbsp;&nbsp;Balance (Double)</b></p><p><b>Поле Currency может принимать три значения: RUB, USD, EUR.</b></p><p>Требуется вывести Id, имя и капитализацию клиента (сумма всех счетов клиента) в рублях в соответствие с текущими курсами обмена валют.</p>',
     correct: 5,
     correctMsg: '<span>Так точно.</span> В этой строке вместо OR должно быть AND, чтобы учитывались все счета.',
     incorrectMsg: '<span>Нет, ошиблись.</span> В строке, выделенной чёрным, вместо OR должно быть AND, чтобы учитывались все счета.'
   }, {
     text: '<p>Эта программа для заданного предложения делает маленькие буквы большими, а большие — маленькими, за исключением букв «a» и «А» (латинских), их регистр менять не следует.</p><p><b>Найдите ошибку в коде программы.</b></p>',
-    bg: 'images/bgs/4.png',
     correct: 7,
     correctMsg: '<span>!!!Именно!!!</span> Нужно убрать «!» — в данном случае он равен частице «не», и от этого поехала вся логика.',
     incorrectMsg: '<span>Ошибочка вышла, код не сработал.</span> Нужно убрать знаки «!» в строчке, выделенной чёрным, потому что восклицательный знак в этом случае равен частице «не».'
+  }, {
+    text: '<p>В стране «Бонифация» нет государственных праздников, но выходными считаются воскресенья, а также последний день каждого месяца. Эта программа подсчитывает количество выходных дней в 2020 году.</p><p><b>Найдите ошибку в коде программы.</b></p>',
+    correct: 9,
+    correctMsg: '<span>Вы правы</span> — здесь нужен else if. В противном случае (если оставить просто if) число выпадет на субботу или воскресенье — и счётчик будет увеличен дважды.',
+    incorrectMsg: '<span>Нет</span>, ошибка в строчке, выделенной чёрным . Здесь нужен «else if» — в противном случае, если последнее число выпадет на субботу или воскресенье, счетчик будет увеличен дважды.'
+  }, {
+    text: '<p>Вы тестируете HTTP-сервер, который должен рисовать котика в браузере. Ниже приведен код функции, который подготавливает ответ для HTTP-сервера. Однако котик в браузере не появился.</p><p><b>Найдите ошибку в коде программы.</b></p>',
+    correct: 7,
+    correctMsg: '<span>Мяу, да.</span> Здесь котик отдается в виде html-странички, — поэтому графика с нем не отобразится. Так что «html» нужно заменить на «plain».',
+    incorrectMsg: '<span>Мяу, нет.</span> Здесь котик отдается в виде html-странички, — поэтому графика с нем не отобразится. Так что «html» нужно заменить на «plain».'
+  }, {
+    type: 'ui',
+    text: '<p>Найдите ошибку в интерфейсе мобильного приложения.</p>',
+    correct: {
+      x1: 28,
+      y1: 285,
+      x2: 195,
+      y2: 335
+    },
+    correctMsg: 'Правильно',
+    incorrectMsg: 'Увы, нет.'
+  }, {
+    text: '<p>Имеется список пользователей в таблице users. В ней два поля:</p><p>&nbsp;&nbsp;userId INT (Primary key) — идентификатор пользователя;<br>&nbsp;&nbsp;username (TEXT) — имя пользователя;</p><p>И имеется реестр посещений уроков пользователями в таблице lesson_details. В ней четыре поля:</p><p>&nbsp;&nbsp;id INT (Primary Key) — идентификатор посещения;<br>&nbsp;&nbsp;userId INT (ссылается на userId в таблице users) — идентификатор пользователя;<br>&nbsp;&nbsp;lessonId INT — идентификатор урока;<br>&nbsp;&nbsp;lessonDate DATE — дата урока;</p><p>Существует запрос, который создает список пользователей, посетивших один и тот же урок более чем один раз в один и тот же день, сгруппированный по пользователям и урокам, отсортированный от наиболее недавней даты. Однако этот запрос дает неправильный результат. В какой строчке ошибка?</p>',
+    correct: 11,
+    correctMsg: '<span>Именно!</span> Ошибка здесь. Знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».',
+    incorrectMsg: '<span>Увы, нет.</span> Ошибка в строке, выделенной чёрным — знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».'
   }],
   result: {
     img: 'https://leonardo.osnova.io/1306e7b6-e62e-16d6-45a8-2c5f952bf96c/',
@@ -3241,7 +3262,7 @@ Object.defineProperty(exports, "__esModule", {
  * предварительно прогнав их через https://jakearchibald.github.io/svgomg/
  */
 exports.default = {
-  logo: '<svg viewBox="0 0 305.92 50.77"><path fill="#ffffff" d="M35.36 19.52v-.05a3.14 3.14 0 0 0 2.29-3.28c0-2.41-2-3.52-4.72-3.52h-4.64v5.77H25.5c-3.7 0-4.46 2.6-4.46 4 0 2 1.16 2.9 3.3 4 1.3.65 2.86 1.05 2.86 2.54 0 .78-.72 1.72-2.28 1.72h-2.9a4.55 4.55 0 0 0 .62-2.27c0-.92-.33-4.63-5.48-4.63h-4.22v14.28h2.87v-6.22l1.16 1.16h7.84c3.66 0 5.4-1.89 5.4-4.13a4.41 4.41 0 0 0-.4-2h2.94c4.54 0 5.59-2.25 5.59-4a3.31 3.31 0 0 0-2.98-3.37zM17.15 30.7H15.8v-4.67h1.34a2.17 2.17 0 0 1 2.43 2.25 2.29 2.29 0 0 1-2.42 2.42zm11.14-8.85v3.46a20 20 0 0 0-2.36-1.12c-.91-.4-1.89-.91-1.89-2.05 0-.58.36-1.45 2.1-1.45h3.23zm2.87-6.93h1.31c2.21 0 2.32 1.36 2.32 1.78 0 .62-.33 1.76-2.21 1.76h-1.46v-3.54zm1.63 9.76h-1.67v-4h1.63c2 0 2.54 1 2.54 2s-.72 2-2.54 2z"/><path fill="#ffffff" d="M50.8 12.36A12.36 12.36 0 0 0 38.44 0H20.97a12.36 12.36 0 0 0-11.9 9h21.11c8.12 0 11.57 3.78 11.57 12.64v20a12.39 12.39 0 0 0 9-11.89V12.36z"/><path fill="#f26522" d="M0 38.41a12.36 12.36 0 0 0 12.36 12.36h17.46a12.36 12.36 0 0 0 11.9-9H20.61c-8.12 0-11.57-3.78-11.57-12.64v-20a12.39 12.39 0 0 0-9 11.89v17.46z"/><path fill="#ffffff" d="M269.56 38.05V19.66h5.33v6.83h5.78v-6.83h5.26v18.39h-5.26v-8.2h-5.78v8.2h-5.33zM261.88 35.19v-6.54c-2.24.3-5.54.69-5.54 3.88 0 3.92 4.22 3.2 5.54 2.65zm-10.4-2.35a5.46 5.46 0 0 1 3.84-5.36 19.24 19.24 0 0 1 3.05-.84c.89-.16 2.06-.3 3.48-.5v-.58c.11-2.66-1.42-3.16-3.3-3.16a10.91 10.91 0 0 0-5 1.38l-.35-3.3a19.38 19.38 0 0 1 6.64-1.17 10.76 10.76 0 0 1 3.62.5 4.59 4.59 0 0 1 3.34 4 13 13 0 0 1 .07 1.87v11.45c-4.61 1.78-15.34 3-15.34-4.31zM243.56 34.52a2.5 2.5 0 0 1-2.16 1.06c-3.06 0-3.77-5-3.77-7.26a7.92 7.92 0 0 1 1.46-5.08 2.64 2.64 0 0 1 2.2-1 3 3 0 0 1 2.81 2.2 12.41 12.41 0 0 1 .78 4.69 9.31 9.31 0 0 1-1.32 5.37zm6.39-9.8a7.91 7.91 0 0 0-2.31-3.78c-1.81-1.72-8.2-3.14-11.29 1.47 0-4.87 2.06-7.26 6.18-8s6.39-1.08 6.39-1.08l-.39-3.94s-4.22.59-7.7 1.38a10.61 10.61 0 0 0-8.28 9.14c-.6 3.59-.53 9.78.53 12.67 1.24 3.34 3.73 5.86 8.28 5.86 6.25 0 9.12-3.84 9.12-9.84a16.81 16.81 0 0 0-.53-3.94zM288.98 38.05V19.66h5.26v8.47l5.89-8.47h5.19l-6.01 8.22 6.61 10.17h-5.86l-5.82-9.14v9.14h-5.26zM205.18 38.44a14.45 14.45 0 0 1-5-.73l.43-3.2a7.19 7.19 0 0 0 3.84 1.06c2.66 0 4.12-1.22 4-2.95a2.27 2.27 0 0 0-.82-1.92 3 3 0 0 0-1.85-.72c-.71-.06-1.28-.11-1.78-.11h-1.28v-2.76h.36c2 0 5-.08 5-2.61 0-2-2-2.4-3.05-2.4a9 9 0 0 0-4.47 1.17l-.28-3a15.74 15.74 0 0 1 5.9-1c4.26-.09 6.92 1.83 6.82 4.72.07 2.37-2 3.75-3.37 4.19a6.34 6.34 0 0 1 2.34.87 4.18 4.18 0 0 1 1.78 3.55 5.18 5.18 0 0 1-3.13 4.86 13.34 13.34 0 0 1-5.47 1zM157.84 38.44c-6.07 0-9.44-3.69-9.44-9.68s3.59-9.55 9.51-9.55a11.58 11.58 0 0 1 4.33.74l-.57 3.34a6.16 6.16 0 0 0-2.91-.78c-3.55 0-5.07 2.9-5.07 6.1s1.49 6.48 5.11 6.48a6 6 0 0 0 2.95-.72l.39 3.39a12.49 12.49 0 0 1-4.29.69zM216.04 38.05V19.66h5.25v5.8c1.1-.05 1.81-.05 2.09-.05 2.41 0 4.23.39 5.33 1.22a5.64 5.64 0 0 1 2.13 4.67c-.14 6-6.21 7.13-9.52 7.13a27.48 27.48 0 0 1-5.25-.39zm5.22-3s4.76 1 4.76-3.53a3.17 3.17 0 0 0-.46-1.9c-.53-.94-1.74-1.1-3-1.1h-.77a2.55 2.55 0 0 0-.53.06v6.48zM170.13 27.33v-5.06s.53-.05 1.85-.05c2.52 0 3 1.47 3 2.42 0 1.81-1.1 2.7-3.66 2.7h-1.21zm1.31 2.86c.5 0 1 0 1.67.06a2.73 2.73 0 0 1 1.67.64 2.07 2.07 0 0 1 .75 1.81c0 2-1.78 2.75-4.08 2.75h-1.31v-5.26h1.31zm5.22-1.92c2.2-.69 3.3-2.07 3.3-4.17a4.32 4.32 0 0 0-.6-2.33 4.14 4.14 0 0 0-2-1.61 15.63 15.63 0 0 0-6-.94 39.15 39.15 0 0 0-6.32.44v18.39a46.66 46.66 0 0 0 6.32.39c3.69 0 9.3-.92 9.45-5.61v-.2c.11-2-1.17-4-4.12-4.37zM192.29 27.63h-1.31c-2.52 0-3.55-.83-3.55-2.91s1.63-2.59 2.95-2.59a15.12 15.12 0 0 1 1.91.06v5.41zm-1.17-8.44c-3.87 0-8.7.64-8.7 5.61a4.66 4.66 0 0 0 3.83 4.92l-4.96 8.33h5.47l3.94-7.33h1.59v7.33h5.18V19.66a40.51 40.51 0 0 0-6.36-.44zM63.5 38.05V12.68h19.32v25.37h-5.61V16.27h-8.06v21.78H63.5zM97.8 28.19c0-6.89-4.8-6.29-6.57-5.86v12c.71.16 6.57 2.41 6.57-6.14zM85.91 45.45V20.19c4.61-.94 17.11-3.54 17.11 7.67a10.94 10.94 0 0 1-2.31 7.26c-3 3.61-7.88 3.21-9.48 2.58v7.81h-5.32zM113.99 35.55c1.53 0 2.56-1.24 3-2.86a16.45 16.45 0 0 0 .46-4.08 12 12 0 0 0-.71-4.43 3 3 0 0 0-2.74-2.06 3.29 3.29 0 0 0-3.09 2.59 12.23 12.23 0 0 0-.6 3.89c0 2.27.53 6.94 3.69 6.94zm-.39 2.89c-6.07 0-8.7-3.83-8.7-9.59 0-6 3.13-9.64 9.23-9.64a8.55 8.55 0 0 1 5.26 1.49 6.65 6.65 0 0 1 2.59 3.67 14.33 14.33 0 0 1 .68 4.33c0 6.19-2.63 9.73-9.05 9.73zM123.76 38.05l1.92-18.39h6.11l3.8 12.53 3.76-12.53h6.04l1.77 18.39h-4.86l-1.03-13.23-3.98 13.23h-4.23l-4.04-13.33-1.03 13.33h-4.23z"/></svg>',
+  logo: '<svg viewBox="0 0 305.92 50.77"><path fill="#0d4ba0" d="M35.36 19.52v-.05a3.14 3.14 0 0 0 2.29-3.28c0-2.41-2-3.52-4.72-3.52h-4.64v5.77H25.5c-3.7 0-4.46 2.59-4.46 4 0 2 1.16 2.9 3.3 4 1.3.65 2.86 1.05 2.86 2.54 0 .78-.72 1.72-2.28 1.72h-2.9a4.55 4.55 0 0 0 .62-2.27c0-.92-.33-4.62-5.48-4.62h-4.22v14.28h2.87v-6.22l1.16 1.16h7.84c3.66 0 5.4-1.88 5.4-4.13a4.39 4.39 0 0 0-.4-2h2.94c4.54 0 5.59-2.25 5.59-4a3.31 3.31 0 0 0-2.98-3.38zM17.15 30.7H15.8v-4.67h1.34a2.17 2.17 0 0 1 2.43 2.25 2.29 2.29 0 0 1-2.42 2.42zm11.14-8.85v3.46a20.35 20.35 0 0 0-2.36-1.12c-.91-.4-1.89-.91-1.89-2.05 0-.58.36-1.45 2.1-1.45h3.23zm2.87-6.93h1.31c2.21 0 2.32 1.36 2.32 1.78 0 .62-.33 1.76-2.21 1.76h-1.46v-3.54zm1.63 9.76h-1.67v-4h1.63c2 0 2.54 1 2.54 2s-.72 2-2.54 2z"/><path fill="#0d4ba0" d="M50.8 12.36A12.36 12.36 0 0 0 38.44 0H20.97a12.36 12.36 0 0 0-11.9 9h21.11c8.12 0 11.57 3.78 11.57 12.64v20a12.39 12.39 0 0 0 9-11.89V12.36z"/><path fill="#f26522" d="M0 38.41a12.36 12.36 0 0 0 12.36 12.36h17.46a12.36 12.36 0 0 0 11.9-9H20.61c-8.12 0-11.57-3.78-11.57-12.64v-20a12.39 12.39 0 0 0-9 11.89v17.46z"/><path fill="#0d4ba0" d="M269.56 38.05V19.66h5.33v6.83h5.78v-6.83h5.26v18.39h-5.26v-8.2h-5.78v8.2h-5.33zM261.88 35.19v-6.54c-2.24.3-5.54.69-5.54 3.89 0 3.92 4.22 3.2 5.54 2.65zm-10.4-2.35a5.46 5.46 0 0 1 3.84-5.36 19.24 19.24 0 0 1 3.05-.84c.89-.16 2.06-.3 3.48-.5v-.58c.11-2.66-1.42-3.16-3.3-3.16a10.94 10.94 0 0 0-5 1.38l-.35-3.3a19.38 19.38 0 0 1 6.64-1.17 10.76 10.76 0 0 1 3.62.5 4.59 4.59 0 0 1 3.34 4 13 13 0 0 1 .07 1.87v11.45c-4.61 1.78-15.34 3-15.34-4.31zM243.56 34.52a2.49 2.49 0 0 1-2.16 1.06c-3.06 0-3.77-5-3.77-7.26a7.93 7.93 0 0 1 1.46-5.08 2.64 2.64 0 0 1 2.2-1 3 3 0 0 1 2.81 2.2 12.42 12.42 0 0 1 .78 4.69 9.31 9.31 0 0 1-1.32 5.37zm6.39-9.8a7.9 7.9 0 0 0-2.31-3.78c-1.81-1.72-8.2-3.14-11.29 1.47 0-4.86 2.06-7.26 6.18-8s6.39-1.08 6.39-1.08l-.39-3.94s-4.22.59-7.7 1.38a10.61 10.61 0 0 0-8.28 9.14c-.6 3.59-.53 9.78.53 12.68 1.24 3.34 3.73 5.86 8.28 5.86 6.25 0 9.12-3.84 9.12-9.84a16.81 16.81 0 0 0-.53-3.94zM288.98 38.05V19.66h5.26v8.46l5.89-8.46h5.19l-6.01 8.22 6.61 10.17h-5.86l-5.82-9.15v9.15h-5.26zM205.18 38.44a14.45 14.45 0 0 1-5-.73l.43-3.2a7.17 7.17 0 0 0 3.84 1.06c2.66 0 4.12-1.22 4-2.95a2.27 2.27 0 0 0-.82-1.92 3 3 0 0 0-1.85-.72c-.71-.05-1.28-.11-1.78-.11h-1.28v-2.76h.36c2 0 5-.08 5-2.61 0-2-2-2.4-3.05-2.4a9.06 9.06 0 0 0-4.47 1.17l-.28-3a15.7 15.7 0 0 1 5.9-1c4.26-.09 6.92 1.83 6.82 4.72.07 2.37-2 3.75-3.37 4.19a6.34 6.34 0 0 1 2.34.87 4.19 4.19 0 0 1 1.78 3.55 5.18 5.18 0 0 1-3.13 4.86 13.34 13.34 0 0 1-5.47 1zM157.84 38.44c-6.07 0-9.44-3.69-9.44-9.68s3.59-9.55 9.51-9.55a11.58 11.58 0 0 1 4.33.74l-.57 3.34a6.18 6.18 0 0 0-2.91-.78c-3.55 0-5.07 2.9-5.07 6.09s1.49 6.48 5.11 6.48a6 6 0 0 0 2.95-.72l.39 3.39a12.49 12.49 0 0 1-4.29.69zM216.04 38.05V19.66h5.25v5.8h2.09c2.41 0 4.23.39 5.33 1.22a5.64 5.64 0 0 1 2.13 4.67c-.14 6-6.21 7.13-9.52 7.13a27.61 27.61 0 0 1-5.25-.39zm5.22-3s4.76 1 4.76-3.53a3.16 3.16 0 0 0-.46-1.9c-.53-.94-1.74-1.1-3-1.1h-.77a2.55 2.55 0 0 0-.53.06v6.48zM170.13 27.33v-5.06s.53-.05 1.85-.05c2.52 0 3 1.47 3 2.42 0 1.81-1.1 2.7-3.66 2.7h-1.21zm1.31 2.86c.5 0 1 0 1.67.06a2.72 2.72 0 0 1 1.67.64 2.07 2.07 0 0 1 .75 1.81c0 2-1.78 2.75-4.08 2.75h-1.31v-5.26h1.31zm5.22-1.92c2.2-.69 3.3-2.07 3.3-4.17a4.32 4.32 0 0 0-.6-2.33 4.15 4.15 0 0 0-2-1.61 15.63 15.63 0 0 0-6-.94 39.15 39.15 0 0 0-6.32.44v18.39a46.89 46.89 0 0 0 6.32.39c3.69 0 9.3-.92 9.45-5.61v-.2c.11-2-1.17-4-4.12-4.37zM192.29 27.63h-1.31c-2.52 0-3.55-.83-3.55-2.91s1.63-2.59 2.95-2.59a15.12 15.12 0 0 1 1.91.06v5.41zm-1.17-8.44c-3.87 0-8.7.64-8.7 5.61a4.66 4.66 0 0 0 3.83 4.92l-4.96 8.33h5.47l3.94-7.33h1.59v7.33h5.18V19.66a40.5 40.5 0 0 0-6.36-.44zM63.5 38.05V12.68h19.32v25.37h-5.61V16.27h-8.06v21.78H63.5zM97.8 28.19c0-6.89-4.8-6.29-6.57-5.86v12c.71.16 6.57 2.41 6.57-6.14zM85.91 45.45V20.19c4.61-.94 17.11-3.54 17.11 7.67a10.94 10.94 0 0 1-2.31 7.26c-3 3.61-7.88 3.21-9.48 2.58v7.81h-5.32zM113.99 35.55c1.53 0 2.56-1.24 3-2.85a16.48 16.48 0 0 0 .46-4.09 12 12 0 0 0-.71-4.42 3 3 0 0 0-2.74-2.06 3.29 3.29 0 0 0-3.09 2.59 12.23 12.23 0 0 0-.6 3.89c0 2.27.53 6.94 3.69 6.94zm-.39 2.89c-6.07 0-8.7-3.83-8.7-9.59 0-6 3.13-9.64 9.23-9.64a8.55 8.55 0 0 1 5.26 1.49 6.66 6.66 0 0 1 2.59 3.67 14.35 14.35 0 0 1 .68 4.33c0 6.19-2.63 9.73-9.05 9.73zM123.76 38.05l1.92-18.39h6.11l3.8 12.53 3.76-12.53h6.04l1.77 18.39h-4.86l-1.03-13.23-3.98 13.23h-4.23l-4.04-13.34-1.03 13.34h-4.23z"/></svg>',
   refresh: '<svg width="15" height="15"><path d="M14.62.674c-.268-.11-.495-.065-.684.136l-1.27 1.26A7.58 7.58 0 0 0 10.278.542 7.357 7.357 0 0 0 7.5 0a7.298 7.298 0 0 0-2.91.596 7.565 7.565 0 0 0-2.393 1.601A7.567 7.567 0 0 0 .596 4.59 7.298 7.298 0 0 0 0 7.5c0 1.015.199 1.986.596 2.91a7.567 7.567 0 0 0 1.601 2.393 7.57 7.57 0 0 0 2.393 1.601A7.298 7.298 0 0 0 7.5 15c1.12 0 2.185-.236 3.194-.708a7.333 7.333 0 0 0 2.578-1.997.32.32 0 0 0 .073-.22.27.27 0 0 0-.093-.2l-1.338-1.348a.376.376 0 0 0-.244-.087c-.104.013-.179.052-.224.117a4.904 4.904 0 0 1-1.748 1.436A4.925 4.925 0 0 1 7.5 12.5a4.87 4.87 0 0 1-1.938-.395 5.034 5.034 0 0 1-1.597-1.07A5.038 5.038 0 0 1 2.896 9.44 4.87 4.87 0 0 1 2.5 7.5c0-.677.132-1.323.396-1.938a5.036 5.036 0 0 1 1.07-1.597c.449-.45.98-.806 1.596-1.07A4.87 4.87 0 0 1 7.5 2.5c1.309 0 2.445.446 3.409 1.338L9.56 5.186c-.202.195-.248.42-.137.674.11.26.303.39.576.39h4.375a.6.6 0 0 0 .44-.185.6.6 0 0 0 .185-.44V1.25a.584.584 0 0 0-.38-.576z"/></svg>'
 };
 
@@ -3253,22 +3274,22 @@ exports.default = {
  * Social network services
  */
 
-var Service = __webpack_require__(50),
+var Service = __webpack_require__(54),
     utils   = __webpack_require__(4),
-    svg     = __webpack_require__(51);
+    svg     = __webpack_require__(55);
 
 var services = {
-    odnoklassniki: __webpack_require__(52),
-    vkontakte:     __webpack_require__(53),
-    facebook:      __webpack_require__(54),
-    twitter:       __webpack_require__(55),
-    gplus:         __webpack_require__(56),
-    pocket:        __webpack_require__(57),
-    telegram:      __webpack_require__(58),
-    whatsapp:      __webpack_require__(59),
-    viber:         __webpack_require__(60),
-    email:         __webpack_require__(61),
-    more:          __webpack_require__(62)
+    odnoklassniki: __webpack_require__(56),
+    vkontakte:     __webpack_require__(57),
+    facebook:      __webpack_require__(58),
+    twitter:       __webpack_require__(59),
+    gplus:         __webpack_require__(60),
+    pocket:        __webpack_require__(61),
+    telegram:      __webpack_require__(62),
+    whatsapp:      __webpack_require__(63),
+    viber:         __webpack_require__(64),
+    email:         __webpack_require__(65),
+    more:          __webpack_require__(66)
 };
 
 utils.each(services, function (service, key) {
@@ -3922,7 +3943,7 @@ if (false) {}
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
+/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
 /* global window */
 
 
@@ -3941,7 +3962,7 @@ if (typeof self !== 'undefined') {
 var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
 /* harmony default export */ __webpack_exports__["a"] = (result);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(13), __webpack_require__(26)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(13), __webpack_require__(27)(module)))
 
 /***/ }),
 /* 13 */
@@ -3976,6 +3997,30 @@ module.exports = g;
 "use strict";
 
 
+var _CSSTransition = _interopRequireDefault(__webpack_require__(31));
+
+var _ReplaceTransition = _interopRequireDefault(__webpack_require__(37));
+
+var _TransitionGroup = _interopRequireDefault(__webpack_require__(18));
+
+var _Transition = _interopRequireDefault(__webpack_require__(15));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+  Transition: _Transition.default,
+  TransitionGroup: _TransitionGroup.default,
+  ReplaceTransition: _ReplaceTransition.default,
+  CSSTransition: _CSSTransition.default
+};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 exports.__esModule = true;
 exports.default = exports.EXITING = exports.ENTERED = exports.ENTERING = exports.EXITED = exports.UNMOUNTED = void 0;
 
@@ -3985,9 +4030,9 @@ var _react = _interopRequireDefault(__webpack_require__(5));
 
 var _reactDom = _interopRequireDefault(__webpack_require__(5));
 
-var _reactLifecyclesCompat = __webpack_require__(15);
+var _reactLifecyclesCompat = __webpack_require__(16);
 
-var _PropTypes = __webpack_require__(16);
+var _PropTypes = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4437,7 +4482,7 @@ var _default = (0, _reactLifecyclesCompat.polyfill)(Transition);
 exports.default = _default;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4604,7 +4649,7 @@ function polyfill(Component) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4659,7 +4704,7 @@ var classNamesShape = _propTypes.default.oneOfType([_propTypes.default.string, _
 exports.classNamesShape = classNamesShape;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4672,7 +4717,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(2));
 
 var _react = _interopRequireDefault(__webpack_require__(5));
 
-var _reactLifecyclesCompat = __webpack_require__(15);
+var _reactLifecyclesCompat = __webpack_require__(16);
 
 var _ChildMapping = __webpack_require__(38);
 
@@ -4810,7 +4855,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 var isAvailable = function() {
@@ -4881,7 +4926,7 @@ var storage = {
 module.exports = storage;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4892,7 +4937,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.sendPageView = exports.sendEvent = undefined;
 
-var _config = __webpack_require__(66);
+var _config = __webpack_require__(70);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -4939,7 +4984,7 @@ var sendPageView = exports.sendPageView = function sendPageView() {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4964,13 +5009,13 @@ function symbolObservablePonyfill(root) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _special = __webpack_require__(22);
+var _special = __webpack_require__(23);
 
 var _special2 = _interopRequireDefault(_special);
 
@@ -4981,7 +5026,7 @@ module.exports.Special = _special2.default; /**
                                              */
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4993,13 +5038,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(23);
+__webpack_require__(24);
 
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(6);
 
-var _app = __webpack_require__(27);
+var _app = __webpack_require__(28);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -5007,7 +5052,7 @@ var _store = __webpack_require__(7);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _analytics = __webpack_require__(19);
+var _analytics = __webpack_require__(20);
 
 var Analytics = _interopRequireWildcard(_analytics);
 
@@ -5016,6 +5061,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var IMAGES = [];
 
 var Special = function () {
   function Special() {
@@ -5083,6 +5130,30 @@ var Special = function () {
         type: 'TEST_PARAMS',
         params: this.params
       });
+
+      var images = [{
+        img: 'https://leonardo.osnova.io/6b760a9e-6b97-a76c-4851-05bcf62b0b90/'
+      }, {
+        img: 'https://leonardo.osnova.io/660e597f-8048-d340-57ee-3d818d55e7dd/',
+        img2x: 'https://leonardo.osnova.io/22f8cd8d-5341-2a3b-2763-e34ba74106cd/'
+      }, {
+        img: 'https://leonardo.osnova.io/72e2b127-9cf8-3976-c4c2-b2f0f14eca1e/',
+        img2x: 'https://leonardo.osnova.io/0c94ee87-6e20-32bc-eff6-1583e715e6cc/'
+      }, {
+        img: 'https://leonardo.osnova.io/1306e7b6-e62e-16d6-45a8-2c5f952bf96c/',
+        img2x: 'https://leonardo.osnova.io/bdbb58d8-0a8d-393b-8c40-403ee9f6ce94/'
+      }];
+
+      images.forEach(function (item) {
+        var img = document.createElement('img');
+        img.src = item.img;
+        if (item.img2x) {
+          img.srcset = item.img2x + ' 2x';
+        }
+        IMAGES.push(img);
+      });
+
+      console.log(IMAGES);
     }
   }]);
 
@@ -5092,15 +5163,15 @@ var Special = function () {
 exports.default = Special;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
-/* 24 */,
 /* 25 */,
-/* 26 */
+/* 26 */,
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = function(originalModule) {
@@ -5130,7 +5201,7 @@ module.exports = function(originalModule) {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5146,11 +5217,11 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(6);
 
-var _bg = __webpack_require__(28);
+var _bg = __webpack_require__(29);
 
 var _bg2 = _interopRequireDefault(_bg);
 
-var _enter = __webpack_require__(29);
+var _enter = __webpack_require__(30);
 
 var _enter2 = _interopRequireDefault(_enter);
 
@@ -5158,7 +5229,7 @@ var _question = __webpack_require__(39);
 
 var _question2 = _interopRequireDefault(_question);
 
-var _result = __webpack_require__(45);
+var _result = __webpack_require__(49);
 
 var _result2 = _interopRequireDefault(_result);
 
@@ -5196,7 +5267,7 @@ var App = function (_Component) {
       return (0, _preact.h)(
         'div',
         { className: 'psb' + (props.test.params.isFeed ? ' is-feed' : '') },
-        (0, _preact.h)(_bg2.default, null),
+        (0, _preact.h)('div', { className: 'psb__bg' + (props.test.status === 'START' ? ' psb__bg--q' : '') }),
         (0, _preact.h)(
           'div',
           { className: 'psb__wrapper' },
@@ -5218,7 +5289,7 @@ var mapStateToProps = function mapStateToProps(store) {
 exports.default = (0, _preactRedux.connect)(mapStateToProps)(App);
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5248,7 +5319,7 @@ var mapStateToProps = function mapStateToProps(store) {
 exports.default = (0, _preactRedux.connect)(mapStateToProps)(Bg);
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5264,7 +5335,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _preact = __webpack_require__(0);
 
-var _reactTransitionGroup = __webpack_require__(30);
+var _reactTransitionGroup = __webpack_require__(14);
 
 var _store = __webpack_require__(7);
 
@@ -5376,30 +5447,6 @@ var Enter = function (_Component) {
 exports.default = Enter;
 
 /***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _CSSTransition = _interopRequireDefault(__webpack_require__(31));
-
-var _ReplaceTransition = _interopRequireDefault(__webpack_require__(37));
-
-var _TransitionGroup = _interopRequireDefault(__webpack_require__(17));
-
-var _Transition = _interopRequireDefault(__webpack_require__(14));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-module.exports = {
-  Transition: _Transition.default,
-  TransitionGroup: _TransitionGroup.default,
-  ReplaceTransition: _ReplaceTransition.default,
-  CSSTransition: _CSSTransition.default
-};
-
-/***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5417,9 +5464,9 @@ var _removeClass = _interopRequireDefault(__webpack_require__(36));
 
 var _react = _interopRequireDefault(__webpack_require__(5));
 
-var _Transition = _interopRequireDefault(__webpack_require__(14));
+var _Transition = _interopRequireDefault(__webpack_require__(15));
 
-var _PropTypes = __webpack_require__(16);
+var _PropTypes = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5763,7 +5810,7 @@ var _react = _interopRequireDefault(__webpack_require__(5));
 
 var _reactDom = __webpack_require__(5);
 
-var _TransitionGroup = _interopRequireDefault(__webpack_require__(17));
+var _TransitionGroup = _interopRequireDefault(__webpack_require__(18));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6072,13 +6119,17 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(6);
 
+var _store = __webpack_require__(7);
+
+var _store2 = _interopRequireDefault(_store);
+
 var _svg = __webpack_require__(9);
 
 var _svg2 = _interopRequireDefault(_svg);
 
-var _store = __webpack_require__(7);
+var _heatmap = __webpack_require__(40);
 
-var _store2 = _interopRequireDefault(_store);
+var _heatmap2 = _interopRequireDefault(_heatmap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6101,82 +6152,140 @@ var Question = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Question.__proto__ || Object.getPrototypeOf(Question)).call(this));
 
     _this.answer = _this.answer.bind(_this);
+    _this.answerUI = _this.answerUI.bind(_this);
     _this.next = _this.next.bind(_this);
     _this.result = _this.result.bind(_this);
-    _this.getButton = _this.getButton.bind(_this);
     return _this;
   }
 
   _createClass(Question, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
-      if (this.state.answered !== undefined) {
-        var blocks = this.code.querySelectorAll('span');
+      if (this.answered) {
 
-        var msg = document.createElement('div');
-        msg.classList.add('psb-code__msg');
+        var heatmapInstance = _heatmap2.default.create({
+          container: this.layout,
+          radius: 60
+        });
 
-        // if (this.state.answered < this.props.test.question.correct) {
-        //   msg.classList.add('psb-code__msg--above');
-        // }
+        console.log(this.answeredDot);
+        console.log(this.props.test.question.type);
 
-        if (this.state.answered === this.props.test.question.correct) {
-          blocks[this.state.answered].classList.add('is-correct');
-          msg.classList.add('is-correct');
-          msg.innerHTML = this.props.test.question.correctMsg;
+        heatmapInstance.addData({
+          x: this.answeredDot.x,
+          y: this.answeredDot.y,
+          value: 1
+        });
+
+        if (this.props.test.question.type === 'ui') {
+          var a = document.createElement('div');
+          a.classList.add('psb-q-phone__answer');
+          if (this.isCorrect) {
+            a.classList.add('is-correct');
+          }
+          this.layout.appendChild(a);
         } else {
-          blocks[this.state.answered].classList.add('is-active');
-          blocks[this.props.test.question.correct].classList.add('is-correct');
-          msg.classList.add('is-incorrect');
-          msg.innerHTML = this.props.test.question.incorrectMsg;
+          var blocks = this.code.querySelectorAll('span');
+
+          if (this.answeredIndex === this.props.test.question.correct) {
+            blocks[this.answeredIndex].classList.add('is-correct');
+          } else {
+            blocks[this.answeredIndex].classList.add('is-active');
+            blocks[this.props.test.question.correct].classList.add('is-correct');
+          }
         }
-
-        blocks[this.state.answered].appendChild(msg);
-        msg.appendChild(this.getButton());
       }
-    }
-  }, {
-    key: 'getButton',
-    value: function getButton() {
-      var btn = document.createElement('button');
-      btn.classList.add('psb-q__btn');
-      if (this.props.test.activeIndex < this.props.test.questionsCount - 1) {
-        btn.innerText = 'Далее';
-        btn.addEventListener('click', this.next);
-      } else {
-        btn.innerText = 'Результат';
-        btn.addEventListener('click', this.result);
-      }
-
-      return btn;
     }
   }, {
     key: 'answer',
     value: function answer(e) {
-      var layout = e.currentTarget;
-      console.log(e.pageX - layout.offsetLeft);
-      if (this.state.answered !== undefined) return;
+      if (this.answered) return;
 
       if (e.target.tagName.toLowerCase() === 'span') {
+        var layout = e.currentTarget;
+        var rect = layout.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+
         var block = e.target;
-        var answerIndex = [].concat(_toConsumableArray(block.parentElement.children)).indexOf(block);
+        var answeredIndex = [].concat(_toConsumableArray(block.parentElement.children)).indexOf(block);
+        var isCorrect = answeredIndex === this.props.test.question.correct;
+
+        this.answered = true;
+        this.answeredIndex = answeredIndex;
+        this.answeredDot = {
+          x: x,
+          y: y
+        };
+        this.isCorrect = isCorrect;
+
+        var spanBody = block.getBoundingClientRect();
+        var sx = e.clientX - spanBody.left;
+        var sy = e.clientY - spanBody.top;
+
+        var rectBody = this.body.getBoundingClientRect();
+        var bx = e.clientX - rectBody.left;
+        var by = e.clientY - rectBody.top;
+
+        if (answeredIndex <= this.props.test.question.correct) {
+          this.msgStyle = {
+            top: by - sy - 10 + 'px',
+            left: bx - sx - 5 + 'px',
+            transform: 'translateY(-100%)'
+          };
+        } else {
+          this.msgStyle = {
+            top: by - sy + 10 + block.offsetHeight + 'px',
+            left: bx - sx - 5 + 'px'
+          };
+          this.body.style.minHeight = this.body.offsetHeight + 200 + 'px';
+        }
 
         _store2.default.dispatch({
           type: 'TEST_ANSWER',
-          isCorrect: answerIndex === this.props.test.question.correct
-        });
-
-        this.setState({
-          answered: answerIndex
+          isCorrect: isCorrect
         });
       }
     }
   }, {
-    key: 'next',
-    value: function next() {
-      this.setState({
-        answered: undefined
+    key: 'answerUI',
+    value: function answerUI(e) {
+      if (this.answered) return;
+
+      var layout = e.currentTarget;
+      var rect = layout.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      var correctCoords = this.props.test.question.correct;
+      var isCorrect = x >= correctCoords.x1 && x <= correctCoords.x2 && y >= correctCoords.y1 && y <= correctCoords.y2;
+
+      this.answered = true;
+      this.answeredDot = {
+        x: x,
+        y: y
+      };
+      this.isCorrect = isCorrect;
+
+      var rectBody = this.body.getBoundingClientRect();
+      var bx = e.clientX - rectBody.left;
+      var by = e.clientY - rectBody.top;
+      this.msgStyle = {
+        top: by + 'px',
+        left: bx + 'px'
+      };
+
+      _store2.default.dispatch({
+        type: 'TEST_ANSWER',
+        isCorrect: isCorrect
       });
+    }
+  }, {
+    key: 'next',
+    value: function next(e) {
+      e.stopPropagation();
+
+      this.answered = false;
+      this.body.style.minHeight = '';
 
       _store2.default.dispatch({
         type: 'TEST_NEXT'
@@ -6184,10 +6293,11 @@ var Question = function (_Component) {
     }
   }, {
     key: 'result',
-    value: function result() {
-      this.setState({
-        answered: undefined
-      });
+    value: function result(e) {
+      e.stopPropagation();
+
+      this.answered = false;
+      this.body.style.minHeight = '';
 
       _store2.default.dispatch({
         type: 'TEST_STATUS',
@@ -6199,8 +6309,73 @@ var Question = function (_Component) {
     value: function render(props, state) {
       var _this2 = this;
 
-      var code = __webpack_require__(40)("./" + (props.test.activeIndex + 1) + '.code');
       var question = props.test.question;
+
+      var getMsg = function getMsg() {
+        if (_this2.answered) {
+          return (0, _preact.h)(
+            'div',
+            { className: 'psb-q__msg ' + (_this2.isCorrect ? 'is-correct' : 'is-incorrect'), style: _this2.msgStyle, ref: function ref(msg) {
+                return _this2.msg = msg;
+              } },
+            (0, _preact.h)('div', { dangerouslySetInnerHTML: { __html: _this2.isCorrect ? question.correctMsg : question.incorrectMsg } }),
+            props.test.activeIndex < props.test.questionsCount - 1 ? (0, _preact.h)(
+              'button',
+              { className: 'psb-q__btn', onClick: _this2.next },
+              '\u0414\u0430\u043B\u0435\u0435'
+            ) : (0, _preact.h)(
+              'button',
+              { className: 'psb-q__btn', onClick: _this2.result },
+              '\u0420\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442'
+            )
+          );
+        } else {
+          return null;
+        }
+      };
+
+      var getBody = function getBody() {
+        if (question.type === 'ui') {
+          return (0, _preact.h)(
+            'div',
+            { className: 'psb-q__ui' },
+            (0, _preact.h)(
+              'div',
+              { className: 'psb-q-phone' },
+              (0, _preact.h)('img', { src: 'https://leonardo.osnova.io/660e597f-8048-d340-57ee-3d818d55e7dd/',
+                srcSet: 'https://leonardo.osnova.io/22f8cd8d-5341-2a3b-2763-e34ba74106cd/ 2x', alt: '' }),
+              (0, _preact.h)(
+                'div',
+                { className: 'psb-q-phone__img', ref: function ref(layout) {
+                    return _this2.layout = layout;
+                  }, onClick: _this2.answerUI },
+                (0, _preact.h)('img', { src: 'https://leonardo.osnova.io/72e2b127-9cf8-3976-c4c2-b2f0f14eca1e/',
+                  srcSet: 'https://leonardo.osnova.io/0c94ee87-6e20-32bc-eff6-1583e715e6cc/ 2x', alt: '' })
+              )
+            )
+          );
+        }
+
+        var code = __webpack_require__(41)("./" + (props.test.activeIndex + 1) + '.code');
+
+        return (0, _preact.h)(
+          'div',
+          { className: 'psb-q__code' },
+          (0, _preact.h)(
+            'div',
+            { className: 'psb-q__code-wrapper' },
+            (0, _preact.h)(
+              'div',
+              { className: 'psb-q__code-inner', ref: function ref(layout) {
+                  return _this2.layout = layout;
+                }, onClick: _this2.answer },
+              (0, _preact.h)('pre', { className: 'psb-q__code-pre', ref: function ref(code) {
+                  return _this2.code = code;
+                }, dangerouslySetInnerHTML: { __html: code } })
+            )
+          )
+        );
+      };
 
       return (0, _preact.h)(
         'div',
@@ -6231,18 +6406,11 @@ var Question = function (_Component) {
         ),
         (0, _preact.h)(
           'div',
-          { className: 'psb-q__code' },
-          (0, _preact.h)(
-            'div',
-            { className: 'psb-q__code-wrapper' },
-            (0, _preact.h)(
-              'div',
-              { className: 'psb-q__code-inner', onClick: this.answer },
-              (0, _preact.h)('pre', { className: 'psb-q__code-pre', ref: function ref(code) {
-                  return _this2.code = code;
-                }, dangerouslySetInnerHTML: { __html: code } })
-            )
-          )
+          { className: 'psb-q__body', ref: function ref(body) {
+              return _this2.body = body;
+            } },
+          getMsg(),
+          getBody()
         )
       );
     }
@@ -6263,11 +6431,745 @@ exports.default = (0, _preactRedux.connect)(mapStateToProps)(Question);
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+ * heatmap.js v2.0.5 | JavaScript Heatmap Library
+ *
+ * Copyright 2008-2016 Patrick Wied <heatmapjs@patrick-wied.at> - All rights reserved.
+ * Dual licensed under MIT and Beerware license 
+ *
+ * :: 2016-09-05 01:16
+ */
+;(function (name, context, factory) {
+
+  // Supports UMD. AMD, CommonJS/Node.js and browser context
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = factory();
+  } else if (true) {
+    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {}
+
+})("h337", this, function () {
+
+// Heatmap Config stores default values and will be merged with instance config
+var HeatmapConfig = {
+  defaultRadius: 40,
+  defaultRenderer: 'canvas2d',
+  defaultGradient: { 0.25: "rgb(0,0,255)", 0.55: "rgb(0,255,0)", 0.85: "yellow", 1.0: "rgb(255,0,0)"},
+  defaultMaxOpacity: 1,
+  defaultMinOpacity: 0,
+  defaultBlur: .85,
+  defaultXField: 'x',
+  defaultYField: 'y',
+  defaultValueField: 'value', 
+  plugins: {}
+};
+var Store = (function StoreClosure() {
+
+  var Store = function Store(config) {
+    this._coordinator = {};
+    this._data = [];
+    this._radi = [];
+    this._min = 10;
+    this._max = 1;
+    this._xField = config['xField'] || config.defaultXField;
+    this._yField = config['yField'] || config.defaultYField;
+    this._valueField = config['valueField'] || config.defaultValueField;
+
+    if (config["radius"]) {
+      this._cfgRadius = config["radius"];
+    }
+  };
+
+  var defaultRadius = HeatmapConfig.defaultRadius;
+
+  Store.prototype = {
+    // when forceRender = false -> called from setData, omits renderall event
+    _organiseData: function(dataPoint, forceRender) {
+        var x = dataPoint[this._xField];
+        var y = dataPoint[this._yField];
+        var radi = this._radi;
+        var store = this._data;
+        var max = this._max;
+        var min = this._min;
+        var value = dataPoint[this._valueField] || 1;
+        var radius = dataPoint.radius || this._cfgRadius || defaultRadius;
+
+        if (!store[x]) {
+          store[x] = [];
+          radi[x] = [];
+        }
+
+        if (!store[x][y]) {
+          store[x][y] = value;
+          radi[x][y] = radius;
+        } else {
+          store[x][y] += value;
+        }
+        var storedVal = store[x][y];
+
+        if (storedVal > max) {
+          if (!forceRender) {
+            this._max = storedVal;
+          } else {
+            this.setDataMax(storedVal);
+          }
+          return false;
+        } else if (storedVal < min) {
+          if (!forceRender) {
+            this._min = storedVal;
+          } else {
+            this.setDataMin(storedVal);
+          }
+          return false;
+        } else {
+          return { 
+            x: x, 
+            y: y,
+            value: value, 
+            radius: radius,
+            min: min,
+            max: max 
+          };
+        }
+    },
+    _unOrganizeData: function() {
+      var unorganizedData = [];
+      var data = this._data;
+      var radi = this._radi;
+
+      for (var x in data) {
+        for (var y in data[x]) {
+
+          unorganizedData.push({
+            x: x,
+            y: y,
+            radius: radi[x][y],
+            value: data[x][y]
+          });
+
+        }
+      }
+      return {
+        min: this._min,
+        max: this._max,
+        data: unorganizedData
+      };
+    },
+    _onExtremaChange: function() {
+      this._coordinator.emit('extremachange', {
+        min: this._min,
+        max: this._max
+      });
+    },
+    addData: function() {
+      if (arguments[0].length > 0) {
+        var dataArr = arguments[0];
+        var dataLen = dataArr.length;
+        while (dataLen--) {
+          this.addData.call(this, dataArr[dataLen]);
+        }
+      } else {
+        // add to store  
+        var organisedEntry = this._organiseData(arguments[0], true);
+        if (organisedEntry) {
+          // if it's the first datapoint initialize the extremas with it
+          if (this._data.length === 0) {
+            this._min = this._max = organisedEntry.value;
+          }
+          this._coordinator.emit('renderpartial', {
+            min: this._min,
+            max: this._max,
+            data: [organisedEntry]
+          });
+        }
+      }
+      return this;
+    },
+    setData: function(data) {
+      var dataPoints = data.data;
+      var pointsLen = dataPoints.length;
+
+
+      // reset data arrays
+      this._data = [];
+      this._radi = [];
+
+      for(var i = 0; i < pointsLen; i++) {
+        this._organiseData(dataPoints[i], false);
+      }
+      this._max = data.max;
+      this._min = data.min || 0;
+      
+      this._onExtremaChange();
+      this._coordinator.emit('renderall', this._getInternalData());
+      return this;
+    },
+    removeData: function() {
+      // TODO: implement
+    },
+    setDataMax: function(max) {
+      this._max = max;
+      this._onExtremaChange();
+      this._coordinator.emit('renderall', this._getInternalData());
+      return this;
+    },
+    setDataMin: function(min) {
+      this._min = min;
+      this._onExtremaChange();
+      this._coordinator.emit('renderall', this._getInternalData());
+      return this;
+    },
+    setCoordinator: function(coordinator) {
+      this._coordinator = coordinator;
+    },
+    _getInternalData: function() {
+      return { 
+        max: this._max,
+        min: this._min, 
+        data: this._data,
+        radi: this._radi 
+      };
+    },
+    getData: function() {
+      return this._unOrganizeData();
+    }/*,
+
+      TODO: rethink.
+
+    getValueAt: function(point) {
+      var value;
+      var radius = 100;
+      var x = point.x;
+      var y = point.y;
+      var data = this._data;
+
+      if (data[x] && data[x][y]) {
+        return data[x][y];
+      } else {
+        var values = [];
+        // radial search for datapoints based on default radius
+        for(var distance = 1; distance < radius; distance++) {
+          var neighbors = distance * 2 +1;
+          var startX = x - distance;
+          var startY = y - distance;
+
+          for(var i = 0; i < neighbors; i++) {
+            for (var o = 0; o < neighbors; o++) {
+              if ((i == 0 || i == neighbors-1) || (o == 0 || o == neighbors-1)) {
+                if (data[startY+i] && data[startY+i][startX+o]) {
+                  values.push(data[startY+i][startX+o]);
+                }
+              } else {
+                continue;
+              } 
+            }
+          }
+        }
+        if (values.length > 0) {
+          return Math.max.apply(Math, values);
+        }
+      }
+      return false;
+    }*/
+  };
+
+
+  return Store;
+})();
+
+var Canvas2dRenderer = (function Canvas2dRendererClosure() {
+
+  var _getColorPalette = function(config) {
+    var gradientConfig = config.gradient || config.defaultGradient;
+    var paletteCanvas = document.createElement('canvas');
+    var paletteCtx = paletteCanvas.getContext('2d');
+
+    paletteCanvas.width = 256;
+    paletteCanvas.height = 1;
+
+    var gradient = paletteCtx.createLinearGradient(0, 0, 256, 1);
+    for (var key in gradientConfig) {
+      gradient.addColorStop(key, gradientConfig[key]);
+    }
+
+    paletteCtx.fillStyle = gradient;
+    paletteCtx.fillRect(0, 0, 256, 1);
+
+    return paletteCtx.getImageData(0, 0, 256, 1).data;
+  };
+
+  var _getPointTemplate = function(radius, blurFactor) {
+    var tplCanvas = document.createElement('canvas');
+    var tplCtx = tplCanvas.getContext('2d');
+    var x = radius;
+    var y = radius;
+    tplCanvas.width = tplCanvas.height = radius*2;
+
+    if (blurFactor == 1) {
+      tplCtx.beginPath();
+      tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
+      tplCtx.fillStyle = 'rgba(0,0,0,1)';
+      tplCtx.fill();
+    } else {
+      var gradient = tplCtx.createRadialGradient(x, y, radius*blurFactor, x, y, radius);
+      gradient.addColorStop(0, 'rgba(0,0,0,1)');
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      tplCtx.fillStyle = gradient;
+      tplCtx.fillRect(0, 0, 2*radius, 2*radius);
+    }
+
+
+
+    return tplCanvas;
+  };
+
+  var _prepareData = function(data) {
+    var renderData = [];
+    var min = data.min;
+    var max = data.max;
+    var radi = data.radi;
+    var data = data.data;
+
+    var xValues = Object.keys(data);
+    var xValuesLen = xValues.length;
+
+    while(xValuesLen--) {
+      var xValue = xValues[xValuesLen];
+      var yValues = Object.keys(data[xValue]);
+      var yValuesLen = yValues.length;
+      while(yValuesLen--) {
+        var yValue = yValues[yValuesLen];
+        var value = data[xValue][yValue];
+        var radius = radi[xValue][yValue];
+        renderData.push({
+          x: xValue,
+          y: yValue,
+          value: value,
+          radius: radius
+        });
+      }
+    }
+
+    return {
+      min: min,
+      max: max,
+      data: renderData
+    };
+  };
+
+
+  function Canvas2dRenderer(config) {
+    var container = config.container;
+    var shadowCanvas = this.shadowCanvas = document.createElement('canvas');
+    var canvas = this.canvas = config.canvas || document.createElement('canvas');
+    var renderBoundaries = this._renderBoundaries = [10000, 10000, 0, 0];
+
+    var computed = getComputedStyle(config.container) || {};
+
+    canvas.className = 'heatmap-canvas';
+
+    this._width = canvas.width = shadowCanvas.width = config.width || +(computed.width.replace(/px/,''));
+    this._height = canvas.height = shadowCanvas.height = config.height || +(computed.height.replace(/px/,''));
+
+    this.shadowCtx = shadowCanvas.getContext('2d');
+    this.ctx = canvas.getContext('2d');
+
+    // @TODO:
+    // conditional wrapper
+
+    canvas.style.cssText = shadowCanvas.style.cssText = 'position:absolute;left:0;top:0;';
+
+    container.style.position = 'relative';
+    container.appendChild(canvas);
+
+    this._palette = _getColorPalette(config);
+    this._templates = {};
+
+    this._setStyles(config);
+  };
+
+  Canvas2dRenderer.prototype = {
+    renderPartial: function(data) {
+      if (data.data.length > 0) {
+        this._drawAlpha(data);
+        this._colorize();
+      }
+    },
+    renderAll: function(data) {
+      // reset render boundaries
+      this._clear();
+      if (data.data.length > 0) {
+        this._drawAlpha(_prepareData(data));
+        this._colorize();
+      }
+    },
+    _updateGradient: function(config) {
+      this._palette = _getColorPalette(config);
+    },
+    updateConfig: function(config) {
+      if (config['gradient']) {
+        this._updateGradient(config);
+      }
+      this._setStyles(config);
+    },
+    setDimensions: function(width, height) {
+      this._width = width;
+      this._height = height;
+      this.canvas.width = this.shadowCanvas.width = width;
+      this.canvas.height = this.shadowCanvas.height = height;
+    },
+    _clear: function() {
+      this.shadowCtx.clearRect(0, 0, this._width, this._height);
+      this.ctx.clearRect(0, 0, this._width, this._height);
+    },
+    _setStyles: function(config) {
+      this._blur = (config.blur == 0)?0:(config.blur || config.defaultBlur);
+
+      if (config.backgroundColor) {
+        this.canvas.style.backgroundColor = config.backgroundColor;
+      }
+
+      this._width = this.canvas.width = this.shadowCanvas.width = config.width || this._width;
+      this._height = this.canvas.height = this.shadowCanvas.height = config.height || this._height;
+
+
+      this._opacity = (config.opacity || 0) * 255;
+      this._maxOpacity = (config.maxOpacity || config.defaultMaxOpacity) * 255;
+      this._minOpacity = (config.minOpacity || config.defaultMinOpacity) * 255;
+      this._useGradientOpacity = !!config.useGradientOpacity;
+    },
+    _drawAlpha: function(data) {
+      var min = this._min = data.min;
+      var max = this._max = data.max;
+      var data = data.data || [];
+      var dataLen = data.length;
+      // on a point basis?
+      var blur = 1 - this._blur;
+
+      while(dataLen--) {
+
+        var point = data[dataLen];
+
+        var x = point.x;
+        var y = point.y;
+        var radius = point.radius;
+        // if value is bigger than max
+        // use max as value
+        var value = Math.min(point.value, max);
+        var rectX = x - radius;
+        var rectY = y - radius;
+        var shadowCtx = this.shadowCtx;
+
+
+
+
+        var tpl;
+        if (!this._templates[radius]) {
+          this._templates[radius] = tpl = _getPointTemplate(radius, blur);
+        } else {
+          tpl = this._templates[radius];
+        }
+        // value from minimum / value range
+        // => [0, 1]
+        var templateAlpha = (value-min)/(max-min);
+        // this fixes #176: small values are not visible because globalAlpha < .01 cannot be read from imageData
+        shadowCtx.globalAlpha = templateAlpha < .01 ? .01 : templateAlpha;
+
+        shadowCtx.drawImage(tpl, rectX, rectY);
+
+        // update renderBoundaries
+        if (rectX < this._renderBoundaries[0]) {
+            this._renderBoundaries[0] = rectX;
+          }
+          if (rectY < this._renderBoundaries[1]) {
+            this._renderBoundaries[1] = rectY;
+          }
+          if (rectX + 2*radius > this._renderBoundaries[2]) {
+            this._renderBoundaries[2] = rectX + 2*radius;
+          }
+          if (rectY + 2*radius > this._renderBoundaries[3]) {
+            this._renderBoundaries[3] = rectY + 2*radius;
+          }
+
+      }
+    },
+    _colorize: function() {
+      var x = this._renderBoundaries[0];
+      var y = this._renderBoundaries[1];
+      var width = this._renderBoundaries[2] - x;
+      var height = this._renderBoundaries[3] - y;
+      var maxWidth = this._width;
+      var maxHeight = this._height;
+      var opacity = this._opacity;
+      var maxOpacity = this._maxOpacity;
+      var minOpacity = this._minOpacity;
+      var useGradientOpacity = this._useGradientOpacity;
+
+      if (x < 0) {
+        x = 0;
+      }
+      if (y < 0) {
+        y = 0;
+      }
+      if (x + width > maxWidth) {
+        width = maxWidth - x;
+      }
+      if (y + height > maxHeight) {
+        height = maxHeight - y;
+      }
+
+      var img = this.shadowCtx.getImageData(x, y, width, height);
+      var imgData = img.data;
+      var len = imgData.length;
+      var palette = this._palette;
+
+
+      for (var i = 3; i < len; i+= 4) {
+        var alpha = imgData[i];
+        var offset = alpha * 4;
+
+
+        if (!offset) {
+          continue;
+        }
+
+        var finalAlpha;
+        if (opacity > 0) {
+          finalAlpha = opacity;
+        } else {
+          if (alpha < maxOpacity) {
+            if (alpha < minOpacity) {
+              finalAlpha = minOpacity;
+            } else {
+              finalAlpha = alpha;
+            }
+          } else {
+            finalAlpha = maxOpacity;
+          }
+        }
+
+        imgData[i-3] = palette[offset];
+        imgData[i-2] = palette[offset + 1];
+        imgData[i-1] = palette[offset + 2];
+        imgData[i] = useGradientOpacity ? palette[offset + 3] : finalAlpha;
+
+      }
+
+      img.data = imgData;
+      this.ctx.putImageData(img, x, y);
+
+      this._renderBoundaries = [1000, 1000, 0, 0];
+
+    },
+    getValueAt: function(point) {
+      var value;
+      var shadowCtx = this.shadowCtx;
+      var img = shadowCtx.getImageData(point.x, point.y, 1, 1);
+      var data = img.data[3];
+      var max = this._max;
+      var min = this._min;
+
+      value = (Math.abs(max-min) * (data/255)) >> 0;
+
+      return value;
+    },
+    getDataURL: function() {
+      return this.canvas.toDataURL();
+    }
+  };
+
+
+  return Canvas2dRenderer;
+})();
+
+
+var Renderer = (function RendererClosure() {
+
+  var rendererFn = false;
+
+  if (HeatmapConfig['defaultRenderer'] === 'canvas2d') {
+    rendererFn = Canvas2dRenderer;
+  }
+
+  return rendererFn;
+})();
+
+
+var Util = {
+  merge: function() {
+    var merged = {};
+    var argsLen = arguments.length;
+    for (var i = 0; i < argsLen; i++) {
+      var obj = arguments[i]
+      for (var key in obj) {
+        merged[key] = obj[key];
+      }
+    }
+    return merged;
+  }
+};
+// Heatmap Constructor
+var Heatmap = (function HeatmapClosure() {
+
+  var Coordinator = (function CoordinatorClosure() {
+
+    function Coordinator() {
+      this.cStore = {};
+    };
+
+    Coordinator.prototype = {
+      on: function(evtName, callback, scope) {
+        var cStore = this.cStore;
+
+        if (!cStore[evtName]) {
+          cStore[evtName] = [];
+        }
+        cStore[evtName].push((function(data) {
+            return callback.call(scope, data);
+        }));
+      },
+      emit: function(evtName, data) {
+        var cStore = this.cStore;
+        if (cStore[evtName]) {
+          var len = cStore[evtName].length;
+          for (var i=0; i<len; i++) {
+            var callback = cStore[evtName][i];
+            callback(data);
+          }
+        }
+      }
+    };
+
+    return Coordinator;
+  })();
+
+
+  var _connect = function(scope) {
+    var renderer = scope._renderer;
+    var coordinator = scope._coordinator;
+    var store = scope._store;
+
+    coordinator.on('renderpartial', renderer.renderPartial, renderer);
+    coordinator.on('renderall', renderer.renderAll, renderer);
+    coordinator.on('extremachange', function(data) {
+      scope._config.onExtremaChange &&
+      scope._config.onExtremaChange({
+        min: data.min,
+        max: data.max,
+        gradient: scope._config['gradient'] || scope._config['defaultGradient']
+      });
+    });
+    store.setCoordinator(coordinator);
+  };
+
+
+  function Heatmap() {
+    var config = this._config = Util.merge(HeatmapConfig, arguments[0] || {});
+    this._coordinator = new Coordinator();
+    if (config['plugin']) {
+      var pluginToLoad = config['plugin'];
+      if (!HeatmapConfig.plugins[pluginToLoad]) {
+        throw new Error('Plugin \''+ pluginToLoad + '\' not found. Maybe it was not registered.');
+      } else {
+        var plugin = HeatmapConfig.plugins[pluginToLoad];
+        // set plugin renderer and store
+        this._renderer = new plugin.renderer(config);
+        this._store = new plugin.store(config);
+      }
+    } else {
+      this._renderer = new Renderer(config);
+      this._store = new Store(config);
+    }
+    _connect(this);
+  };
+
+  // @TODO:
+  // add API documentation
+  Heatmap.prototype = {
+    addData: function() {
+      this._store.addData.apply(this._store, arguments);
+      return this;
+    },
+    removeData: function() {
+      this._store.removeData && this._store.removeData.apply(this._store, arguments);
+      return this;
+    },
+    setData: function() {
+      this._store.setData.apply(this._store, arguments);
+      return this;
+    },
+    setDataMax: function() {
+      this._store.setDataMax.apply(this._store, arguments);
+      return this;
+    },
+    setDataMin: function() {
+      this._store.setDataMin.apply(this._store, arguments);
+      return this;
+    },
+    configure: function(config) {
+      this._config = Util.merge(this._config, config);
+      this._renderer.updateConfig(this._config);
+      this._coordinator.emit('renderall', this._store._getInternalData());
+      return this;
+    },
+    repaint: function() {
+      this._coordinator.emit('renderall', this._store._getInternalData());
+      return this;
+    },
+    getData: function() {
+      return this._store.getData();
+    },
+    getDataURL: function() {
+      return this._renderer.getDataURL();
+    },
+    getValueAt: function(point) {
+
+      if (this._store.getValueAt) {
+        return this._store.getValueAt(point);
+      } else  if (this._renderer.getValueAt) {
+        return this._renderer.getValueAt(point);
+      } else {
+        return null;
+      }
+    }
+  };
+
+  return Heatmap;
+
+})();
+
+
+// core
+var heatmapFactory = {
+  create: function(config) {
+    return new Heatmap(config);
+  },
+  register: function(pluginKey, plugin) {
+    HeatmapConfig.plugins[pluginKey] = plugin;
+  }
+};
+
+return heatmapFactory;
+
+
+});
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var map = {
-	"./1.code": 41,
-	"./2.code": 42,
-	"./3.code": 43,
-	"./4.code": 44
+	"./1.code": 42,
+	"./2.code": 43,
+	"./3.code": 44,
+	"./4.code": 45,
+	"./5.code": 46,
+	"./6.code": 47,
+	"./8.code": 48
 };
 
 
@@ -6289,34 +7191,52 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 40;
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span class=\"psb-code\">public enum Sex</span> <span class=\"psb-code\">{ MALE, FEMALE };</span>\n\n    <span class=\"psb-code\">public static void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.print</span> (\"Loan possible for female with age 50 and for period 2 years: \" +\n                <span class=\"psb-code\">isLoanPossible(Sex.FEMALE, 50, 2));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>\n        <span class=\"psb-code\">boolean retval = false;</span>\n        <span class=\"psb-code\">if (sex == Sex.FEMALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod)</span> <span class=\"psb-code\">< 65) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (sex == Sex.MALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod) < 60) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (age < 21) {</span>\n            <span class=\"psb-code\">retval = false;</span>\n        }\n        <span class=\"psb-code\">return retval;</span>\n\n}"
+webpackContext.id = 41;
 
 /***/ }),
 /* 42 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span>(<span class=\"psb-code\">\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int hospitalDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double hospitalAmount = 0;</span>\n        <span class=\"psb-code\">if (hospitalDays >= 3) {</span>\n            <span class=\"psb-code\">hospitalAmount = 0.8 * hospitalDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + hospitalAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span class=\"psb-code\">public enum Sex</span> <span class=\"psb-code\">{ MALE, FEMALE };</span>\n\n    <span class=\"psb-code\">public static void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.print</span> (\"Loan possible for female with age 50 and for period 2 years: \" +\n                <span class=\"psb-code\">isLoanPossible(Sex.FEMALE, 50, 2));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>\n        <span class=\"psb-code\">boolean retval = false;</span>\n        <span class=\"psb-code\">if (sex == Sex.FEMALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod)</span> <span class=\"psb-code\">< 65) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (sex == Sex.MALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod) < 60) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (age < 21) {</span>\n            <span class=\"psb-code\">retval = false;</span>\n        }\n        <span class=\"psb-code\">return retval;</span>\n\n}"
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<span class=\"psb-code\">SET @RUB_EUR_RATIO = 70.0;</span>\n\n<span class=\"psb-code\">SELECT</span> <span class=\"psb-code\">c.Id, c.Name, SUM(</span>\n       <span class=\"psb-code\">CASE</span>\n            <span class=\"psb-code\">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>\n            \t<span class=\"psb-code\">THEN Balance</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'USD'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_USD_RATIO</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'EUR'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_EUR_RATIO</span>\n       <span class=\"psb-code\">END)</span> <span class=\"psb-code\">as total</span>\n<span class=\"psb-code\">FROM customers AS c</span>\n<span class=\"psb-code\">INNER JOIN accounts AS a</span>\n    <span class=\"psb-code\">ON c.Id=a.CustomerId</span>\n<span class=\"psb-code\">GROUP BY a.CustomerId</span>\n"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span>(<span class=\"psb-code\">\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int hospitalDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double hospitalAmount = 0;</span>\n        <span class=\"psb-code\">if (hospitalDays >= 3) {</span>\n            <span class=\"psb-code\">hospitalAmount = 0.8 * hospitalDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + hospitalAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">class Program</span>\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">String str</span> = <span class=\"psb-code\">\"The Big Bang Theory\";</span>\n\t\t<span class=\"psb-code\">for(int i = 0; i < str.Length; i++)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">char c = str[i];</span>\n\t\t\t<span class=\"psb-code\">if (c != 'a' || c != 'A')</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsLower(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span>(<span class=\"psb-code\">Char.ToUpper(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsUpper(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span>(<span class=\"psb-code\">Char.ToLower(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t}\n\t}\n}\n"
+module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<span class=\"psb-code\">SET @RUB_EUR_RATIO = 70.0;</span>\n\n<span class=\"psb-code\">SELECT</span> <span class=\"psb-code\">c.Id, c.Name, SUM(</span>\n       <span class=\"psb-code\">CASE</span>\n            <span class=\"psb-code\">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>\n            \t<span class=\"psb-code\">THEN Balance</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'USD'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_USD_RATIO</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'EUR'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_EUR_RATIO</span>\n       <span class=\"psb-code\">END)</span> <span class=\"psb-code\">as total</span>\n<span class=\"psb-code\">FROM customers AS c</span>\n<span class=\"psb-code\">INNER JOIN accounts AS a</span>\n    <span class=\"psb-code\">ON c.Id=a.CustomerId</span>\n<span class=\"psb-code\">GROUP BY a.CustomerId</span>\n"
 
 /***/ }),
 /* 45 */
+/***/ (function(module, exports) {
+
+module.exports = "<span class=\"psb-code\">class Program</span>\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">String str</span> = <span class=\"psb-code\">\"The Big Bang Theory\";</span>\n\t\t<span class=\"psb-code\">for(int i = 0; i < str.Length; i++)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">char c = str[i];</span>\n\t\t\t<span class=\"psb-code\">if (c != 'a' || c != 'A')</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsLower(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span>(<span class=\"psb-code\">Char.ToUpper(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsUpper(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span>(<span class=\"psb-code\">Char.ToLower(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t}\n\t}\n}\n"
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports) {
+
+module.exports = "class Program\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">int year = 2020;</span>\n\t\t<span class=\"psb-code\">int holidays = 0;</span>\n\t\t<span class=\"psb-code\">DateTime day =</span> <span class=\"psb-code\">new DateTime(year, 1, 1);</span>\n\t\twhile<span class=\"psb-code\">(day.Year == year)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">if (isLastDayOfMonth(day))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">if (day.DayOfWeek == DayOfWeek.Sunday)</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">day = day.AddDays(1);</span>\n\t\t}\n\t\t<span class=\"psb-code\">Console.WriteLine(\"Number of holidays:</span> \" <span class=\"psb-code\">+ holidays</span>);\n\t}\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">bool isLastDayOfMonth(DateTime dt)</span>\n\t{\n\t\t<span class=\"psb-code\">if (dt.AddDays(1).Day == 1)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">return true;</span>\n\t\t}\n\t\t<span class=\"psb-code\">return false;</span>\n\t}\n}"
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append<span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports) {
+
+module.exports = "<span class=\"psb-code\">SELECT</span>\n    <span class=\"psb-code\">u.userId,</span>\n    <span class=\"psb-code\">u.username,</span>\n    <span class=\"psb-code\">t.lessonId,</span>\n    <span class=\"psb-code\">t.lessonDate,</span>\n    <span class=\"psb-code\">count( t.id ) AS count</span>\n  <span class=\"psb-code\">FROM users u JOIN lesson_details t ON t.userId = u.userId</span>\n  <span class=\"psb-code\">GROUP BY u.userId,</span>\n         <span class=\"psb-code\">u.username,</span>\n         <span class=\"psb-code\">t.lessonId,</span>\n         <span class=\"psb-code\">t.lessonDate</span>\n  <span class=\"psb-code\">HAVING count( t.id ) >= 1</span>\n  <span class=\"psb-code\">ORDER BY t.lessonDate DESC;</span>"
+
+/***/ }),
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6325,6 +7245,8 @@ module.exports = "<span class=\"psb-code\">class Program</span>\n{\n\n\t<span cl
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6336,7 +7258,9 @@ var _store = __webpack_require__(7);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _share = __webpack_require__(46);
+var _reactTransitionGroup = __webpack_require__(14);
+
+var _share = __webpack_require__(50);
 
 var Share = _interopRequireWildcard(_share);
 
@@ -6352,11 +7276,23 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var defaultStyle = {
+  transition: 'opacity 200ms linear',
+  opacity: 0
+};
+
+var transitionStyles = {
+  entered: { opacity: 1 },
+  exited: { opacity: 0 }
+};
 
 var Result = function (_Component) {
   _inherits(Result, _Component);
@@ -6373,6 +7309,10 @@ var Result = function (_Component) {
   _createClass(Result, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      this.setState({
+        animate: true
+      });
+
       Share.make(this.share, {
         url: this.props.test.params.share.url + '/' + this.props.test.correctAnswers,
         title: this.props.test.params.share.title,
@@ -6397,9 +7337,26 @@ var Result = function (_Component) {
     value: function render(props, state) {
       var _this2 = this;
 
+      var getBlocks = function getBlocks() {
+        if (window.innerWidth < 1025) {
+          return null;
+        }
+
+        return [].concat(_toConsumableArray(Array(8))).map(function (item, i) {
+          return (0, _preact.h)(
+            _reactTransitionGroup.Transition,
+            { 'in': state.animate, timeout: 150 * i },
+            function (state) {
+              return (0, _preact.h)('div', { style: _extends({}, defaultStyle, transitionStyles[state], { transform: 'translate3d(-' + 15 * i + 'px, -' + 15 * i + 'px, 0)' }), className: 'psb-result__frame' });
+            }
+          );
+        });
+      };
+
       return (0, _preact.h)(
         'div',
         { className: 'psb-result' },
+        getBlocks(),
         (0, _preact.h)(
           'div',
           { className: 'psb-result__header' },
@@ -6450,7 +7407,7 @@ var mapStateToProps = function mapStateToProps(store) {
 exports.default = (0, _preactRedux.connect)(mapStateToProps)(Result);
 
 /***/ }),
-/* 46 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6461,13 +7418,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.make = exports.init = undefined;
 
-var _cmttLikely = __webpack_require__(47);
+var _cmttLikely = __webpack_require__(51);
 
 var _cmttLikely2 = _interopRequireDefault(_cmttLikely);
 
-var _dom = __webpack_require__(65);
+var _dom = __webpack_require__(69);
 
-var _analytics = __webpack_require__(19);
+var _analytics = __webpack_require__(20);
 
 var Analytics = _interopRequireWildcard(_analytics);
 
@@ -6517,12 +7474,12 @@ var make = exports.make = function make(parentContainer) {
 };
 
 /***/ }),
-/* 47 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 'use strict';
 
-var Likely = __webpack_require__(48),
+var Likely = __webpack_require__(52),
     config = __webpack_require__(1),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3);
@@ -6573,16 +7530,16 @@ likely.defaults = {
 module.exports = likely;
 
 /***/ }),
-/* 48 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Button = __webpack_require__(49);
+var Button = __webpack_require__(53);
 
 var services = __webpack_require__(10),
     config   = __webpack_require__(1),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3),
-    storage = __webpack_require__(18);
+    storage = __webpack_require__(19);
 
 /**
  * Main widget view
@@ -6725,15 +7682,15 @@ Likely.prototype = {
 module.exports = Likely;
 
 /***/ }),
-/* 49 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var services = __webpack_require__(10),
     config = __webpack_require__(1),
-    fetch = __webpack_require__(63),
+    fetch = __webpack_require__(67),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3),
-    storage = __webpack_require__(18);
+    storage = __webpack_require__(19);
 
 var htmlSpan = '<span class="{className}">{content}</span>';
 
@@ -6998,7 +7955,7 @@ LikelyButton.prototype = {
 module.exports = LikelyButton;
 
 /***/ }),
-/* 50 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dom = __webpack_require__(3);
@@ -7031,13 +7988,13 @@ module.exports = function (options) {
 };
 
 /***/ }),
-/* 51 */
+/* 55 */
 /***/ (function(module) {
 
 module.exports = {"facebook":"5.9 16h3.3V8h2.2l.3-2.8H9.2V3.8c0-.7.1-1.1 1.1-1.1h1.4V0H9.5C6.9 0 5.9 1.3 5.9 3.6v1.7H4.3V8H6v8","twitter":"15.96 3.42c-.04.153-.144.31-.237.414l-.118.058v.118l-.59.532-.237.295c-.05.036-.398.21-.413.237V6.49h-.06v.473h-.058v.294h-.058v.296h-.06v.235h-.06v.237h-.058c-.1.355-.197.71-.295 1.064h-.06v.116h-.06c-.02.1-.04.197-.058.296h-.06c-.04.118-.08.237-.118.355h-.06c-.038.118-.078.236-.117.353l-.118.06-.06.235-.117.06v.116l-.118.06v.12h-.06c-.02.057-.038.117-.058.175l-.118.06v.117c-.06.04-.118.08-.177.118v.118l-.237.177v.118l-.59.53-.532.592h-.117c-.06.078-.118.156-.177.236l-.177.06-.06.117h-.118l-.06.118-.176.06v.058h-.118l-.06.118-.353.12-.06.117c-.078.02-.156.04-.235.058v.06c-.118.038-.236.078-.354.118v.058H8.76v.06h-.12v.06h-.176v.058h-.118v.06H8.17v.058H7.99v.06l-.413.058v.06h-.237c-.667.22-1.455.293-2.36.293h-.886v-.058h-.53v-.06H3.27v-.06h-.295v-.06H2.68v-.057h-.177v-.06h-.236v-.058H2.09v-.06h-.177v-.058h-.177v-.06H1.56v-.058h-.12v-.06l-.294-.06v-.057c-.118-.04-.236-.08-.355-.118v-.06H.674v-.058H.555v-.06H.437v-.058H.32l-.06-.12H.142v-.058c-.13-.08-.083.026-.177-.118H1.56v-.06c.294-.04.59-.077.884-.117v-.06h.177v-.058h.237v-.06h.118v-.06h.177v-.057h.118v-.06h.177v-.058l.236-.06v-.058l.236-.06c.02-.038.04-.078.058-.117l.237-.06c.02-.04.04-.077.058-.117h.118l.06-.118h.118c.036-.025.047-.078.118-.118V12.1c-1.02-.08-1.84-.54-2.303-1.183-.08-.058-.157-.118-.236-.176v-.117l-.118-.06v-.117c-.115-.202-.268-.355-.296-.65.453.004.987.008 1.354-.06v-.06c-.254-.008-.47-.08-.65-.175v-.058H2.32v-.06c-.08-.02-.157-.04-.236-.058l-.06-.118h-.117l-.118-.178h-.12c-.077-.098-.156-.196-.235-.294l-.118-.06v-.117l-.177-.12c-.35-.502-.6-1.15-.59-2.006h.06c.204.234.948.377 1.357.415v-.06c-.257-.118-.676-.54-.827-.768V5.9l-.118-.06c-.04-.117-.08-.236-.118-.354h-.06v-.118H.787c-.04-.196-.08-.394-.118-.59-.06-.19-.206-.697-.118-1.005h.06V3.36h.058v-.177h.06v-.177h.057V2.83h.06c.04-.118.078-.236.117-.355h.118v.06c.12.097.237.196.355.295v.118l.118.058c.08.098.157.197.236.295l.176.06.354.413h.118l.177.236h.118l.06.117h.117c.04.06.08.118.118.177h.118l.06.118.235.06.06.117.356.12.06.117.53.176v.06h.118v.058l.236.06v.06c.118.02.236.04.355.058v.06h.177v.058h.177v.06h.176v.058h.236v.06l.472.057v.06l1.417.18v-.237c-.1-.112-.058-.442-.057-.65 0-.573.15-.99.354-1.358v-.117l.118-.06.06-.235.176-.118v-.118c.14-.118.276-.236.414-.355l.06-.117h.117l.12-.177.235-.06.06-.117h.117v-.058H9.7v-.058h.177v-.06h.177v-.058h.177v-.06h.296v-.058h1.063v.058h.294v.06h.177v.058h.178v.06h.177v.058h.118v.06h.118l.06.117c.08.018.158.038.236.058.04.06.08.118.118.177h.118l.06.117c.142.133.193.163.472.178.136-.12.283-.05.472-.118v-.06h.177v-.058h.177v-.06l.236-.058v-.06h.177l.59-.352v.176h-.058l-.06.295h-.058v.117h-.06v.118l-.117.06v.118l-.177.118v.117l-.118.06-.354.412h-.117l-.177.236h.06c.13-.112.402-.053.59-.117l1.063-.353","vkontakte":"15.4 12.8h-1.8c-.7 0-.9-.5-2.1-1.7-1-1-1.5-1.1-1.7-1.1-.4 0-.5.1-.5.6v1.6c0 .4-.1.7-1.3.7-1.9 0-3.9-1.1-5.3-3.2C.6 6.5 0 4.2 0 3.7c0-.3.1-.5.6-.5h1.8c.4 0 .6.2.8.7C4 6.4 5.4 8.6 6 8.6c.2 0 .3-.1.3-.7V5.4c0-1.2-.6-1.3-.6-1.7 0-.2.2-.4.4-.4h2.8c.4 0 .5.2.5.6v3.5c0 .4.2.5.3.5.2 0 .4-.1.8-.5 1.3-1.4 2.2-3.6 2.2-3.6.1-.3.3-.5.8-.5h1.8c.5 0 .6.3.5.6-.2 1-2.4 4-2.4 4-.2.3-.3.4 0 .8.2.3.8.8 1.2 1.3.8.8 1.3 1.6 1.5 2.1 0 .4-.2.7-.7.7","gplus":"8,6.5v3h4.291c-0.526,2.01-2.093,3.476-4.315,3.476C5.228,12.976,3,10.748,3,8c0-2.748,2.228-4.976,4.976-4.976c1.442,0,2.606,0.623,3.397,1.603L13.52,2.48C12.192,0.955,10.276,0,8,0C3.582,0,0,3.582,0,8s3.582,8,8,8s7.5-3.582,7.5-8V6.5H8","odnoklassniki":"8 2.6c.9 0 1.7.7 1.7 1.7C9.7 5.2 9 6 8 6c-.9 0-1.7-.7-1.7-1.7S7.1 2.6 8 2.6zm0 5.7c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm1.6 3.2c.8-.2 1.6-.5 2.3-1 .5-.3.7-1.1.4-1.6-.3-.6-1.1-.7-1.6-.4-1.6 1-3.8 1-5.4 0-.6-.3-1.3-.1-1.6.4-.4.6-.2 1.3.3 1.7.7.5 1.5.8 2.3 1l-2.2 2.2c-.5.5-.5 1.2 0 1.7.2.2.5.3.8.3.3 0 .6-.1.8-.3L8 13.2l2.2 2.2c.5.5 1.2.5 1.7 0s.5-1.2 0-1.7l-2.3-2.2","pocket":"12.533 6.864L8.77 10.4c-.213.2-.486.3-.76.3-.273 0-.547-.1-.76-.3L3.488 6.865c-.437-.41-.45-1.09-.032-1.52.42-.428 1.114-.443 1.55-.032l3.006 2.823 3.004-2.823c.438-.41 1.132-.396 1.55.032.42.43.406 1.11-.03 1.52zm3.388-4.928c-.207-.56-.755-.936-1.363-.936H1.45C.854 1 .31 1.368.096 1.917.032 2.08 0 2.25 0 2.422v4.73l.055.94c.232 2.14 1.366 4.01 3.12 5.314.03.024.063.047.094.07l.02.013c.94.673 1.992 1.13 3.128 1.353.524.104 1.06.157 1.592.157.492 0 .986-.045 1.472-.133.058-.01.116-.022.175-.034.016-.003.033-.01.05-.018 1.088-.233 2.098-.677 3.003-1.326l.02-.015c.032-.022.064-.045.096-.07 1.753-1.303 2.887-3.173 3.12-5.312l.054-.94v-4.73c0-.165-.02-.327-.08-.487","telegram":"12.4 4.2L6.6 9.6c-.2.2-.3.4-.4.7L6 11.8c0 .2-.3.2-.3 0l-.8-2.6c-.1-.4.1-.7.3-.8l7-4.3c.2-.2.4 0 .2.1zm2.9-3L.5 6.9c-.4.1-.4.7 0 .8L4.1 9l1.4 4.5c.1.3.4.4.7.2l2-1.6c.2-.2.5-.2.7 0l3.6 2.6c.3.2.6 0 .7-.3l2.6-12.8c.1-.2-.2-.5-.5-.4","whatsapp":"15.8 7.8c0 4.2-3.4 7.6-7.6 7.6-1.3 0-2.6-.3-3.7-.9L.3 15.8l1.4-4.1C1 10.6.6 9.2.6 7.8.6 3.6 4 .2 8.2.2c4.2 0 7.6 3.4 7.6 7.6M8.1 1.4c-3.5 0-6.4 2.9-6.4 6.4 0 1.4.5 2.7 1.2 3.7l-.8 2.4 2.5-.8c1 .7 2.2 1.1 3.5 1.1 3.5 0 6.4-2.9 6.4-6.4.1-3.5-2.8-6.4-6.4-6.4M12 9.5c0-.1-.2-.1-.4-.2s-1.1-.5-1.3-.6c-.2-.1-.3-.1-.4.1-.1.2-.4.6-.6.7-.1.1-.2.1-.4 0-.1 0-.8-.2-1.5-.8-.6-.5-.9-1.1-1-1.3-.1-.2 0-.3.1-.4l.3-.3c.1-.1.1-.2.2-.3 0-.2 0-.3-.1-.4 0-.1-.4-1-.6-1.4-.1-.3-.3-.2-.4-.2h-.4c-.1 0-.3 0-.5.2-.1.2-.6.6-.6 1.5s.7 1.8.8 1.9c.1.1 1.3 2.1 3.2 2.8 1.9.7 1.9.5 2.2.5.3 0 1.1-.4 1.3-.9.1-.4.1-.8.1-.9","viber":"13.7 6.7c0 .3.1.7-.3.8-.6.1-.5-.4-.5-.8-.4-2.3-1.2-3.2-3.5-3.7-.4-.1-.9 0-.8-.5.1-.5.5-.4.9-.3 2.3.3 4.2 2.3 4.2 4.5zM8.8 1.2c3.7.6 5.5 2.4 5.9 6.1 0 .3-.1.9.4.9s.4-.5.4-.9c0-3.6-3.1-6.8-6.7-7-.2.1-.8-.1-.8.5 0 .4.4.3.8.4zm5.7 10.2c-.5-.4-1-.7-1.5-1.1-1-.7-1.9-.7-2.6.4-.4.6-1 .6-1.6.4-1.7-.8-2.9-1.9-3.7-3.6-.3-.7-.3-1.4.5-1.9.4-.3.8-.6.8-1.2 0-.8-2-3.5-2.7-3.7-.3-.1-.6-.1-1 0C.9 1.2.2 2.7.9 4.4c2.1 5.2 5.8 8.8 11 11 .3.1.6.2.8.2 1.2 0 2.5-1.1 2.9-2.2.3-1-.5-1.5-1.1-2zM9.7 4c-.2 0-.5 0-.6.3-.1.4.2.5.5.5.9.2 1.4.7 1.5 1.7 0 .3.2.5.4.4.3 0 .4-.3.4-.6 0-1.1-1.2-2.3-2.2-2.3","email":"12.7 1c1 .5 1.8 1.2 2.3 2.2.5.9.8 1.9.8 3.1 0 .9-.1 1.8-.5 2.7-.3.9-.8 1.6-1.4 2.2-.6.6-1.4.9-2.3.9-.6 0-1.1-.2-1.5-.5-.4-.3-.6-.7-.7-1.2-.6 1.1-1.5 1.6-2.5 1.6-.8 0-1.5-.3-1.9-.8-.5-.6-.7-1.3-.7-2.2 0-.8.1-1.6.4-2.5S5.5 5 6.1 4.4c.7-.6 1.5-.8 2.6-.8.5 0 1 .1 1.4.2.5.1.9.3 1.3.6l-.7 4.9v.3c0 .2 0 .4.1.5.1.1.3.2.5.2.4 0 .8-.2 1.1-.7.3-.4.5-1 .7-1.6.1-.7.2-1.3.2-1.9 0-1.3-.4-2.3-1.1-3-.8-.7-1.9-1-3.4-1s-2.7.4-3.7 1.1c-.9.7-1.6 1.6-2 2.6S2.6 7.9 2.6 9c0 .9.2 1.8.6 2.5.4.7 1 1.3 1.7 1.7.7.4 1.7.6 2.7.6.5 0 1-.1 1.6-.2.6-.1 1.1-.3 1.5-.4l.4 1.9c-.6.2-1.2.4-1.8.5-.7.1-1.3.2-1.9.2-1.4 0-2.7-.3-3.8-.9s-1.9-1.4-2.5-2.4S.2 10.3.2 9c0-1.3.3-2.7 1-4 .6-1.4 1.6-2.5 3-3.4C5.5.7 7.2.2 9.2.2c1.3 0 2.5.3 3.5.8zm-4 8.4l.6-3.9c-.3-.1-.5-.2-.7-.2-.7 0-1.2.4-1.5 1.2-.3.8-.5 1.7-.5 2.6 0 .8.3 1.2.8 1.2s.9-.3 1.3-.9","more":"14.725 6.667H9.333V1.275C9.333.57 8.738 0 8 0S6.667.57 6.667 1.275v5.392H1.275C.57 6.667 0 7.262 0 8s.57 1.334 1.275 1.334h5.392v5.393C6.667 15.43 7.262 16 8 16s1.333-.57 1.333-1.273V9.334h5.392C15.43 9.334 16 8.738 16 8s-.57-1.333-1.275-1.333"};
 
 /***/ }),
-/* 52 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7072,7 +8029,7 @@ utils.set(window, 'ODKL.updateCount', function (index, counter) {
 module.exports = odnoklassniki;
 
 /***/ }),
-/* 53 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7106,7 +8063,7 @@ module.exports = vkontakte;
 
 
 /***/ }),
-/* 54 */
+/* 58 */
 /***/ (function(module, exports) {
 
 /**
@@ -7124,7 +8081,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 55 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7150,7 +8107,7 @@ module.exports = twitter;
 
 
 /***/ }),
-/* 56 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7172,7 +8129,7 @@ var gplus = {
 module.exports = gplus;
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7190,7 +8147,7 @@ var pocket = {
 module.exports = pocket;
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports) {
 
 /**
@@ -7204,7 +8161,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports) {
 
 /**
@@ -7218,7 +8175,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports) {
 
 /**
@@ -7232,7 +8189,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7250,7 +8207,7 @@ var email = {
 module.exports = email;
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var config = __webpack_require__(1);
@@ -7261,11 +8218,11 @@ module.exports = {
 };
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var services = __webpack_require__(10),
-    Factory  = __webpack_require__(64),
+    Factory  = __webpack_require__(68),
     utils    = __webpack_require__(4),
     dom      = __webpack_require__(3);
 
@@ -7305,7 +8262,7 @@ module.exports = function (service, url, options) {
 };
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports) {
 
 /**
@@ -7345,7 +8302,7 @@ module.exports = function (value) {
 };
 
 /***/ }),
-/* 65 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7477,7 +8434,7 @@ var isElementInDom = exports.isElementInDom = function isElementInDom(el) {
 };
 
 /***/ }),
-/* 66 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
