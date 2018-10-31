@@ -6198,6 +6198,19 @@ var Question = function (_Component) {
             blocks[this.props.test.question.correct].classList.add('is-correct');
           }
         }
+      } else {
+        window.scroll({
+          top: this.props.test.params.container.offsetTop,
+          left: 0,
+          behavior: 'smooth'
+        });
+        if (this.codeContainer) {
+          this.codeContainer.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          });
+        }
       }
     }
   }, {
@@ -6248,10 +6261,22 @@ var Question = function (_Component) {
         } else {
           var blocks = this.code.querySelectorAll('span');
           var correctBlock = blocks[this.props.test.question.correct];
-          this.msgStyle = {
-            top: correctBlock.offsetTop + 45 + 'px',
-            left: correctBlock.offsetLeft + 10 + 'px'
-          };
+          // if (answeredIndex > this.props.test.question.correct / 2) {
+          //   this.body.style.minHeight = this.body.offsetHeight + 200 + 'px';
+          // }
+
+          if (this.props.test.question.correct > blocks.length / 2) {
+            this.msgStyle = {
+              top: correctBlock.offsetTop + 10 + 'px',
+              left: correctBlock.offsetLeft + 10 + 'px',
+              transform: 'translateY(-100%)'
+            };
+          } else {
+            this.msgStyle = {
+              top: correctBlock.offsetTop + 45 + 'px',
+              left: correctBlock.offsetLeft + 10 + 'px'
+            };
+          }
 
           window.scroll({
             top: correctBlock.offsetTop,
@@ -6317,30 +6342,23 @@ var Question = function (_Component) {
 
       this.body.style.minHeight = '';
 
-      console.log(this.layout);
-
       if (this.heatmapInstance) {
         this.layout.removeChild(this.heatmapInstance._renderer.canvas);
         this.heatmapInstance = null;
       }
 
-      // window.scrollTo(0,this.props.test.params.container.offsetTop);
+      // window.scroll({
+      //   top: this.props.test.params.container.offsetTop,
+      //   left: 0,
+      //   behavior: 'smooth'
+      // });
       // if (this.codeContainer) {
-      //   this.codeContainer.scrollTo(0,0);
+      //   this.codeContainer.scroll({
+      //     top: 0,
+      //     left: 0,
+      //     behavior: 'smooth'
+      //   });
       // }
-
-      window.scroll({
-        top: this.props.test.params.container.offsetTop,
-        left: 0,
-        behavior: 'smooth'
-      });
-      if (this.codeContainer) {
-        this.codeContainer.scroll({
-          top: 0,
-          left: 0,
-          behavior: 'smooth'
-        });
-      }
 
       this.setState({
         answered: false
