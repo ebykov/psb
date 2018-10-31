@@ -365,7 +365,7 @@ a.psb__logo:hover,
 .psb-q__code-wrapper {
   position: relative;
   display: inline-block;
-  width: 100%;
+  min-width: 100%;
 }
 @media (min-width: 680px) {
   .psb-q__code-wrapper {
