@@ -3274,22 +3274,22 @@ exports.default = {
  * Social network services
  */
 
-var Service = __webpack_require__(54),
+var Service = __webpack_require__(55),
     utils   = __webpack_require__(4),
-    svg     = __webpack_require__(55);
+    svg     = __webpack_require__(56);
 
 var services = {
-    odnoklassniki: __webpack_require__(56),
-    vkontakte:     __webpack_require__(57),
-    facebook:      __webpack_require__(58),
-    twitter:       __webpack_require__(59),
-    gplus:         __webpack_require__(60),
-    pocket:        __webpack_require__(61),
-    telegram:      __webpack_require__(62),
-    whatsapp:      __webpack_require__(63),
-    viber:         __webpack_require__(64),
-    email:         __webpack_require__(65),
-    more:          __webpack_require__(66)
+    odnoklassniki: __webpack_require__(57),
+    vkontakte:     __webpack_require__(58),
+    facebook:      __webpack_require__(59),
+    twitter:       __webpack_require__(60),
+    gplus:         __webpack_require__(61),
+    pocket:        __webpack_require__(62),
+    telegram:      __webpack_require__(63),
+    whatsapp:      __webpack_require__(64),
+    viber:         __webpack_require__(65),
+    email:         __webpack_require__(66),
+    more:          __webpack_require__(67)
 };
 
 utils.each(services, function (service, key) {
@@ -4937,7 +4937,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.sendPageView = exports.sendEvent = undefined;
 
-var _config = __webpack_require__(70);
+var _config = __webpack_require__(71);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -5227,7 +5227,7 @@ var _question = __webpack_require__(39);
 
 var _question2 = _interopRequireDefault(_question);
 
-var _result = __webpack_require__(49);
+var _result = __webpack_require__(50);
 
 var _result2 = _interopRequireDefault(_result);
 
@@ -6129,6 +6129,10 @@ var _heatmap = __webpack_require__(40);
 
 var _heatmap2 = _interopRequireDefault(_heatmap);
 
+var _smoothscrollPolyfill = __webpack_require__(41);
+
+var _smoothscrollPolyfill2 = _interopRequireDefault(_smoothscrollPolyfill);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -6140,6 +6144,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 // import ReactDOM from 'react-dom';
 
+
+_smoothscrollPolyfill2.default.polyfill();
 
 var Question = function (_Component) {
   _inherits(Question, _Component);
@@ -6418,7 +6424,7 @@ var Question = function (_Component) {
           );
         }
 
-        var code = __webpack_require__(41)("./" + (props.test.activeIndex + 1) + '.code');
+        var code = __webpack_require__(42)("./" + (props.test.activeIndex + 1) + '.code');
 
         return [window.innerWidth >= 1025 ? getMsg() : null, (0, _preact.h)(
           'div',
@@ -7228,14 +7234,456 @@ return heatmapFactory;
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/* smoothscroll v0.4.0 - 2018 - Dustan Kasten, Jeremias Menichelli - MIT License */
+(function () {
+  'use strict';
+
+  // polyfill
+  function polyfill() {
+    // aliases
+    var w = window;
+    var d = document;
+
+    // return if scroll behavior is supported and polyfill is not forced
+    if (
+      'scrollBehavior' in d.documentElement.style &&
+      w.__forceSmoothScrollPolyfill__ !== true
+    ) {
+      return;
+    }
+
+    // globals
+    var Element = w.HTMLElement || w.Element;
+    var SCROLL_TIME = 468;
+
+    // object gathering original scroll methods
+    var original = {
+      scroll: w.scroll || w.scrollTo,
+      scrollBy: w.scrollBy,
+      elementScroll: Element.prototype.scroll || scrollElement,
+      scrollIntoView: Element.prototype.scrollIntoView
+    };
+
+    // define timing method
+    var now =
+      w.performance && w.performance.now
+        ? w.performance.now.bind(w.performance)
+        : Date.now;
+
+    /**
+     * indicates if a the current browser is made by Microsoft
+     * @method isMicrosoftBrowser
+     * @param {String} userAgent
+     * @returns {Boolean}
+     */
+    function isMicrosoftBrowser(userAgent) {
+      var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
+
+      return new RegExp(userAgentPatterns.join('|')).test(userAgent);
+    }
+
+    /*
+     * IE has rounding bug rounding down clientHeight and clientWidth and
+     * rounding up scrollHeight and scrollWidth causing false positives
+     * on hasScrollableSpace
+     */
+    var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
+
+    /**
+     * changes scroll position inside an element
+     * @method scrollElement
+     * @param {Number} x
+     * @param {Number} y
+     * @returns {undefined}
+     */
+    function scrollElement(x, y) {
+      this.scrollLeft = x;
+      this.scrollTop = y;
+    }
+
+    /**
+     * returns result of applying ease math function to a number
+     * @method ease
+     * @param {Number} k
+     * @returns {Number}
+     */
+    function ease(k) {
+      return 0.5 * (1 - Math.cos(Math.PI * k));
+    }
+
+    /**
+     * indicates if a smooth behavior should be applied
+     * @method shouldBailOut
+     * @param {Number|Object} firstArg
+     * @returns {Boolean}
+     */
+    function shouldBailOut(firstArg) {
+      if (
+        firstArg === null ||
+        typeof firstArg !== 'object' ||
+        firstArg.behavior === undefined ||
+        firstArg.behavior === 'auto' ||
+        firstArg.behavior === 'instant'
+      ) {
+        // first argument is not an object/null
+        // or behavior is auto, instant or undefined
+        return true;
+      }
+
+      if (typeof firstArg === 'object' && firstArg.behavior === 'smooth') {
+        // first argument is an object and behavior is smooth
+        return false;
+      }
+
+      // throw error when behavior is not supported
+      throw new TypeError(
+        'behavior member of ScrollOptions ' +
+          firstArg.behavior +
+          ' is not a valid value for enumeration ScrollBehavior.'
+      );
+    }
+
+    /**
+     * indicates if an element has scrollable space in the provided axis
+     * @method hasScrollableSpace
+     * @param {Node} el
+     * @param {String} axis
+     * @returns {Boolean}
+     */
+    function hasScrollableSpace(el, axis) {
+      if (axis === 'Y') {
+        return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
+      }
+
+      if (axis === 'X') {
+        return el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
+      }
+    }
+
+    /**
+     * indicates if an element has a scrollable overflow property in the axis
+     * @method canOverflow
+     * @param {Node} el
+     * @param {String} axis
+     * @returns {Boolean}
+     */
+    function canOverflow(el, axis) {
+      var overflowValue = w.getComputedStyle(el, null)['overflow' + axis];
+
+      return overflowValue === 'auto' || overflowValue === 'scroll';
+    }
+
+    /**
+     * indicates if an element can be scrolled in either axis
+     * @method isScrollable
+     * @param {Node} el
+     * @param {String} axis
+     * @returns {Boolean}
+     */
+    function isScrollable(el) {
+      var isScrollableY = hasScrollableSpace(el, 'Y') && canOverflow(el, 'Y');
+      var isScrollableX = hasScrollableSpace(el, 'X') && canOverflow(el, 'X');
+
+      return isScrollableY || isScrollableX;
+    }
+
+    /**
+     * finds scrollable parent of an element
+     * @method findScrollableParent
+     * @param {Node} el
+     * @returns {Node} el
+     */
+    function findScrollableParent(el) {
+      var isBody;
+
+      do {
+        el = el.parentNode;
+
+        isBody = el === d.body;
+      } while (isBody === false && isScrollable(el) === false);
+
+      isBody = null;
+
+      return el;
+    }
+
+    /**
+     * self invoked function that, given a context, steps through scrolling
+     * @method step
+     * @param {Object} context
+     * @returns {undefined}
+     */
+    function step(context) {
+      var time = now();
+      var value;
+      var currentX;
+      var currentY;
+      var elapsed = (time - context.startTime) / SCROLL_TIME;
+
+      // avoid elapsed times higher than one
+      elapsed = elapsed > 1 ? 1 : elapsed;
+
+      // apply easing to elapsed time
+      value = ease(elapsed);
+
+      currentX = context.startX + (context.x - context.startX) * value;
+      currentY = context.startY + (context.y - context.startY) * value;
+
+      context.method.call(context.scrollable, currentX, currentY);
+
+      // scroll more if we have not reached our destination
+      if (currentX !== context.x || currentY !== context.y) {
+        w.requestAnimationFrame(step.bind(w, context));
+      }
+    }
+
+    /**
+     * scrolls window or element with a smooth behavior
+     * @method smoothScroll
+     * @param {Object|Node} el
+     * @param {Number} x
+     * @param {Number} y
+     * @returns {undefined}
+     */
+    function smoothScroll(el, x, y) {
+      var scrollable;
+      var startX;
+      var startY;
+      var method;
+      var startTime = now();
+
+      // define scroll context
+      if (el === d.body) {
+        scrollable = w;
+        startX = w.scrollX || w.pageXOffset;
+        startY = w.scrollY || w.pageYOffset;
+        method = original.scroll;
+      } else {
+        scrollable = el;
+        startX = el.scrollLeft;
+        startY = el.scrollTop;
+        method = scrollElement;
+      }
+
+      // scroll looping over a frame
+      step({
+        scrollable: scrollable,
+        method: method,
+        startTime: startTime,
+        startX: startX,
+        startY: startY,
+        x: x,
+        y: y
+      });
+    }
+
+    // ORIGINAL METHODS OVERRIDES
+    // w.scroll and w.scrollTo
+    w.scroll = w.scrollTo = function() {
+      // avoid action when no arguments are passed
+      if (arguments[0] === undefined) {
+        return;
+      }
+
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0]) === true) {
+        original.scroll.call(
+          w,
+          arguments[0].left !== undefined
+            ? arguments[0].left
+            : typeof arguments[0] !== 'object'
+              ? arguments[0]
+              : w.scrollX || w.pageXOffset,
+          // use top prop, second argument if present or fallback to scrollY
+          arguments[0].top !== undefined
+            ? arguments[0].top
+            : arguments[1] !== undefined
+              ? arguments[1]
+              : w.scrollY || w.pageYOffset
+        );
+
+        return;
+      }
+
+      // LET THE SMOOTHNESS BEGIN!
+      smoothScroll.call(
+        w,
+        d.body,
+        arguments[0].left !== undefined
+          ? ~~arguments[0].left
+          : w.scrollX || w.pageXOffset,
+        arguments[0].top !== undefined
+          ? ~~arguments[0].top
+          : w.scrollY || w.pageYOffset
+      );
+    };
+
+    // w.scrollBy
+    w.scrollBy = function() {
+      // avoid action when no arguments are passed
+      if (arguments[0] === undefined) {
+        return;
+      }
+
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0])) {
+        original.scrollBy.call(
+          w,
+          arguments[0].left !== undefined
+            ? arguments[0].left
+            : typeof arguments[0] !== 'object' ? arguments[0] : 0,
+          arguments[0].top !== undefined
+            ? arguments[0].top
+            : arguments[1] !== undefined ? arguments[1] : 0
+        );
+
+        return;
+      }
+
+      // LET THE SMOOTHNESS BEGIN!
+      smoothScroll.call(
+        w,
+        d.body,
+        ~~arguments[0].left + (w.scrollX || w.pageXOffset),
+        ~~arguments[0].top + (w.scrollY || w.pageYOffset)
+      );
+    };
+
+    // Element.prototype.scroll and Element.prototype.scrollTo
+    Element.prototype.scroll = Element.prototype.scrollTo = function() {
+      // avoid action when no arguments are passed
+      if (arguments[0] === undefined) {
+        return;
+      }
+
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0]) === true) {
+        // if one number is passed, throw error to match Firefox implementation
+        if (typeof arguments[0] === 'number' && arguments[1] === undefined) {
+          throw new SyntaxError('Value could not be converted');
+        }
+
+        original.elementScroll.call(
+          this,
+          // use left prop, first number argument or fallback to scrollLeft
+          arguments[0].left !== undefined
+            ? ~~arguments[0].left
+            : typeof arguments[0] !== 'object' ? ~~arguments[0] : this.scrollLeft,
+          // use top prop, second argument or fallback to scrollTop
+          arguments[0].top !== undefined
+            ? ~~arguments[0].top
+            : arguments[1] !== undefined ? ~~arguments[1] : this.scrollTop
+        );
+
+        return;
+      }
+
+      var left = arguments[0].left;
+      var top = arguments[0].top;
+
+      // LET THE SMOOTHNESS BEGIN!
+      smoothScroll.call(
+        this,
+        this,
+        typeof left === 'undefined' ? this.scrollLeft : ~~left,
+        typeof top === 'undefined' ? this.scrollTop : ~~top
+      );
+    };
+
+    // Element.prototype.scrollBy
+    Element.prototype.scrollBy = function() {
+      // avoid action when no arguments are passed
+      if (arguments[0] === undefined) {
+        return;
+      }
+
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0]) === true) {
+        original.elementScroll.call(
+          this,
+          arguments[0].left !== undefined
+            ? ~~arguments[0].left + this.scrollLeft
+            : ~~arguments[0] + this.scrollLeft,
+          arguments[0].top !== undefined
+            ? ~~arguments[0].top + this.scrollTop
+            : ~~arguments[1] + this.scrollTop
+        );
+
+        return;
+      }
+
+      this.scroll({
+        left: ~~arguments[0].left + this.scrollLeft,
+        top: ~~arguments[0].top + this.scrollTop,
+        behavior: arguments[0].behavior
+      });
+    };
+
+    // Element.prototype.scrollIntoView
+    Element.prototype.scrollIntoView = function() {
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0]) === true) {
+        original.scrollIntoView.call(
+          this,
+          arguments[0] === undefined ? true : arguments[0]
+        );
+
+        return;
+      }
+
+      // LET THE SMOOTHNESS BEGIN!
+      var scrollableParent = findScrollableParent(this);
+      var parentRects = scrollableParent.getBoundingClientRect();
+      var clientRects = this.getBoundingClientRect();
+
+      if (scrollableParent !== d.body) {
+        // reveal element inside parent
+        smoothScroll.call(
+          this,
+          scrollableParent,
+          scrollableParent.scrollLeft + clientRects.left - parentRects.left,
+          scrollableParent.scrollTop + clientRects.top - parentRects.top
+        );
+
+        // reveal parent in viewport unless is fixed
+        if (w.getComputedStyle(scrollableParent).position !== 'fixed') {
+          w.scrollBy({
+            left: parentRects.left,
+            top: parentRects.top,
+            behavior: 'smooth'
+          });
+        }
+      } else {
+        // reveal element in viewport
+        w.scrollBy({
+          left: clientRects.left,
+          top: clientRects.top,
+          behavior: 'smooth'
+        });
+      }
+    };
+  }
+
+  if (true) {
+    // commonjs
+    module.exports = { polyfill: polyfill };
+  } else {}
+
+}());
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var map = {
-	"./1.code": 42,
-	"./2.code": 43,
-	"./3.code": 44,
-	"./4.code": 45,
-	"./5.code": 46,
-	"./6.code": 47,
-	"./8.code": 48
+	"./1.code": 43,
+	"./2.code": 44,
+	"./3.code": 45,
+	"./4.code": 46,
+	"./5.code": 47,
+	"./6.code": 48,
+	"./8.code": 49
 };
 
 
@@ -7257,52 +7705,52 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 41;
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span class=\"psb-code\">public enum Sex</span> <span class=\"psb-code\">{ MALE, FEMALE };</span>\n\n    <span class=\"psb-code\">public static void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.print</span> (\"Loan possible for female with age 50 and for period 2 years: \" +\n                <span class=\"psb-code\">isLoanPossible(Sex.FEMALE, 50, 2));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>\n        <span class=\"psb-code\">boolean retval = false;</span>\n        <span class=\"psb-code\">if (sex == Sex.FEMALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod)</span> <span class=\"psb-code\">< 65) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (sex == Sex.MALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod) < 60) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (age < 21) {</span>\n            <span class=\"psb-code\">retval = false;</span>\n        }\n        <span class=\"psb-code\">return retval;</span>\n\n}"
+webpackContext.id = 42;
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span> <span class=\"psb-code\">(\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int hospitalDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double hospitalAmount = 0;</span>\n        <span class=\"psb-code\">if (hospitalDays >= 3) {</span>\n            <span class=\"psb-code\">hospitalAmount = 0.8 * hospitalDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + hospitalAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span class=\"psb-code\">public enum Sex</span> <span class=\"psb-code\">{ MALE, FEMALE };</span>\n\n    <span class=\"psb-code\">public static void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.print</span> (\"Loan possible for female with age 50 and for period 2 years: \" +\n                <span class=\"psb-code\">isLoanPossible(Sex.FEMALE, 50, 2));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>\n        <span class=\"psb-code\">boolean retval = false;</span>\n        <span class=\"psb-code\">if (sex == Sex.FEMALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod)</span> <span class=\"psb-code\">< 65) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (sex == Sex.MALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod) < 60) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (age < 21) {</span>\n            <span class=\"psb-code\">retval = false;</span>\n        }\n        <span class=\"psb-code\">return retval;</span>\n\n}"
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<span class=\"psb-code\">SET @RUB_EUR_RATIO = 70.0;</span>\n\n<span class=\"psb-code\">SELECT</span> <span class=\"psb-code\">c.Id, c.Name, SUM(</span>\n       <span class=\"psb-code\">CASE</span>\n            <span class=\"psb-code\">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>\n            \t<span class=\"psb-code\">THEN Balance</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'USD'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_USD_RATIO</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'EUR'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_EUR_RATIO</span>\n       <span class=\"psb-code\">END)</span> <span class=\"psb-code\">as total</span>\n<span class=\"psb-code\">FROM customers AS c</span>\n<span class=\"psb-code\">INNER JOIN accounts AS a</span>\n    <span class=\"psb-code\">ON c.Id=a.CustomerId</span>\n<span class=\"psb-code\">GROUP BY a.CustomerId</span>\n"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span> <span class=\"psb-code\">(\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int hospitalDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double hospitalAmount = 0;</span>\n        <span class=\"psb-code\">if (hospitalDays >= 3) {</span>\n            <span class=\"psb-code\">hospitalAmount = 0.8 * hospitalDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + hospitalAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
 
 /***/ }),
 /* 45 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">class Program</span>\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">String str</span> = <span class=\"psb-code\">\"The Big Bang Theory\";</span>\n\t\t<span class=\"psb-code\">for(int i = 0; i < str.Length; i++)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">char c = str[i];</span>\n\t\t\t<span class=\"psb-code\">if (c != 'a' || c != 'A')</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsLower(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span> <span class=\"psb-code\">(Char.ToUpper(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsUpper(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span> <span class=\"psb-code\">(Char.ToLower(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t}\n\t}\n}\n"
+module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<span class=\"psb-code\">SET @RUB_EUR_RATIO = 70.0;</span>\n\n<span class=\"psb-code\">SELECT</span> <span class=\"psb-code\">c.Id, c.Name, SUM(</span>\n       <span class=\"psb-code\">CASE</span>\n            <span class=\"psb-code\">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>\n            \t<span class=\"psb-code\">THEN Balance</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'USD'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_USD_RATIO</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'EUR'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_EUR_RATIO</span>\n       <span class=\"psb-code\">END)</span> <span class=\"psb-code\">as total</span>\n<span class=\"psb-code\">FROM customers AS c</span>\n<span class=\"psb-code\">INNER JOIN accounts AS a</span>\n    <span class=\"psb-code\">ON c.Id=a.CustomerId</span>\n<span class=\"psb-code\">GROUP BY a.CustomerId</span>\n"
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports) {
 
-module.exports = "class Program\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">int year = 2020;</span>\n\t\t<span class=\"psb-code\">int holidays = 0;</span>\n\t\t<span class=\"psb-code\">DateTime day =</span> <span class=\"psb-code\">new DateTime(year, 1, 1);</span>\n\t\twhile <span class=\"psb-code\">(day.Year == year)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">if (isLastDayOfMonth(day))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">if (day.DayOfWeek == DayOfWeek.Sunday)</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">day = day.AddDays(1);</span>\n\t\t}\n\t\t<span class=\"psb-code\">Console.WriteLine(\"Number of holidays: \"</span> <span class=\"psb-code\">+ holidays)</span>;\n\t}\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">bool isLastDayOfMonth(DateTime dt)</span>\n\t{\n\t\t<span class=\"psb-code\">if (dt.AddDays(1).Day == 1)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">return true;</span>\n\t\t}\n\t\t<span class=\"psb-code\">return false;</span>\n\t}\n}"
+module.exports = "<span class=\"psb-code\">class Program</span>\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">String str</span> = <span class=\"psb-code\">\"The Big Bang Theory\";</span>\n\t\t<span class=\"psb-code\">for(int i = 0; i < str.Length; i++)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">char c = str[i];</span>\n\t\t\t<span class=\"psb-code\">if (c != 'a' || c != 'A')</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsLower(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span> <span class=\"psb-code\">(Char.ToUpper(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsUpper(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span> <span class=\"psb-code\">(Char.ToLower(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t}\n\t}\n}\n"
 
 /***/ }),
 /* 47 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append <span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
+module.exports = "class Program\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">int year = 2020;</span>\n\t\t<span class=\"psb-code\">int holidays = 0;</span>\n\t\t<span class=\"psb-code\">DateTime day =</span> <span class=\"psb-code\">new DateTime(year, 1, 1);</span>\n\t\twhile <span class=\"psb-code\">(day.Year == year)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">if (isLastDayOfMonth(day))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">if (day.DayOfWeek == DayOfWeek.Sunday)</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">day = day.AddDays(1);</span>\n\t\t}\n\t\t<span class=\"psb-code\">Console.WriteLine(\"Number of holidays: \"</span> <span class=\"psb-code\">+ holidays)</span>;\n\t}\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">bool isLastDayOfMonth(DateTime dt)</span>\n\t{\n\t\t<span class=\"psb-code\">if (dt.AddDays(1).Day == 1)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">return true;</span>\n\t\t}\n\t\t<span class=\"psb-code\">return false;</span>\n\t}\n}"
 
 /***/ }),
 /* 48 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">SELECT</span>\n    <span class=\"psb-code\">u.userId,</span>\n    <span class=\"psb-code\">u.username,</span>\n    <span class=\"psb-code\">t.lessonId,</span>\n    <span class=\"psb-code\">t.lessonDate,</span>\n    <span class=\"psb-code\">count( t.id ) AS count</span>\n  <span class=\"psb-code\">FROM users u JOIN lesson_details t ON t.userId = u.userId</span>\n  <span class=\"psb-code\">GROUP BY u.userId,</span>\n         <span class=\"psb-code\">u.username,</span>\n         <span class=\"psb-code\">t.lessonId,</span>\n         <span class=\"psb-code\">t.lessonDate</span>\n  <span class=\"psb-code\">HAVING count( t.id ) >= 1</span>\n  <span class=\"psb-code\">ORDER BY t.lessonDate DESC;</span>"
+module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append <span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
 
 /***/ }),
 /* 49 */
+/***/ (function(module, exports) {
+
+module.exports = "<span class=\"psb-code\">SELECT</span>\n    <span class=\"psb-code\">u.userId,</span>\n    <span class=\"psb-code\">u.username,</span>\n    <span class=\"psb-code\">t.lessonId,</span>\n    <span class=\"psb-code\">t.lessonDate,</span>\n    <span class=\"psb-code\">count( t.id ) AS count</span>\n  <span class=\"psb-code\">FROM users u JOIN lesson_details t ON t.userId = u.userId</span>\n  <span class=\"psb-code\">GROUP BY u.userId,</span>\n         <span class=\"psb-code\">u.username,</span>\n         <span class=\"psb-code\">t.lessonId,</span>\n         <span class=\"psb-code\">t.lessonDate</span>\n  <span class=\"psb-code\">HAVING count( t.id ) >= 1</span>\n  <span class=\"psb-code\">ORDER BY t.lessonDate DESC;</span>"
+
+/***/ }),
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7326,7 +7774,7 @@ var _store2 = _interopRequireDefault(_store);
 
 var _reactTransitionGroup = __webpack_require__(14);
 
-var _share = __webpack_require__(50);
+var _share = __webpack_require__(51);
 
 var Share = _interopRequireWildcard(_share);
 
@@ -7508,7 +7956,7 @@ var mapStateToProps = function mapStateToProps(store) {
 exports.default = (0, _preactRedux.connect)(mapStateToProps)(Result);
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7519,11 +7967,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.make = exports.init = undefined;
 
-var _cmttLikely = __webpack_require__(51);
+var _cmttLikely = __webpack_require__(52);
 
 var _cmttLikely2 = _interopRequireDefault(_cmttLikely);
 
-var _dom = __webpack_require__(69);
+var _dom = __webpack_require__(70);
 
 var _analytics = __webpack_require__(20);
 
@@ -7575,12 +8023,12 @@ var make = exports.make = function make(parentContainer) {
 };
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 'use strict';
 
-var Likely = __webpack_require__(52),
+var Likely = __webpack_require__(53),
     config = __webpack_require__(1),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3);
@@ -7631,10 +8079,10 @@ likely.defaults = {
 module.exports = likely;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Button = __webpack_require__(53);
+var Button = __webpack_require__(54);
 
 var services = __webpack_require__(10),
     config   = __webpack_require__(1),
@@ -7783,12 +8231,12 @@ Likely.prototype = {
 module.exports = Likely;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var services = __webpack_require__(10),
     config = __webpack_require__(1),
-    fetch = __webpack_require__(67),
+    fetch = __webpack_require__(68),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3),
     storage = __webpack_require__(19);
@@ -8056,7 +8504,7 @@ LikelyButton.prototype = {
 module.exports = LikelyButton;
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dom = __webpack_require__(3);
@@ -8089,13 +8537,13 @@ module.exports = function (options) {
 };
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module) {
 
 module.exports = {"facebook":"5.9 16h3.3V8h2.2l.3-2.8H9.2V3.8c0-.7.1-1.1 1.1-1.1h1.4V0H9.5C6.9 0 5.9 1.3 5.9 3.6v1.7H4.3V8H6v8","twitter":"15.96 3.42c-.04.153-.144.31-.237.414l-.118.058v.118l-.59.532-.237.295c-.05.036-.398.21-.413.237V6.49h-.06v.473h-.058v.294h-.058v.296h-.06v.235h-.06v.237h-.058c-.1.355-.197.71-.295 1.064h-.06v.116h-.06c-.02.1-.04.197-.058.296h-.06c-.04.118-.08.237-.118.355h-.06c-.038.118-.078.236-.117.353l-.118.06-.06.235-.117.06v.116l-.118.06v.12h-.06c-.02.057-.038.117-.058.175l-.118.06v.117c-.06.04-.118.08-.177.118v.118l-.237.177v.118l-.59.53-.532.592h-.117c-.06.078-.118.156-.177.236l-.177.06-.06.117h-.118l-.06.118-.176.06v.058h-.118l-.06.118-.353.12-.06.117c-.078.02-.156.04-.235.058v.06c-.118.038-.236.078-.354.118v.058H8.76v.06h-.12v.06h-.176v.058h-.118v.06H8.17v.058H7.99v.06l-.413.058v.06h-.237c-.667.22-1.455.293-2.36.293h-.886v-.058h-.53v-.06H3.27v-.06h-.295v-.06H2.68v-.057h-.177v-.06h-.236v-.058H2.09v-.06h-.177v-.058h-.177v-.06H1.56v-.058h-.12v-.06l-.294-.06v-.057c-.118-.04-.236-.08-.355-.118v-.06H.674v-.058H.555v-.06H.437v-.058H.32l-.06-.12H.142v-.058c-.13-.08-.083.026-.177-.118H1.56v-.06c.294-.04.59-.077.884-.117v-.06h.177v-.058h.237v-.06h.118v-.06h.177v-.057h.118v-.06h.177v-.058l.236-.06v-.058l.236-.06c.02-.038.04-.078.058-.117l.237-.06c.02-.04.04-.077.058-.117h.118l.06-.118h.118c.036-.025.047-.078.118-.118V12.1c-1.02-.08-1.84-.54-2.303-1.183-.08-.058-.157-.118-.236-.176v-.117l-.118-.06v-.117c-.115-.202-.268-.355-.296-.65.453.004.987.008 1.354-.06v-.06c-.254-.008-.47-.08-.65-.175v-.058H2.32v-.06c-.08-.02-.157-.04-.236-.058l-.06-.118h-.117l-.118-.178h-.12c-.077-.098-.156-.196-.235-.294l-.118-.06v-.117l-.177-.12c-.35-.502-.6-1.15-.59-2.006h.06c.204.234.948.377 1.357.415v-.06c-.257-.118-.676-.54-.827-.768V5.9l-.118-.06c-.04-.117-.08-.236-.118-.354h-.06v-.118H.787c-.04-.196-.08-.394-.118-.59-.06-.19-.206-.697-.118-1.005h.06V3.36h.058v-.177h.06v-.177h.057V2.83h.06c.04-.118.078-.236.117-.355h.118v.06c.12.097.237.196.355.295v.118l.118.058c.08.098.157.197.236.295l.176.06.354.413h.118l.177.236h.118l.06.117h.117c.04.06.08.118.118.177h.118l.06.118.235.06.06.117.356.12.06.117.53.176v.06h.118v.058l.236.06v.06c.118.02.236.04.355.058v.06h.177v.058h.177v.06h.176v.058h.236v.06l.472.057v.06l1.417.18v-.237c-.1-.112-.058-.442-.057-.65 0-.573.15-.99.354-1.358v-.117l.118-.06.06-.235.176-.118v-.118c.14-.118.276-.236.414-.355l.06-.117h.117l.12-.177.235-.06.06-.117h.117v-.058H9.7v-.058h.177v-.06h.177v-.058h.177v-.06h.296v-.058h1.063v.058h.294v.06h.177v.058h.178v.06h.177v.058h.118v.06h.118l.06.117c.08.018.158.038.236.058.04.06.08.118.118.177h.118l.06.117c.142.133.193.163.472.178.136-.12.283-.05.472-.118v-.06h.177v-.058h.177v-.06l.236-.058v-.06h.177l.59-.352v.176h-.058l-.06.295h-.058v.117h-.06v.118l-.117.06v.118l-.177.118v.117l-.118.06-.354.412h-.117l-.177.236h.06c.13-.112.402-.053.59-.117l1.063-.353","vkontakte":"15.4 12.8h-1.8c-.7 0-.9-.5-2.1-1.7-1-1-1.5-1.1-1.7-1.1-.4 0-.5.1-.5.6v1.6c0 .4-.1.7-1.3.7-1.9 0-3.9-1.1-5.3-3.2C.6 6.5 0 4.2 0 3.7c0-.3.1-.5.6-.5h1.8c.4 0 .6.2.8.7C4 6.4 5.4 8.6 6 8.6c.2 0 .3-.1.3-.7V5.4c0-1.2-.6-1.3-.6-1.7 0-.2.2-.4.4-.4h2.8c.4 0 .5.2.5.6v3.5c0 .4.2.5.3.5.2 0 .4-.1.8-.5 1.3-1.4 2.2-3.6 2.2-3.6.1-.3.3-.5.8-.5h1.8c.5 0 .6.3.5.6-.2 1-2.4 4-2.4 4-.2.3-.3.4 0 .8.2.3.8.8 1.2 1.3.8.8 1.3 1.6 1.5 2.1 0 .4-.2.7-.7.7","gplus":"8,6.5v3h4.291c-0.526,2.01-2.093,3.476-4.315,3.476C5.228,12.976,3,10.748,3,8c0-2.748,2.228-4.976,4.976-4.976c1.442,0,2.606,0.623,3.397,1.603L13.52,2.48C12.192,0.955,10.276,0,8,0C3.582,0,0,3.582,0,8s3.582,8,8,8s7.5-3.582,7.5-8V6.5H8","odnoklassniki":"8 2.6c.9 0 1.7.7 1.7 1.7C9.7 5.2 9 6 8 6c-.9 0-1.7-.7-1.7-1.7S7.1 2.6 8 2.6zm0 5.7c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm1.6 3.2c.8-.2 1.6-.5 2.3-1 .5-.3.7-1.1.4-1.6-.3-.6-1.1-.7-1.6-.4-1.6 1-3.8 1-5.4 0-.6-.3-1.3-.1-1.6.4-.4.6-.2 1.3.3 1.7.7.5 1.5.8 2.3 1l-2.2 2.2c-.5.5-.5 1.2 0 1.7.2.2.5.3.8.3.3 0 .6-.1.8-.3L8 13.2l2.2 2.2c.5.5 1.2.5 1.7 0s.5-1.2 0-1.7l-2.3-2.2","pocket":"12.533 6.864L8.77 10.4c-.213.2-.486.3-.76.3-.273 0-.547-.1-.76-.3L3.488 6.865c-.437-.41-.45-1.09-.032-1.52.42-.428 1.114-.443 1.55-.032l3.006 2.823 3.004-2.823c.438-.41 1.132-.396 1.55.032.42.43.406 1.11-.03 1.52zm3.388-4.928c-.207-.56-.755-.936-1.363-.936H1.45C.854 1 .31 1.368.096 1.917.032 2.08 0 2.25 0 2.422v4.73l.055.94c.232 2.14 1.366 4.01 3.12 5.314.03.024.063.047.094.07l.02.013c.94.673 1.992 1.13 3.128 1.353.524.104 1.06.157 1.592.157.492 0 .986-.045 1.472-.133.058-.01.116-.022.175-.034.016-.003.033-.01.05-.018 1.088-.233 2.098-.677 3.003-1.326l.02-.015c.032-.022.064-.045.096-.07 1.753-1.303 2.887-3.173 3.12-5.312l.054-.94v-4.73c0-.165-.02-.327-.08-.487","telegram":"12.4 4.2L6.6 9.6c-.2.2-.3.4-.4.7L6 11.8c0 .2-.3.2-.3 0l-.8-2.6c-.1-.4.1-.7.3-.8l7-4.3c.2-.2.4 0 .2.1zm2.9-3L.5 6.9c-.4.1-.4.7 0 .8L4.1 9l1.4 4.5c.1.3.4.4.7.2l2-1.6c.2-.2.5-.2.7 0l3.6 2.6c.3.2.6 0 .7-.3l2.6-12.8c.1-.2-.2-.5-.5-.4","whatsapp":"15.8 7.8c0 4.2-3.4 7.6-7.6 7.6-1.3 0-2.6-.3-3.7-.9L.3 15.8l1.4-4.1C1 10.6.6 9.2.6 7.8.6 3.6 4 .2 8.2.2c4.2 0 7.6 3.4 7.6 7.6M8.1 1.4c-3.5 0-6.4 2.9-6.4 6.4 0 1.4.5 2.7 1.2 3.7l-.8 2.4 2.5-.8c1 .7 2.2 1.1 3.5 1.1 3.5 0 6.4-2.9 6.4-6.4.1-3.5-2.8-6.4-6.4-6.4M12 9.5c0-.1-.2-.1-.4-.2s-1.1-.5-1.3-.6c-.2-.1-.3-.1-.4.1-.1.2-.4.6-.6.7-.1.1-.2.1-.4 0-.1 0-.8-.2-1.5-.8-.6-.5-.9-1.1-1-1.3-.1-.2 0-.3.1-.4l.3-.3c.1-.1.1-.2.2-.3 0-.2 0-.3-.1-.4 0-.1-.4-1-.6-1.4-.1-.3-.3-.2-.4-.2h-.4c-.1 0-.3 0-.5.2-.1.2-.6.6-.6 1.5s.7 1.8.8 1.9c.1.1 1.3 2.1 3.2 2.8 1.9.7 1.9.5 2.2.5.3 0 1.1-.4 1.3-.9.1-.4.1-.8.1-.9","viber":"13.7 6.7c0 .3.1.7-.3.8-.6.1-.5-.4-.5-.8-.4-2.3-1.2-3.2-3.5-3.7-.4-.1-.9 0-.8-.5.1-.5.5-.4.9-.3 2.3.3 4.2 2.3 4.2 4.5zM8.8 1.2c3.7.6 5.5 2.4 5.9 6.1 0 .3-.1.9.4.9s.4-.5.4-.9c0-3.6-3.1-6.8-6.7-7-.2.1-.8-.1-.8.5 0 .4.4.3.8.4zm5.7 10.2c-.5-.4-1-.7-1.5-1.1-1-.7-1.9-.7-2.6.4-.4.6-1 .6-1.6.4-1.7-.8-2.9-1.9-3.7-3.6-.3-.7-.3-1.4.5-1.9.4-.3.8-.6.8-1.2 0-.8-2-3.5-2.7-3.7-.3-.1-.6-.1-1 0C.9 1.2.2 2.7.9 4.4c2.1 5.2 5.8 8.8 11 11 .3.1.6.2.8.2 1.2 0 2.5-1.1 2.9-2.2.3-1-.5-1.5-1.1-2zM9.7 4c-.2 0-.5 0-.6.3-.1.4.2.5.5.5.9.2 1.4.7 1.5 1.7 0 .3.2.5.4.4.3 0 .4-.3.4-.6 0-1.1-1.2-2.3-2.2-2.3","email":"12.7 1c1 .5 1.8 1.2 2.3 2.2.5.9.8 1.9.8 3.1 0 .9-.1 1.8-.5 2.7-.3.9-.8 1.6-1.4 2.2-.6.6-1.4.9-2.3.9-.6 0-1.1-.2-1.5-.5-.4-.3-.6-.7-.7-1.2-.6 1.1-1.5 1.6-2.5 1.6-.8 0-1.5-.3-1.9-.8-.5-.6-.7-1.3-.7-2.2 0-.8.1-1.6.4-2.5S5.5 5 6.1 4.4c.7-.6 1.5-.8 2.6-.8.5 0 1 .1 1.4.2.5.1.9.3 1.3.6l-.7 4.9v.3c0 .2 0 .4.1.5.1.1.3.2.5.2.4 0 .8-.2 1.1-.7.3-.4.5-1 .7-1.6.1-.7.2-1.3.2-1.9 0-1.3-.4-2.3-1.1-3-.8-.7-1.9-1-3.4-1s-2.7.4-3.7 1.1c-.9.7-1.6 1.6-2 2.6S2.6 7.9 2.6 9c0 .9.2 1.8.6 2.5.4.7 1 1.3 1.7 1.7.7.4 1.7.6 2.7.6.5 0 1-.1 1.6-.2.6-.1 1.1-.3 1.5-.4l.4 1.9c-.6.2-1.2.4-1.8.5-.7.1-1.3.2-1.9.2-1.4 0-2.7-.3-3.8-.9s-1.9-1.4-2.5-2.4S.2 10.3.2 9c0-1.3.3-2.7 1-4 .6-1.4 1.6-2.5 3-3.4C5.5.7 7.2.2 9.2.2c1.3 0 2.5.3 3.5.8zm-4 8.4l.6-3.9c-.3-.1-.5-.2-.7-.2-.7 0-1.2.4-1.5 1.2-.3.8-.5 1.7-.5 2.6 0 .8.3 1.2.8 1.2s.9-.3 1.3-.9","more":"14.725 6.667H9.333V1.275C9.333.57 8.738 0 8 0S6.667.57 6.667 1.275v5.392H1.275C.57 6.667 0 7.262 0 8s.57 1.334 1.275 1.334h5.392v5.393C6.667 15.43 7.262 16 8 16s1.333-.57 1.333-1.273V9.334h5.392C15.43 9.334 16 8.738 16 8s-.57-1.333-1.275-1.333"};
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8130,7 +8578,7 @@ utils.set(window, 'ODKL.updateCount', function (index, counter) {
 module.exports = odnoklassniki;
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8164,7 +8612,7 @@ module.exports = vkontakte;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 /**
@@ -8182,7 +8630,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8208,7 +8656,7 @@ module.exports = twitter;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8230,7 +8678,7 @@ var gplus = {
 module.exports = gplus;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8248,7 +8696,7 @@ var pocket = {
 module.exports = pocket;
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 /**
@@ -8262,7 +8710,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 /**
@@ -8276,7 +8724,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 /**
@@ -8290,7 +8738,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8308,7 +8756,7 @@ var email = {
 module.exports = email;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var config = __webpack_require__(1);
@@ -8319,11 +8767,11 @@ module.exports = {
 };
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var services = __webpack_require__(10),
-    Factory  = __webpack_require__(68),
+    Factory  = __webpack_require__(69),
     utils    = __webpack_require__(4),
     dom      = __webpack_require__(3);
 
@@ -8363,7 +8811,7 @@ module.exports = function (service, url, options) {
 };
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 /**
@@ -8403,7 +8851,7 @@ module.exports = function (value) {
 };
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8535,7 +8983,7 @@ var isElementInDom = exports.isElementInDom = function isElementInDom(el) {
 };
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
