@@ -3232,8 +3232,8 @@ exports.default = {
       x2: 195,
       y2: 335
     },
-    correctMsg: 'Правильно',
-    incorrectMsg: 'Увы, нет.'
+    correctMsg: '<span>Да.</span> Дизайнер зачем-то нарисовал «срок действия» на карте получателя, а разработчик зачем-то закодил. Теперь деньги не перевести: пользователи понятия не имеют о сроке действия чужой карты.',
+    incorrectMsg: '<span>Нет,</span> ошибка в «сроке действия» на карте получателя. Ни у кого не получится перевести деньги: пользователи понятия не имеют о сроке действия чужой карты.'
   }, {
     text: '<p>Имеется список пользователей в таблице users. В ней два поля:</p><p>&nbsp;&nbsp;userId INT (Primary key) — идентификатор пользователя;<br>&nbsp;&nbsp;username (TEXT) — имя пользователя;</p><p>И имеется реестр посещений уроков пользователями в таблице lesson_details. В ней четыре поля:</p><p>&nbsp;&nbsp;id INT (Primary Key) — идентификатор посещения;<br>&nbsp;&nbsp;userId INT (ссылается на userId в таблице users) — идентификатор пользователя;<br>&nbsp;&nbsp;lessonId INT — идентификатор урока;<br>&nbsp;&nbsp;lessonDate DATE — дата урока;</p><p>Существует запрос, который создает список пользователей, посетивших один и тот же урок более чем один раз в один и тот же день, сгруппированный по пользователям и урокам, отсортированный от наиболее недавней даты. Однако этот запрос дает неправильный результат. В какой строчке ошибка?</p>',
     correct: 11,
@@ -5137,8 +5137,8 @@ var Special = function () {
         img: 'https://leonardo.osnova.io/660e597f-8048-d340-57ee-3d818d55e7dd/',
         img2x: 'https://leonardo.osnova.io/22f8cd8d-5341-2a3b-2763-e34ba74106cd/'
       }, {
-        img: 'https://leonardo.osnova.io/72e2b127-9cf8-3976-c4c2-b2f0f14eca1e/',
-        img2x: 'https://leonardo.osnova.io/0c94ee87-6e20-32bc-eff6-1583e715e6cc/'
+        img: 'https://leonardo.osnova.io/62c5e9a0-e4be-9901-44b9-65201f2365aa/',
+        img2x: 'https://leonardo.osnova.io/87b6e3d7-02db-6faa-6afa-17ef57d7a320/'
       }, {
         img: 'https://leonardo.osnova.io/1306e7b6-e62e-16d6-45a8-2c5f952bf96c/',
         img2x: 'https://leonardo.osnova.io/bdbb58d8-0a8d-393b-8c40-403ee9f6ce94/'
@@ -5152,8 +5152,6 @@ var Special = function () {
         }
         IMAGES.push(img);
       });
-
-      console.log(IMAGES);
     }
   }]);
 
@@ -6161,21 +6159,21 @@ var Question = function (_Component) {
   _createClass(Question, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
-      if (this.answered) {
+      console.log('did update');
+      if (this.state.answered) {
 
-        var heatmapInstance = _heatmap2.default.create({
+        this.heatmapInstance = _heatmap2.default.create({
           container: this.layout,
           radius: 60
         });
 
-        console.log(this.answeredDot);
-        console.log(this.props.test.question.type);
-
-        heatmapInstance.addData({
+        this.heatmapInstance.addData({
           x: this.answeredDot.x,
           y: this.answeredDot.y,
           value: 1
         });
+
+        // console.log(this.heatmapInstance);
 
         if (this.props.test.question.type === 'ui') {
           var a = document.createElement('div');
@@ -6199,7 +6197,7 @@ var Question = function (_Component) {
   }, {
     key: 'answer',
     value: function answer(e) {
-      if (this.answered) return;
+      if (this.state.answered) return;
 
       if (e.target.tagName.toLowerCase() === 'span') {
         var layout = e.currentTarget;
@@ -6211,7 +6209,7 @@ var Question = function (_Component) {
         var answeredIndex = [].concat(_toConsumableArray(block.parentElement.children)).indexOf(block);
         var isCorrect = answeredIndex === this.props.test.question.correct;
 
-        this.answered = true;
+        // this.answered = true;
         this.answeredIndex = answeredIndex;
         this.answeredDot = {
           x: x,
@@ -6227,19 +6225,43 @@ var Question = function (_Component) {
         var bx = e.clientX - rectBody.left;
         var by = e.clientY - rectBody.top;
 
-        if (answeredIndex <= this.props.test.question.correct) {
-          this.msgStyle = {
-            top: by - sy - 10 + 'px',
-            left: bx - sx - 5 + 'px',
-            transform: 'translateY(-100%)'
-          };
+        if (window.innerWidth >= 1025) {
+          if (answeredIndex <= this.props.test.question.correct) {
+            this.msgStyle = {
+              top: by - sy - 10 + 'px',
+              left: bx - sx - 5 + 'px',
+              transform: 'translateY(-100%)'
+            };
+          } else {
+            this.msgStyle = {
+              top: by - sy + 10 + block.offsetHeight + 'px',
+              left: bx - sx - 5 + 'px'
+            };
+            this.body.style.minHeight = this.body.offsetHeight + 200 + 'px';
+          }
         } else {
+          var blocks = this.code.querySelectorAll('span');
+          var correctBlock = blocks[this.props.test.question.correct];
           this.msgStyle = {
-            top: by - sy + 10 + block.offsetHeight + 'px',
-            left: bx - sx - 5 + 'px'
+            top: correctBlock.offsetTop + 45 + 'px',
+            left: correctBlock.offsetLeft + 10 + 'px'
           };
-          this.body.style.minHeight = this.body.offsetHeight + 200 + 'px';
+
+          window.scrollBy({
+            top: correctBlock.offsetTop,
+            left: null,
+            behavior: 'smooth'
+          });
+          this.codeContainer.scrollBy({
+            top: null,
+            left: correctBlock.offsetLeft,
+            behavior: 'smooth'
+          });
         }
+
+        this.setState({
+          answered: true
+        });
 
         _store2.default.dispatch({
           type: 'TEST_ANSWER',
@@ -6250,7 +6272,7 @@ var Question = function (_Component) {
   }, {
     key: 'answerUI',
     value: function answerUI(e) {
-      if (this.answered) return;
+      if (this.state.answered) return;
 
       var layout = e.currentTarget;
       var rect = layout.getBoundingClientRect();
@@ -6259,7 +6281,6 @@ var Question = function (_Component) {
       var correctCoords = this.props.test.question.correct;
       var isCorrect = x >= correctCoords.x1 && x <= correctCoords.x2 && y >= correctCoords.y1 && y <= correctCoords.y2;
 
-      this.answered = true;
       this.answeredDot = {
         x: x,
         y: y
@@ -6274,6 +6295,10 @@ var Question = function (_Component) {
         left: bx + 'px'
       };
 
+      this.setState({
+        answered: true
+      });
+
       _store2.default.dispatch({
         type: 'TEST_ANSWER',
         isCorrect: isCorrect
@@ -6284,8 +6309,23 @@ var Question = function (_Component) {
     value: function next(e) {
       e.stopPropagation();
 
-      this.answered = false;
       this.body.style.minHeight = '';
+
+      console.log(this.layout);
+
+      if (this.heatmapInstance) {
+        this.layout.removeChild(this.heatmapInstance._renderer.canvas);
+        this.heatmapInstance = null;
+      }
+
+      window.scrollTo(0, this.props.test.params.container.offsetTop);
+      if (this.codeContainer) {
+        this.codeContainer.scrollTo(0, 0);
+      }
+
+      this.setState({
+        answered: false
+      });
 
       _store2.default.dispatch({
         type: 'TEST_NEXT'
@@ -6296,8 +6336,16 @@ var Question = function (_Component) {
     value: function result(e) {
       e.stopPropagation();
 
-      this.answered = false;
       this.body.style.minHeight = '';
+
+      if (this.heatmapInstance) {
+        this.layout.removeChild(this.heatmapInstance._renderer.canvas);
+        this.heatmapInstance = null;
+      }
+
+      this.setState({
+        answered: false
+      });
 
       _store2.default.dispatch({
         type: 'TEST_STATUS',
@@ -6312,7 +6360,7 @@ var Question = function (_Component) {
       var question = props.test.question;
 
       var getMsg = function getMsg() {
-        if (_this2.answered) {
+        if (_this2.state.answered) {
           return (0, _preact.h)(
             'div',
             { className: 'psb-q__msg ' + (_this2.isCorrect ? 'is-correct' : 'is-incorrect'), style: _this2.msgStyle, ref: function ref(msg) {
@@ -6339,6 +6387,7 @@ var Question = function (_Component) {
           return (0, _preact.h)(
             'div',
             { className: 'psb-q__ui' },
+            getMsg(),
             (0, _preact.h)(
               'div',
               { className: 'psb-q-phone' },
@@ -6349,8 +6398,8 @@ var Question = function (_Component) {
                 { className: 'psb-q-phone__img', ref: function ref(layout) {
                     return _this2.layout = layout;
                   }, onClick: _this2.answerUI },
-                (0, _preact.h)('img', { src: 'https://leonardo.osnova.io/72e2b127-9cf8-3976-c4c2-b2f0f14eca1e/',
-                  srcSet: 'https://leonardo.osnova.io/0c94ee87-6e20-32bc-eff6-1583e715e6cc/ 2x', alt: '' })
+                (0, _preact.h)('img', { src: 'https://leonardo.osnova.io/62c5e9a0-e4be-9901-44b9-65201f2365aa/',
+                  srcSet: 'https://leonardo.osnova.io/87b6e3d7-02db-6faa-6afa-17ef57d7a320/ 2x', alt: '' })
               )
             )
           );
@@ -6358,23 +6407,28 @@ var Question = function (_Component) {
 
         var code = __webpack_require__(41)("./" + (props.test.activeIndex + 1) + '.code');
 
-        return (0, _preact.h)(
+        return [window.innerWidth >= 1025 ? getMsg() : null, (0, _preact.h)(
           'div',
-          { className: 'psb-q__code' },
+          { className: 'psb-q__code', ref: function ref(codeContainer) {
+              return _this2.codeContainer = codeContainer;
+            } },
           (0, _preact.h)(
             'div',
-            { className: 'psb-q__code-wrapper' },
+            { className: 'psb-q__code-wrapper', ref: function ref(codeWrapper) {
+                return _this2.codeWrapper = codeWrapper;
+              } },
             (0, _preact.h)(
               'div',
               { className: 'psb-q__code-inner', ref: function ref(layout) {
                   return _this2.layout = layout;
                 }, onClick: _this2.answer },
+              window.innerWidth < 1025 ? getMsg() : null,
               (0, _preact.h)('pre', { className: 'psb-q__code-pre', ref: function ref(code) {
                   return _this2.code = code;
                 }, dangerouslySetInnerHTML: { __html: code } })
             )
           )
-        );
+        )];
       };
 
       return (0, _preact.h)(
@@ -6409,7 +6463,6 @@ var Question = function (_Component) {
           { className: 'psb-q__body', ref: function ref(body) {
               return _this2.body = body;
             } },
-          getMsg(),
           getBody()
         )
       );
@@ -7203,7 +7256,7 @@ module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span>(<span class=\"psb-code\">\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int hospitalDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double hospitalAmount = 0;</span>\n        <span class=\"psb-code\">if (hospitalDays >= 3) {</span>\n            <span class=\"psb-code\">hospitalAmount = 0.8 * hospitalDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + hospitalAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span> <span class=\"psb-code\">(\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int hospitalDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double hospitalAmount = 0;</span>\n        <span class=\"psb-code\">if (hospitalDays >= 3) {</span>\n            <span class=\"psb-code\">hospitalAmount = 0.8 * hospitalDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + hospitalAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
 
 /***/ }),
 /* 44 */
@@ -7215,19 +7268,19 @@ module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<s
 /* 45 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">class Program</span>\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">String str</span> = <span class=\"psb-code\">\"The Big Bang Theory\";</span>\n\t\t<span class=\"psb-code\">for(int i = 0; i < str.Length; i++)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">char c = str[i];</span>\n\t\t\t<span class=\"psb-code\">if (c != 'a' || c != 'A')</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsLower(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span>(<span class=\"psb-code\">Char.ToUpper(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsUpper(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span>(<span class=\"psb-code\">Char.ToLower(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t}\n\t}\n}\n"
+module.exports = "<span class=\"psb-code\">class Program</span>\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">String str</span> = <span class=\"psb-code\">\"The Big Bang Theory\";</span>\n\t\t<span class=\"psb-code\">for(int i = 0; i < str.Length; i++)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">char c = str[i];</span>\n\t\t\t<span class=\"psb-code\">if (c != 'a' || c != 'A')</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsLower(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span> <span class=\"psb-code\">(Char.ToUpper(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsUpper(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span> <span class=\"psb-code\">(Char.ToLower(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t}\n\t}\n}\n"
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports) {
 
-module.exports = "class Program\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">int year = 2020;</span>\n\t\t<span class=\"psb-code\">int holidays = 0;</span>\n\t\t<span class=\"psb-code\">DateTime day =</span> <span class=\"psb-code\">new DateTime(year, 1, 1);</span>\n\t\twhile<span class=\"psb-code\">(day.Year == year)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">if (isLastDayOfMonth(day))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">if (day.DayOfWeek == DayOfWeek.Sunday)</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">day = day.AddDays(1);</span>\n\t\t}\n\t\t<span class=\"psb-code\">Console.WriteLine(\"Number of holidays:</span> \" <span class=\"psb-code\">+ holidays</span>);\n\t}\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">bool isLastDayOfMonth(DateTime dt)</span>\n\t{\n\t\t<span class=\"psb-code\">if (dt.AddDays(1).Day == 1)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">return true;</span>\n\t\t}\n\t\t<span class=\"psb-code\">return false;</span>\n\t}\n}"
+module.exports = "class Program\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">int year = 2020;</span>\n\t\t<span class=\"psb-code\">int holidays = 0;</span>\n\t\t<span class=\"psb-code\">DateTime day =</span> <span class=\"psb-code\">new DateTime(year, 1, 1);</span>\n\t\twhile <span class=\"psb-code\">(day.Year == year)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">if (isLastDayOfMonth(day))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">if (day.DayOfWeek == DayOfWeek.Sunday)</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">day = day.AddDays(1);</span>\n\t\t}\n\t\t<span class=\"psb-code\">Console.WriteLine(\"Number of holidays: \"</span> <span class=\"psb-code\">+ holidays)</span>;\n\t}\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">bool isLastDayOfMonth(DateTime dt)</span>\n\t{\n\t\t<span class=\"psb-code\">if (dt.AddDays(1).Day == 1)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">return true;</span>\n\t\t}\n\t\t<span class=\"psb-code\">return false;</span>\n\t}\n}"
 
 /***/ }),
 /* 47 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append<span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append<span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
+module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append <span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
 
 /***/ }),
 /* 48 */
@@ -7353,6 +7406,41 @@ var Result = function (_Component) {
         });
       };
 
+      var getOffer = function getOffer() {
+        if (props.test.correctAnswers < 6) {
+          return null;
+        }
+
+        var subject = '\u042F \u0438\u0441\u043F\u0440\u0430\u0432\u0438\u043B ' + props.test.correctAnswers + ' \u043A\u0443\u0441\u043A\u043E\u0432 \u043A\u043E\u0434\u0430 \u043D\u0430 vc.ru';
+
+        return (0, _preact.h)(
+          'div',
+          { className: 'psb-result__offer' },
+          (0, _preact.h)(
+            'p',
+            null,
+            (0, _preact.h)(
+              'b',
+              null,
+              '\u041A\u0440\u0443\u0442\u043E\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442!'
+            )
+          ),
+          (0, _preact.h)(
+            'p',
+            null,
+            '\u041C\u044B \u0437\u0430\u0442\u0435\u044F\u043B\u0438 \u044D\u0442\u043E \u0432\u0441\u0451 \u043F\u043E\u0442\u043E\u043C\u0443, \u0447\u0442\u043E \xAB\u041F\u0440\u043E\u043C\u0441\u0432\u044F\u0437\u044C\u0431\u0430\u043D\u043A\xBB \u0438\u0449\u0435\u0442 \u0441\u0435\u0431\u0435 \u0442\u0435\u0441\u0442\u0438\u0440\u043E\u0432\u0449\u0438\u043A\u043E\u0432. \u041E\u0442\u043F\u0440\u0430\u0432\u043B\u044F\u0439\u0442\u0435 \u0440\u0435\u0437\u044E\u043C\u0435 \u043D\u0430 \u043F\u043E\u0447\u0442\u0443 ',
+            (0, _preact.h)(
+              'a',
+              { href: 'mailto:hr_it@psbank.ru?subject=' + encodeURIComponent(subject) },
+              'hr_it@psbank.ru'
+            ),
+            ' \u0441 \u0442\u0435\u043C\u043E\u0439 \xAB',
+            subject,
+            '\xBB, \u0438 \u0432\u0430\u0448\u0443 \u043A\u0430\u043D\u0434\u0438\u0434\u0430\u0442\u0443\u0440\u0443 \u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u043E \u0440\u0430\u0441\u0441\u043C\u043E\u0442\u0440\u044F\u0442.'
+          )
+        );
+      };
+
       return (0, _preact.h)(
         'div',
         { className: 'psb-result' },
@@ -7389,7 +7477,7 @@ var Result = function (_Component) {
             ),
             (0, _preact.h)('span', { dangerouslySetInnerHTML: { __html: _svg2.default.refresh } })
           ),
-          props.test.correctAnswers === _data2.default.questions.length ? (0, _preact.h)('div', { className: 'psb-result__offer', dangerouslySetInnerHTML: { __html: _data2.default.result.offer } }) : null
+          getOffer()
         )
       );
     }

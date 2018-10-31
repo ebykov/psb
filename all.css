@@ -405,12 +405,9 @@ a.psb__logo:hover,
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
-  width: 224px;
+  width: 223px;
   height: 394px;
   cursor: pointer;
-}
-.psb-q-phone__img canvas {
-  z-index: 1;
 }
 .psb-q-phone__answer {
   position: absolute;
