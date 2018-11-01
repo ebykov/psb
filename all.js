@@ -6147,6 +6147,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 _smoothscrollPolyfill2.default.polyfill();
 
+function getOffsetY(el) {
+  var rect = el.getBoundingClientRect();
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  return rect.top + scrollTop;
+}
+
 var Question = function (_Component) {
   _inherits(Question, _Component);
 
@@ -6165,7 +6171,6 @@ var Question = function (_Component) {
   _createClass(Question, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
-      console.log('did update');
       if (this.state.answered) {
 
         this.heatmapInstance = _heatmap2.default.create({
@@ -6261,10 +6266,6 @@ var Question = function (_Component) {
         } else {
           var blocks = this.code.querySelectorAll('span');
           var correctBlock = blocks[this.props.test.question.correct];
-          var rectCorrectBlock = correctBlock.getBoundingClientRect();
-          // if (answeredIndex > this.props.test.question.correct / 2) {
-          //   this.body.style.minHeight = this.body.offsetHeight + 200 + 'px';
-          // }
 
           if (this.props.test.question.correct > blocks.length / 2) {
             this.msgStyle = {
@@ -6279,9 +6280,8 @@ var Question = function (_Component) {
             };
           }
 
-          // console.log(rectCorrectBlock);
           window.scroll({
-            top: rectCorrectBlock.y - window.innerHeight / 2,
+            top: getOffsetY(correctBlock) - window.innerHeight / 2,
             left: null,
             behavior: 'smooth'
           });
@@ -6380,6 +6380,19 @@ var Question = function (_Component) {
       if (this.heatmapInstance) {
         this.layout.removeChild(this.heatmapInstance._renderer.canvas);
         this.heatmapInstance = null;
+      }
+
+      window.scroll({
+        top: this.props.test.params.container.offsetTop,
+        left: 0,
+        behavior: 'smooth'
+      });
+      if (this.codeContainer) {
+        this.codeContainer.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
       }
 
       this.setState({

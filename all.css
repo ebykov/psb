@@ -334,7 +334,7 @@ a.psb__logo:hover,
   height: 40px;
   padding: 0;
   margin: 0;
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 16px;
   font-weight: 700;
   line-height: 1;
@@ -343,6 +343,11 @@ a.psb__logo:hover,
   background-color: #fff;
   -webkit-transition: opacity 0.2s;
   transition: opacity 0.2s;
+}
+@media (min-width: 680px) {
+  .psb-q__btn {
+    margin-top: 20px;
+  }
 }
 .psb-q__btn:hover {
   opacity: 0.6;
@@ -425,13 +430,24 @@ a.psb__logo:hover,
 .psb-q__msg {
   position: absolute;
   z-index: 4;
-  width: 320px;
-  padding: 20px;
+  width: 280px;
+  max-width: 100%;
+  padding: 10px;
   color: #000;
   line-height: 1.357em;
   white-space: normal;
   border: 2px solid #000;
   background-color: #fff;
+}
+@media (min-width: 375px) {
+  .psb-q__msg {
+    width: 320px;
+  }
+}
+@media (min-width: 680px) {
+  .psb-q__msg {
+    padding: 20px;
+  }
 }
 .psb-q__msg.is-correct > div > span {
   color: #059e02;
@@ -481,29 +497,6 @@ a.psb__logo:hover,
   z-index: -1;
   border-color: #000;
   background-color: #000;
-}
-.psb-code__msg {
-  position: absolute;
-  z-index: 2;
-  top: calc(100% + 20px);
-  left: -5px;
-  width: 320px;
-  padding: 20px;
-  color: #000;
-  line-height: 1.357em;
-  white-space: normal;
-  border: 2px solid #000;
-  background-color: #fff;
-}
-.psb-code__msg--above {
-  top: auto;
-  bottom: calc(100% + 20px);
-}
-.psb-code__msg.is-correct > span {
-  color: #059e02;
-}
-.psb-code__msg.is-incorrect > span {
-  color: #ff5656;
 }
 .psb-result {
   width: 640px;
