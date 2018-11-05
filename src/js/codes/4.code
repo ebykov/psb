@@ -1,0 +1,28 @@
+<span class="psb-code">class Program</span>
+{
+
+	<span class="psb-code">static</span> <span class="psb-code">void Main(string[] args)</span>
+	{
+		<span class="psb-code">String str</span> = <span class="psb-code">"The Big Bang Theory";</span>
+		<span class="psb-code">for(int i = 0; i < str.Length; i++)</span>
+		{
+			<span class="psb-code">char c = str[i];</span>
+			<span class="psb-code">if (c != 'a' || c != 'A')</span>
+			{
+				<span class="psb-code">Console.Out.Write(c);</span>
+			}
+			<span class="psb-code">else if</span> <span class="psb-code">(Char.IsLower(c))</span>
+			{
+				<span class="psb-code">Console.Out.Write</span> <span class="psb-code">(Char.ToUpper(c));</span>
+			}
+			<span class="psb-code">else if</span> <span class="psb-code">(Char.IsUpper(c))</span>
+			{
+				<span class="psb-code">Console.Out.Write</span> <span class="psb-code">(Char.ToLower(c));</span>
+			}
+			<span class="psb-code">else</span>
+			{
+				<span class="psb-code">Console.Out.Write(c);</span>
+			}
+		}
+	}
+}

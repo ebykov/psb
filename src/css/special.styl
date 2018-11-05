@@ -1,0 +1,742 @@
+@import 'fonts'
+@import 'mq'
+@import 'functions'
+@import 'keyframes'
+
+$colors = {
+  green: #059E02,
+  red: #FF5656,
+}
+
+.psb
+  position: relative
+  z-index: 99
+  width: 1060px
+  max-width: 100%
+  font-family: 'PT Mono', monospace
+  font-size: 14px
+  line-height: normal
+  text-size-adjust: 100%
+
+  & *
+  & *:before
+  & *:after
+    box-sizing: border-box
+
+  svg
+    display block
+    fill currentColor
+    pointer-events none
+
+  & b
+    font-weight: 700
+
+  & button
+    font-family: inherit
+    outline: none
+    cursor: pointer
+    appearance: none
+
+  &__bg
+    position: fixed
+    z-index: 1
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    background: #000
+
+    &--q
+      background-image: url('https://leonardo.osnova.io/6b760a9e-6b97-a76c-4851-05bcf62b0b90/')
+      background-size: cover
+
+    ^[0].is-feed &
+      position: absolute
+
+  &__wrapper
+    position: relative
+    z-index: 2
+
+  a&__logo
+  &__logo
+    width: 165px
+    height: 28px
+    color: #fff !important
+    border: 0 !important
+    transition: opacity .2s
+
+    &:hover
+      opacity: .6
+
+      @media (hover none), (hover on-demand)
+        opacity: 1
+
+  &-enter
+    width: 640px
+    max-width: 100%
+    min-height: 100vh
+    margin: 0 auto
+    background-color: #3E3E3E
+
+    @media (min-width: 480px)
+      min-height: 600px
+
+    &__frame
+      position: absolute
+      top: 0
+      width: 320px
+      height: 150px
+      background-color: #fff
+
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        width: 100%
+        height: 15px
+        background: #fff
+
+      &--1
+        z-index: -1
+        right: 0
+        height: 300px
+        background-color: #FFEC3F
+        transform: translate3d(35px, 40px, 0)
+
+      &--2
+        z-index: 1
+        right: 0
+        background-color: #FF5656
+        transform: translate3d(50px, 245px, 0)
+
+      &--3
+        z-index: 1
+        right: 0
+        background-color: #A2FF69
+        transform: translate3d(90px, 335px, 0)
+
+      &--4
+        z-index: -1
+        left: 0
+        background-color: #FF79FA
+        transform: translate3d(30px, 180px, 0)
+
+      &--5
+        z-index: -1
+        left: 0
+        height: 300px
+        background-color: #4B72FF
+        transform: translate3d(-45px, 290px, 0)
+
+      &--6
+        z-index: 1
+        left: 0
+        background-color: #94F9FF
+        transform: translate3d(50px, 495px, 0)
+
+    &__header
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 45px
+      background: #fff
+
+      @media (min-width: 480px)
+        justify-content: flex-end
+        padding-right: 16px
+
+    &__body
+      padding: 30px 25px 20px
+
+      @media $mq.not_mobile
+        padding: 55px 90px 10px 50px
+
+    &__title
+      color: #fff
+      font-size: 24px
+      font-weight: 700
+
+      a&
+        color: #fff !important
+        border: 0 !important
+        transition: opacity .2s
+
+        &:hover
+          opacity: .6
+
+          @media (hover none), (hover on-demand)
+            opacity: 1
+
+      @media $mq.not_mobile
+        font-size: 36px
+
+    &__text
+      margin-top: 25px
+      color: #fff
+      font-size: 16px
+      line-height: 1.333em
+
+      @media $mq.not_mobile
+        font-size: 18px
+
+    &__start-btn
+      width: 100%
+      max-width: 300px
+      height: 60px
+      padding: 0
+      margin: 0
+      margin-top: 34px
+      color: #000
+      font-size: 18px
+      font-weight: 700
+      line-height: 1
+      text-transform: uppercase
+      border: 3px solid #000
+      background-color: #fff
+      transition: opacity .2s
+
+      @media (min-width: 480px)
+        width: 200px
+        max-width: none
+
+      &:hover
+        opacity: .6
+
+        @media (hover none), (hover on-demand)
+          opacity: 1
+
+  &-q
+    position: relative
+    background-color: #fff
+
+    &__bg
+      display: none
+      position: absolute
+      z-index: 1
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+
+      @media (min-width: 1160px)
+        display: block
+
+      & > div
+        position: absolute
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+
+        &::before
+          content: ''
+          position: absolute
+          top: 0
+          left: 0
+          right: 0
+          width: 100%
+          height: 45px
+          background: #fff
+
+        &:nth-child(1)
+          z-index: 5
+          background-color: #FF5656
+          transform: translate3d(10px, 10px, 0)
+
+        &:nth-child(2)
+          z-index: 4
+          background-color: #94F9FF
+          transform: translate3d(20px, 20px, 0)
+
+        &:nth-child(3)
+          z-index: 3
+          background-color: #FFEC3F
+          transform: translate3d(30px, 30px, 0)
+
+        &:nth-child(4)
+          z-index: 2
+          background-color: #FF5656
+          transform: translate3d(40px, 40px, 0)
+
+        &:nth-child(5)
+          z-index: 1
+          background-color: #94F9FF
+          transform: translate3d(50px, 50px, 0)
+
+    &__header
+      position: relative
+      z-index: 2
+      display: flex
+      justify-content: space-between
+      align-items: center
+      height: 45px
+      padding: 0 15px
+      background: #fff
+
+      @media $mq.not_mobile
+        padding: 0 16px 0 45px
+
+    &__head
+      position: relative
+      z-index: 2
+      padding: 15px
+      background-color: #000
+
+      @media $mq.not_mobile
+        padding: 45px 45px 40px
+
+    &__body
+      position: relative
+      z-index: 2
+      background-color: #fff
+
+    &__text
+      width: 600px
+      max-width: 100%
+      color: #fff
+      line-height: 1.429em
+
+      & p
+        padding: 0
+        margin: 0 !important
+
+        &:not(:last-child)
+          margin-bottom: 0.714em !important
+
+    &__btn
+      display: block
+      width: 160px
+      height: 40px
+      padding: 0
+      margin: 0
+      margin-top: 10px
+      font-size: 16px
+      font-weight: 700
+      line-height: 1
+      text-transform: uppercase
+      border: 3px solid #000
+      background-color: #fff
+      transition: opacity .2s
+
+      @media $mq.not_mobile
+        margin-top: 20px
+
+      &:hover
+        opacity: .6
+
+        @media (hover none), (hover on-demand)
+          opacity: 1
+
+    &__code
+      position: relative
+      z-index: 2
+      background-color: #fff
+      overflow: auto
+      user-select: none
+
+    &__code-wrapper
+      position: relative
+      display: inline-block
+      min-width: 100%
+
+      @media $mq.not_mobile
+        padding: 20px 35px 20px 25px
+
+    &__code-inner
+      position: relative
+      padding: 20px 15px
+
+    &__code-pre
+      position: relative
+      z-index: 1
+      line-height: 1.786em
+      overflow-wrap: normal
+
+    &__ui
+      position: relative
+      z-index: 1
+      display: flex
+      justify-content: center
+      align-items: center
+      padding: 35px 0 60px
+      background-color: #fff
+
+    &-phone
+      position: relative
+
+      &__img
+        position: absolute !important
+        top: 57px
+        left: 50%
+        transform: translateX(-50%)
+        width: 223px
+        height: 394px
+        cursor: pointer
+
+      &__answer
+        position: absolute
+        top: 285px
+        left: 28px
+        width: 167px
+        height: 50px
+        border: 2px solid $colors.red
+        background-color: rgba(255, 86, 86, .2)
+
+        &.is-correct
+          background-color: rgba(5, 160, 1, .1)
+          border-color: $colors.green
+
+    &__msg
+      position: absolute
+      z-index: 4
+      width: 280px
+      max-width: 100%
+      padding: 10px
+      color: #000
+      line-height: 1.357em
+      white-space: normal
+      border: 2px solid #000
+      background-color: #fff
+
+      @media (min-width: 375px)
+        width: 320px
+
+      @media $mq.not_mobile
+        padding: 20px
+
+      &.is-correct > div > span
+        color: $colors.green
+
+      &.is-incorrect > div > span
+        color: $colors.red
+
+  &-code
+    position: relative
+    cursor: pointer
+
+    &::after
+      content: ''
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 50%
+      right: 0
+      width: calc(100% + .7em)
+      height: 26px
+      margin: auto 0
+      border: 1px solid #B3B3B3
+      transform: translateX(-50%)
+      cursor: pointer
+
+    &:hover::after
+      background-color: rgba(0,0,0,.3)
+
+      @media (hover none), (hover on-demand)
+        background-color: transparent
+
+    &.is-active
+      z-index: 2
+
+      &::after
+        border: 2px solid #7D7D7D
+        background-color: rgba(0,0,0,.2)
+
+    &.is-correct
+      z-index: 1
+      color: #fff
+
+      &::after
+        z-index: -1
+        border-color: #000
+        background-color: #000
+
+  &-result
+    width: 640px
+    max-width: 100%
+    min-height: 100vh
+    margin: 0 auto
+    background-color: #3E3E3E
+
+    @media (min-width: 480px)
+      min-height: 600px
+
+    &__frame
+      position: absolute
+      bottom: -30px
+      left: -80px
+      display: flex
+      justify-content: center
+      align-items: center
+      width: 320px
+      height: 150px
+      padding-top: 10px
+      background-color: #FF5656
+      box-shadow: 5px 5px 10px rgba(0,0,0,.5)
+
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        width: 100%
+        height: 15px
+        background: #fff
+
+      &::after
+        content: 'ERROR'
+        color: #FFAEAE
+        font-size: 36px
+        font-weight: 700
+        line-height: normal
+        letter-spacing: .5em
+
+    &__header
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 45px
+      padding-right: 16px
+      background: #fff
+
+      @media (min-width: 480px)
+        justify-content: flex-end
+        padding-right: 16px
+
+    &__body
+      position: relative
+      padding: 60px 15px 20px
+
+      @media $mq.not_mobile
+        padding: 65px 20px 10px
+
+    &__main
+      @media $mq.not_mobile
+        padding: 0 30px
+
+    &__img
+      position: absolute
+      top: 10px
+      right: 10px
+      width: 80px
+
+      @media (min-width: 480px)
+        top: 35px
+        right: 65px
+
+      @media $mq.not_mobile
+        width: auto
+
+    &__title
+      position: relative
+      z-index: 1
+      width: 300px
+      max-width: 100%
+      color: $colors.red
+      font-size: 26px
+      font-weight: 700
+
+      @media (min-width: 480px)
+        font-size: 36px
+
+    &__share
+      position: relative
+      z-index: 1
+      margin-top: 55px
+
+      @media $mq.not_mobile
+        margin-top: 20px
+
+    &__restart
+      position: relative
+      z-index: 1
+      display: inline-flex
+      align-items: center
+      margin-top: 30px
+      color: #fff
+      font-size: 18px
+      line-height: 1
+      cursor: pointer
+      transition: opacity .2s
+
+      & svg
+        margin-left: 10px
+
+      &:hover
+        opacity: .6
+
+        @media (hover none), (hover on-demand)
+          opacity: 1
+
+      @media (min-width: 480px)
+        margin-top: 50px
+
+    &__offer
+      position: relative
+      margin-top: 50px
+      padding: 35px 25px 20px
+      border: 1px solid #FE5300
+
+      @media (min-width: 480px)
+        padding: 55px 40px 45px
+
+    &__offer-bd
+      position: absolute
+      top: 4px
+      bottom: 4px
+      left: 4px
+      right: 4px
+      overflow: hidden
+
+      & > div
+        position: absolute
+
+        &:nth-child(1)
+        &:nth-child(2)
+          left: 0
+          right: 0
+
+        &:nth-child(1)
+          top: 0
+
+        &:nth-child(2)
+          bottom: 0
+          transform scale(1,-1)
+
+        &:nth-child(3)
+        &:nth-child(4)
+          top: 0
+          bottom: 0
+          width: 8px
+          height: 8px
+
+        &:nth-child(3)
+          left: 0
+          transform: rotate(90deg) scale(1,-1)
+
+        &:nth-child(4)
+          right: 0
+          transform: rotate(90deg)
+
+    &__offer-title
+      position: absolute
+      z-index: 1
+      top: 3px
+      left: 50%
+      display: inline-block
+      min-width: 230px
+      height: 35px
+      padding: 0 12px
+      color: #fff
+      font-size: 18px
+      font-weight: 700
+      line-height: 35px
+      text-align: center
+      border-radius: 5px
+      background-color: #FE5300
+      transform: translate3d(-50%, -50%, 0)
+
+      &::before
+        content: ''
+        position: absolute
+        z-index: -2
+        top: -5px
+        bottom: 0
+        left: -5px
+        right: 0
+        width: calc(100% + 10px)
+        height: calc(100% + 10px)
+        border: 1px solid #FE5300
+        border-radius: 10px
+        background-color: #3E3E3E
+
+      &::after
+        content: ''
+        position: absolute
+        z-index: -1
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+        width: 100%
+        height: 100%
+        border-radius: 5px
+        background-color: #FE5300
+
+    &__offer-text
+      position: relative
+      z-index: 1
+      color: #fff
+      line-height: 1.438em
+
+      @media (min-width: 480px)
+        font-size: 16px
+
+      & a
+        color: #FE5300 !important
+        border: 0 !important
+        border-bottom: 1px solid currentColor !important
+        transition: opacity .2s
+
+        &:hover
+          opacity: .6
+
+          @media (hover none), (hover on-demand)
+            opacity: 1
+
+  .likely
+    &--custom
+      display: flex
+
+    &__widget
+      flex-shrink: 0
+      display: flex
+      align-items: center
+      justify-content: center
+      min-width 60px
+      height 50px
+      color #fff
+      border 2px solid currentColor
+      background-color transparent
+      cursor: pointer
+      transition: opacity .2s
+
+      &:not(:last-child)
+        margin-right 10px
+
+      &:hover
+        opacity: .6
+
+        @media (hover none), (hover on-demand)
+          opacity: 1
+
+      &--facebook
+        padding: 0 13px 0 10px
+
+    &__counter
+      display: none
+
+    &__icon
+      background-color transparent
+
+      & svg
+        display: block
+        width: 25px
+        height: @width
+        fill currentColor
+
+      &--facebook
+        & svg
+          width: 20px
+          height: @width
+
+      &--facebook
+
+        @media $mq.not_mobile
+          margin-right 10px
+
+    &__button
+      font-size 18px
+      line-height 1

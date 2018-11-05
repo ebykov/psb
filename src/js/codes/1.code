@@ -1,0 +1,24 @@
+<span class="psb-code">public class Main {</span>
+    <span class="psb-code">public enum Sex</span> <span class="psb-code">{ MALE, FEMALE };</span>
+
+    <span class="psb-code">public static void main(String[] args) {</span>
+        <span class="psb-code">System.out.print</span> ("Loan possible for female with age 50 and for period 2 years: " +
+                <span class="psb-code">isLoanPossible(Sex.FEMALE, 50, 2));</span>
+    }
+
+    <span class="psb-code">public static</span> <span class="psb-code">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>
+        <span class="psb-code">boolean retval = false;</span>
+        <span class="psb-code">if (sex == Sex.FEMALE) {</span>
+            <span class="psb-code">if ((age + loanPeriod)</span> <span class="psb-code">< 60) {</span>
+                <span class="psb-code">retval = true;</span>
+            }
+        <span class="psb-code">} else if (sex == Sex.MALE) {</span>
+            <span class="psb-code">if ((age + loanPeriod) < 65) {</span>
+                <span class="psb-code">retval = true;</span>
+            }
+        <span class="psb-code">} else if (age < 21) {</span>
+            <span class="psb-code">retval = false;</span>
+        }
+        <span class="psb-code">return retval;</span>
+
+}

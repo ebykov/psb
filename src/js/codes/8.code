@@ -1,0 +1,13 @@
+<span class="psb-code">SELECT</span>
+    <span class="psb-code">u.userId,</span>
+    <span class="psb-code">u.username,</span>
+    <span class="psb-code">t.lessonId,</span>
+    <span class="psb-code">t.lessonDate,</span>
+    <span class="psb-code">count( t.id ) AS count</span>
+  <span class="psb-code">FROM users u JOIN lesson_details t ON t.userId = u.userId</span>
+  <span class="psb-code">GROUP BY u.userId,</span>
+         <span class="psb-code">u.username,</span>
+         <span class="psb-code">t.lessonId,</span>
+         <span class="psb-code">t.lessonDate</span>
+  <span class="psb-code">HAVING count( t.id ) >= 1</span>
+  <span class="psb-code">ORDER BY t.lessonDate DESC;</span>

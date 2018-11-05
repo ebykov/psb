@@ -1,0 +1,32 @@
+class Program
+{
+
+	<span class="psb-code">static</span> <span class="psb-code">void Main(string[] args)</span>
+	{
+		<span class="psb-code">int year = 2020;</span>
+		<span class="psb-code">int holidays = 0;</span>
+		<span class="psb-code">DateTime day =</span> <span class="psb-code">new DateTime(year, 1, 1);</span>
+		while <span class="psb-code">(day.Year == year)</span>
+		{
+			<span class="psb-code">if (isLastDayOfMonth(day))</span>
+			{
+				<span class="psb-code">holidays++;</span>
+			}
+			<span class="psb-code">if (day.DayOfWeek == DayOfWeek.Sunday)</span>
+			{
+				<span class="psb-code">holidays++;</span>
+			}
+			<span class="psb-code">day = day.AddDays(1);</span>
+		}
+		<span class="psb-code">Console.WriteLine("Number of holidays: "</span> <span class="psb-code">+ holidays)</span>;
+	}
+
+	<span class="psb-code">static</span> <span class="psb-code">bool isLastDayOfMonth(DateTime dt)</span>
+	{
+		<span class="psb-code">if (dt.AddDays(1).Day == 1)</span>
+		{
+			<span class="psb-code">return true;</span>
+		}
+		<span class="psb-code">return false;</span>
+	}
+}

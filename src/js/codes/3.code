@@ -1,0 +1,16 @@
+<span class="psb-code">SET @RUB_USD_RATIO = 60.0;</span>
+<span class="psb-code">SET @RUB_EUR_RATIO = 70.0;</span>
+
+<span class="psb-code">SELECT</span> <span class="psb-code">c.Id, c.Name, SUM(</span>
+       <span class="psb-code">CASE</span>
+            <span class="psb-code">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>
+            	<span class="psb-code">THEN Balance</span>
+            <span class="psb-code">WHEN a.Currency</span> <span class="psb-code">= 'USD'</span>
+               <span class="psb-code">THEN a.Balance *</span> <span class="psb-code">@RUB_USD_RATIO</span>
+            <span class="psb-code">WHEN a.Currency</span> <span class="psb-code">= 'EUR'</span>
+               <span class="psb-code">THEN a.Balance *</span> <span class="psb-code">@RUB_EUR_RATIO</span>
+       <span class="psb-code">END)</span> <span class="psb-code">as total</span>
+<span class="psb-code">FROM customers AS c</span>
+<span class="psb-code">INNER JOIN accounts AS a</span>
+    <span class="psb-code">ON c.Id=a.CustomerId</span>
+<span class="psb-code">GROUP BY a.CustomerId</span>

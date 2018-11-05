@@ -1,0 +1,19 @@
+<span class="psb-code">public class Main {</span>
+
+    <span class="psb-code">public static</span> <span class="psb-code">void main(String[] args) {</span>
+        <span class="psb-code">System.out.println</span> <span class="psb-code">("Calculated salary = "</span> <span class="psb-code">+ salaryCalculator(12000, 21, 5, 4));</span>
+    }
+
+    <span class="psb-code">public static</span> <span class="psb-code">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int hospitalDays) {
+        <span class="psb-code">int actualWorkDays = monthWorkDays - daysOff;</span>
+        <span class="psb-code">double earnedAmount =</span> <span class="psb-code">baseSalary * actualWorkDays / monthWorkDays;</span>
+        <span class="psb-code">double hospitalAmount = 0;</span>
+        <span class="psb-code">if (hospitalDays >= 3) {</span>
+            <span class="psb-code">hospitalAmount = 0.8 * hospitalDays * baseSalary;</span>
+        }
+        <span class="psb-code">double totalPay = earnedAmount + hospitalAmount;</span>
+        <span class="psb-code">double totalPayRound = Math.round (totalPay * 100)</span> / <span class="psb-code">100.0;</span>
+
+        <span class="psb-code">return totalPayRound;</span>
+    }
+}

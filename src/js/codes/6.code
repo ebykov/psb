@@ -1,0 +1,20 @@
+<span class="psb-code">static</span> <span class="psb-code">String createCatResponse()</span>
+{
+	<span class="psb-code">StringBuilder sb =</span> <span class="psb-code">new StringBuilder();</span>
+
+	sb.Append <span class="psb-code">("HTTP/1.1 200 OK\r\n");</span>
+	sb.Append <span class="psb-code">("Server: MyUltimateServerForCoolCats\r\n");</span>
+	sb.Append <span class="psb-code">("Date: Sun, 01 Jan 1999 00:00:00 GMT\r\n");</span>
+	sb.Append <span class="psb-code">("Content-Type: text/html\r\n");</span>
+	sb.Append <span class="psb-code">("Cache-Control: max-age=3600, public\r\n");</span>
+	sb.Append <span class="psb-code">("Vary: Accept-Encoding\r\n");</span>
+	sb.Append <span class="psb-code">("Connection: close\r\n");</span>
+	sb.Append <span class="psb-code">("\r\n\r\n");</span>
+	sb.Append <span class="psb-code">("  |\\_ /|\r\n");</span>
+	sb.Append <span class="psb-code">(" / @ @ \\\r\n");</span>
+	sb.Append <span class="psb-code">("( > º < )\r\n");</span>
+	sb.Append <span class="psb-code">("`>> x <<´\r\n");</span>
+	sb.Append <span class="psb-code">(" /  O  \\\r\n");</span>
+	sb.Append <span class="psb-code">("\r\n\r\n");</span>
+	<span class="psb-code">return sb.ToString();</span>
+}
