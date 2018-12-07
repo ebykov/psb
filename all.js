@@ -82,7 +82,7 @@ var PSB =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -848,7 +848,7 @@ module.exports = {
 if (false) { var throwOnDirectAccess, isValidElement, REACT_ELEMENT_TYPE; } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(32)();
+  module.exports = __webpack_require__(31)();
 }
 
 
@@ -1884,7 +1884,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "connect", function() { return connect; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "connectAdvanced", function() { return connectAdvanced; });
 /* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
 
 
 
@@ -3109,10 +3109,68 @@ var index = { Provider: Provider, connect: connect, connectAdvanced: connectAdva
 /* harmony default export */ __webpack_exports__["default"] = (index);
 //# sourceMappingURL=preact-redux.esm.js.map
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14)))
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.sendPageView = exports.sendEvent = undefined;
+
+var _config = __webpack_require__(38);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CONSOLE_STYLE = 'color: #E87E04';
+
+/**
+ * Send analytics events via GTM
+ * @param {String} label - event label
+ * @param {String} action - event action ("Click" by default)
+ */
+var sendEvent = exports.sendEvent = function sendEvent(label) {
+    var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Click';
+
+    var value = _config2.default.analyticsCategory + ' \u2014 ' + label + ' \u2014 ' + action;
+
+    if (false) {}
+
+    if (window.dataLayer !== undefined && _config2.default.analyticsCategory) {
+        window.dataLayer.push({
+            event: 'data_event',
+            data_description: value
+        });
+    }
+};
+
+/**
+ * Send pageview event via GTM
+ */
+var sendPageView = exports.sendPageView = function sendPageView() {
+    if (false) {}
+
+    if (window.dataLayer !== undefined) {
+        window.dataLayer.push({
+            event: 'Page — View',
+            post_details: {},
+            section: 'special',
+            tags: [],
+            title: document.title,
+            url: window.location.pathname
+        });
+    }
+};
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3124,9 +3182,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _redux = __webpack_require__(11);
+var _redux = __webpack_require__(12);
 
-var _data = __webpack_require__(8);
+var _data = __webpack_require__(9);
 
 var _data2 = _interopRequireDefault(_data);
 
@@ -3135,10 +3193,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var initialTestState = {
   status: '',
   params: {},
+  points: [],
   question: _data2.default.questions[0],
   questionsCount: _data2.default.questions.length,
   activeIndex: 0,
   correctAnswers: 0,
+  correctRealAnswers: 0,
   bg: ''
 };
 
@@ -3147,6 +3207,7 @@ var restartTestState = {
   activeIndex: 0,
   question: _data2.default.questions[0],
   correctAnswers: 0,
+  correctRealAnswers: 0,
   bg: _data2.default.questions[0].bg
 };
 
@@ -3157,11 +3218,19 @@ var testReducer = function testReducer() {
   switch (action.type) {
     case 'TEST_PARAMS':
       return _extends({}, state, { params: action.params });
+    case 'TEST_POINTS':
+      return _extends({}, state, { points: action.points });
     case 'TEST_STATUS':
       var bg = action.status === 'START' ? state.question.bg : '';
       return _extends({}, state, { status: action.status, bg: bg });
     case 'TEST_ANSWER':
-      return _extends({}, state, { correctAnswers: action.isCorrect ? state.correctAnswers + 1 : state.correctAnswers });
+      var correctAnswers = action.isCorrect ? state.correctAnswers + 1 : state.correctAnswers;
+      var correctRealAnswers = action.isReal && action.isCorrect ? state.correctRealAnswers + 1 : state.correctRealAnswers;
+
+      return _extends({}, state, {
+        correctAnswers: correctAnswers,
+        correctRealAnswers: correctRealAnswers
+      });
     case 'TEST_NEXT':
       var index = state.activeIndex + 1;
       return _extends({}, state, {
@@ -3181,7 +3250,7 @@ var reducers = (0, _redux.combineReducers)({
 exports.default = (0, _redux.createStore)(reducers);
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3194,35 +3263,51 @@ exports.default = {
   title: 'Cможете ли вы<br />стать тестировщиком',
   description: 'Вас случайно приняли на работу тестировщиком, не проверив скиллы. Чтобы никто ничего не заподозрил — попробуйте продержаться на новой работе как можно дольше. Внимательно читайте задания и ищите ошибки в коде.',
   questions: [{
-    text: '<p>Эта программа определяет, есть ли у человека право запросить кредит. Вот правила, по которым она работает:</p><p>человек должен быть не моложе 21 года.<br/>мужчина должен быть моложе 65 лет на момент прекращения срока кредита.<br/>женщина должна быть моложе 60 лет на момент прекращения срока кредита.</p><p><b>Найдите ошибку в коде программы.</b></p>',
+    text: '<p>Эта программа определяет, есть ли у человека право запросить кредит. Вот правила, по которым она работает:</p><p>человек должен быть не моложе 21 года.<br/>мужчина должен быть моложе 65 лет на момент прекращения срока кредита.<br/>женщина должна быть моложе 60 лет на момент прекращения срока кредита.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
     correct: 16,
     correctMsg: '<span>Правильно</span> — эта строчка разрешает давать кредит человеку младше 21 года. А это совсем не то, что вам нужно.',
-    incorrectMsg: '<span>Ну нет.</span> Ошибка в строчке, выделенной черным, — она разрешает давать кредит человеку младше 21 года. Правильно было бы написать «else if (age < 21)».'
+    incorrectMsg: '<span>Ну нет.</span> Ошибка в строчке, выделенной черным, — она разрешает давать кредит человеку младше 21 года. Правильно было бы написать «if (age < 21)».'
   }, {
-    text: '<p>Эта программа вычисляет сумму заработка работника исходя из следующих параметров: месячная зарплата, кол-во рабочих дней в месяце, кол-во дней отсутствия на работе, кол-во дней на больничном.</p><p>Если работник болел менее трех дней в месяц, то компенсация за больничный ему не полагается, а если три дня или более — то оплачивается только 80% от его зарплаты. Итоговую сумму необходимо округлить до двух знаков после запятой.</p><p><b>Найдите ошибку в коде программы.</b></p>',
+    text: '<p>Вы тестируете HTTP-сервер, который должен рисовать котика в браузере. Ниже приведен код функции, который подготавливает ответ для HTTP-сервера. Однако котик в браузере не появился.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
+    correct: 7,
+    correctMsg: '<span>Мяу, да.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».',
+    incorrectMsg: '<span>Мяу, нет.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».'
+  }, {
+    type: 'test',
+    text: '<p>Найдите все определения, в которых отражены принципы ООП.</p>',
+    options: [{
+      text: '<span style="color:#DCC600;">Абстрагирование</span> — это способ выделить набор значимых характеристик объекта, исключая из рассмотрения не значимые.',
+      isCorrect: true
+    }, {
+      text: '<span style="color:#4B72FF;">Декомпозиция</span> — разбиение на части сложные методы с целью последующей реализации в виде отдельных небольших подпрограмм.'
+    }, {
+      text: '<span style="color:#38AE00;">Единый родитель</span> — все классы в проекте должны быть порождены от одного корневого объекта (не обязательно напрямую) и выстроены в единую иерархию.'
+    }, {
+      text: '<span style="color:#FE5300;">Инкапсуляция</span> — это свойство системы, позволяющее объединить данные и методы, работающие с ними в классе, и скрыть детали реализации от пользователя.',
+      isCorrect: true
+    }, {
+      text: '<span style="color:#DCC600;">Исключение избыточности</span> — это свойство системы, подразумевающее исключение наличия дубликатов данных, классов и методов во всех ее компонентах.'
+    }, {
+      text: '<span style="color:#4B72FF;">Компонетизация</span> — построение программного обеспечения из отдельных компонентов физически отдельно существующих частей программного обеспечения, которые взаимодействуют между собой через стандартизованные двоичные или http-интерфейсы.'
+    }, {
+      text: '<span style="color:#38AE00;">Наследование</span> — это свойство системы, позволяющее описать новый класс на основе уже существующего с частично или полностью заимствующейся функциональностью. Класс, от которого производится наследование, называется базовым, родительским или суперклассом. Новый класс — потомком, наследником или производным классом',
+      isCorrect: true
+    }, {
+      text: '<span style="color:#FE5300;">Полиморфизм</span> — это свойство системы использовать объекты с одинаковым интерфейсом без информации о типе и внутренней структуре объекта.',
+      isCorrect: true
+    }, {
+      text: '<span style="color:#DCC600;">Укрупнение сущностей</span> — принцип объединения простых классов в более крупные с целью уменьшить сложность системы за счет сокращения количества классов.'
+    }]
+  }, {
+    text: '<p>У вас есть автоматизированный тестовый сценарий, проверяющий вход в личный кабинет банка. Он должен на веб-странице вводить логин и пароль в соответствующие поля, а потом нажимать на кнопку "Login". Однако при запуске тестового сценария автоматический логин не происходит. Найдите ошибку в классе LoginPage, представляющий собой объект автотеста.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
+    correct: 23,
+    correctMsg: '<span>Да</span>, здесь нельзя использовать метод sendkeys() при нажатии на кнопку.',
+    incorrectMsg: '<span>Нет</span>, ошибка в строке, выделенной чёрным. Там нельзя использовать метод sendkeys() при нажатии на кнопку.'
+  }, {
+    text: '<p>Эта программа вычисляет сумму заработка работника исходя из следующих параметров: месячная зарплата, кол-во рабочих дней в месяце, кол-во дней отсутствия на работе, кол-во дней на больничном.</p><p>Если работник болел менее трех дней в месяц, то компенсация за больничный ему не полагается, а если три дня или более — то оплачивается только 80% от его зарплаты в дни, проведенные на больничном. Итоговую сумму необходимо округлить до двух знаков после запятой.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
     correct: 13,
     correctMsg: '<span>Верно.</span> Эта строчка не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше.',
     incorrectMsg: '<span>Нет.</span> Ошибка в строчке, выделенной чёрным, — она не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше, чем нужно.'
-  }, {
-    text: '<p>Найдите ошибку в коде.</p><p><b>В базе данных есть две таблицы.</b></p><p><b>Первая таблица — «Клиенты» (Customers):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;Name (Text)<br>&nbsp;&nbsp;Phone (Text)<br>&nbsp;&nbsp;Birthday (Date)</b></p><p><b>Вторая таблица — «Счета» (Accounts):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;CustomerId (int, foreign key to table Customers)<br>&nbsp;&nbsp;Currency (Text)<br>&nbsp;&nbsp;Balance (Double)</b></p><p><b>Поле Currency может принимать три значения: RUB, USD, EUR.</b></p><p>Требуется вывести Id, имя и капитализацию клиента (сумма всех счетов клиента) в рублях в соответствие с текущими курсами обмена валют.</p>',
-    correct: 5,
-    correctMsg: '<span>Так точно.</span> В этой строке вместо OR должно быть AND, чтобы учитывались все счета.',
-    incorrectMsg: '<span>Нет, ошиблись.</span> В строке, выделенной чёрным, вместо OR должно быть AND, чтобы учитывались все счета.'
-  }, {
-    text: '<p>Эта программа для заданного предложения делает маленькие буквы большими, а большие — маленькими, за исключением букв «a» и «А» (латинских), их регистр менять не следует.</p><p><b>Найдите ошибку в коде программы.</b></p>',
-    correct: 7,
-    correctMsg: '<span>!!!Именно!!!</span> Нужно убрать «!» — в данном случае он равен частице «не», и от этого поехала вся логика.',
-    incorrectMsg: '<span>Ошибочка вышла, код не сработал.</span> Нужно убрать знаки «!» в строчке, выделенной чёрным, потому что восклицательный знак в этом случае равен частице «не».'
-  }, {
-    text: '<p>В стране «Бонифация» нет государственных праздников, но выходными считаются воскресенья, а также последний день каждого месяца. Эта программа подсчитывает количество выходных дней в 2020 году.</p><p><b>Найдите ошибку в коде программы.</b></p>',
-    correct: 9,
-    correctMsg: '<span>Вы правы</span> — здесь нужен else if. В противном случае (если оставить просто if) число выпадет на субботу или воскресенье — и счётчик будет увеличен дважды.',
-    incorrectMsg: '<span>Нет</span>, ошибка в строчке, выделенной чёрным . Здесь нужен «else if» — в противном случае, если последнее число выпадет на субботу или воскресенье, счетчик будет увеличен дважды.'
-  }, {
-    text: '<p>Вы тестируете HTTP-сервер, который должен рисовать котика в браузере. Ниже приведен код функции, который подготавливает ответ для HTTP-сервера. Однако котик в браузере не появился.</p><p><b>Найдите ошибку в коде программы.</b></p>',
-    correct: 7,
-    correctMsg: '<span>Мяу, да.</span> Здесь котик отдается в виде html-странички, — поэтому графика с нем не отобразится. Так что «html» нужно заменить на «plain».',
-    incorrectMsg: '<span>Мяу, нет.</span> Здесь котик отдается в виде html-странички, — поэтому графика с нем не отобразится. Так что «html» нужно заменить на «plain».'
   }, {
     type: 'ui',
     text: '<p>Найдите ошибку в интерфейсе мобильного приложения.</p>',
@@ -3235,20 +3320,46 @@ exports.default = {
     correctMsg: '<span>Да.</span> Дизайнер зачем-то нарисовал «срок действия» на карте получателя, а разработчик зачем-то закодил. Теперь деньги не перевести: пользователи понятия не имеют о сроке действия чужой карты.',
     incorrectMsg: '<span>Нет,</span> ошибка в «сроке действия» на карте получателя. Ни у кого не получится перевести деньги: пользователи понятия не имеют о сроке действия чужой карты.'
   }, {
+    text: '<p>Найдите ошибку в коде.</p><p><b>В базе данных есть две таблицы.</b></p><p><b>Первая таблица — «Клиенты» (Customers):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;Name (Text)<br>&nbsp;&nbsp;Phone (Text)<br>&nbsp;&nbsp;Birthday (Date)</b></p><p><b>Вторая таблица — «Счета» (Accounts):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;CustomerId (int, foreign key to table Customers)<br>&nbsp;&nbsp;Currency (Text)<br>&nbsp;&nbsp;Balance (Double)</b></p><p><b>Поле Currency может принимать три значения: RUB, USD, EUR.</b></p><p>Требуется вывести Id, имя и капитализацию клиента (сумма всех счетов клиента) в рублях в соответствии с текущими курсами обмена валют.</p>',
+    correct: 5,
+    correctMsg: '<span>Так точно.</span> В этой строке вместо OR должно быть AND, чтобы учитывались все счета.',
+    incorrectMsg: '<span>Нет, ошиблись.</span> В строке, выделенной чёрным, вместо OR должно быть AND, чтобы учитывались счета во всех валютах.',
+    isReal: true
+  }, {
     text: '<p>Имеется список пользователей в таблице users. В ней два поля:</p><p>&nbsp;&nbsp;userId INT (Primary key) — идентификатор пользователя;<br>&nbsp;&nbsp;username (TEXT) — имя пользователя;</p><p>И имеется реестр посещений уроков пользователями в таблице lesson_details. В ней четыре поля:</p><p>&nbsp;&nbsp;id INT (Primary Key) — идентификатор посещения;<br>&nbsp;&nbsp;userId INT (ссылается на userId в таблице users) — идентификатор пользователя;<br>&nbsp;&nbsp;lessonId INT — идентификатор урока;<br>&nbsp;&nbsp;lessonDate DATE — дата урока;</p><p>Существует запрос, который создает список пользователей, посетивших один и тот же урок более чем один раз в один и тот же день, сгруппированный по пользователям и урокам, отсортированный от наиболее недавней даты. Однако этот запрос дает неправильный результат. В какой строчке ошибка?</p>',
     correct: 11,
     correctMsg: '<span>Именно!</span> Ошибка здесь. Знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».',
-    incorrectMsg: '<span>Увы, нет.</span> Ошибка в строке, выделенной чёрным — знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».'
+    incorrectMsg: '<span>Увы, нет.</span> Ошибка в строке, выделенной чёрным — знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».',
+    isReal: true
   }],
   result: {
     img: 'https://leonardo.osnova.io/1306e7b6-e62e-16d6-45a8-2c5f952bf96c/',
     img2x: 'https://leonardo.osnova.io/bdbb58d8-0a8d-393b-8c40-403ee9f6ce94/',
-    offer: '<p><b>Крутой результат!</b></p><p>Мы затеяли это всё потому, что «Промсвязьбанк» ищет себе тестировщиков. Отправляйте резюме на почту <a href="mailto:hr_it@psbank.ru?subject=%D0%AF%20%D0%B8%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%208%20%D0%BA%D1%83%D1%81%D0%BA%D0%BE%D0%B2%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20vc.ru">hr_it@psbank.ru</a> с темой «Я исправил 8 кусков кода на vc.ru», и вашу кандидатуру обязательно рассмотрят.</p>'
+    offer: '<p><b>Крутой результат!</b></p><p>Мы затеяли это всё потому, что «Промсвязьбанк» ищет себе тестировщиков. Отправляйте резюме на почту <a href="mailto:hr_it@psbank.ru?subject=%D0%AF%20%D0%B8%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%208%20%D0%BA%D1%83%D1%81%D0%BA%D0%BE%D0%B2%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20vc.ru">hr_it@psbank.ru</a> с темой «Я исправил 8 кусков кода на vc.ru», и вашу кандидатуру обязательно рассмотрят.</p>',
+    images: [{
+      img: 'https://leonardo.osnova.io/7dc4c4a7-8f07-ea43-1552-8208b8eca16c/'
+    }, {
+      img: 'https://leonardo.osnova.io/6c767cb1-82e5-8514-79cd-3e0b1b19d1a6/'
+    }, {
+      img: 'https://leonardo.osnova.io/50ae065c-392a-b8c0-9f6f-dec8514699ea/'
+    }, {
+      img: 'https://leonardo.osnova.io/a3d272da-47ba-c8bc-749d-2fb72bf36a47/'
+    }, {
+      img: 'https://leonardo.osnova.io/d4cb75f1-7422-9213-9c70-704b1163edb1/'
+    }, {
+      img: 'https://leonardo.osnova.io/a23d34af-093d-f25f-5c76-4106c7d53933/'
+    }, {
+      img: 'https://leonardo.osnova.io/0d5cabe1-3a90-6139-865e-e48733eea9f4/'
+    }, {
+      img: 'https://leonardo.osnova.io/e48961c2-0ce9-a54d-0af4-8aa4ea2c09f1/'
+    }, {
+      img: 'https://leonardo.osnova.io/7a9ecc07-6cc7-fa0d-bde0-33e67618c6d0/'
+    }]
   }
 };
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3263,11 +3374,12 @@ Object.defineProperty(exports, "__esModule", {
  */
 exports.default = {
   logo: '<svg viewBox="0 0 305.92 50.77"><path fill="#0d4ba0" d="M35.36 19.52v-.05a3.14 3.14 0 0 0 2.29-3.28c0-2.41-2-3.52-4.72-3.52h-4.64v5.77H25.5c-3.7 0-4.46 2.59-4.46 4 0 2 1.16 2.9 3.3 4 1.3.65 2.86 1.05 2.86 2.54 0 .78-.72 1.72-2.28 1.72h-2.9a4.55 4.55 0 0 0 .62-2.27c0-.92-.33-4.62-5.48-4.62h-4.22v14.28h2.87v-6.22l1.16 1.16h7.84c3.66 0 5.4-1.88 5.4-4.13a4.39 4.39 0 0 0-.4-2h2.94c4.54 0 5.59-2.25 5.59-4a3.31 3.31 0 0 0-2.98-3.38zM17.15 30.7H15.8v-4.67h1.34a2.17 2.17 0 0 1 2.43 2.25 2.29 2.29 0 0 1-2.42 2.42zm11.14-8.85v3.46a20.35 20.35 0 0 0-2.36-1.12c-.91-.4-1.89-.91-1.89-2.05 0-.58.36-1.45 2.1-1.45h3.23zm2.87-6.93h1.31c2.21 0 2.32 1.36 2.32 1.78 0 .62-.33 1.76-2.21 1.76h-1.46v-3.54zm1.63 9.76h-1.67v-4h1.63c2 0 2.54 1 2.54 2s-.72 2-2.54 2z"/><path fill="#0d4ba0" d="M50.8 12.36A12.36 12.36 0 0 0 38.44 0H20.97a12.36 12.36 0 0 0-11.9 9h21.11c8.12 0 11.57 3.78 11.57 12.64v20a12.39 12.39 0 0 0 9-11.89V12.36z"/><path fill="#f26522" d="M0 38.41a12.36 12.36 0 0 0 12.36 12.36h17.46a12.36 12.36 0 0 0 11.9-9H20.61c-8.12 0-11.57-3.78-11.57-12.64v-20a12.39 12.39 0 0 0-9 11.89v17.46z"/><path fill="#0d4ba0" d="M269.56 38.05V19.66h5.33v6.83h5.78v-6.83h5.26v18.39h-5.26v-8.2h-5.78v8.2h-5.33zM261.88 35.19v-6.54c-2.24.3-5.54.69-5.54 3.89 0 3.92 4.22 3.2 5.54 2.65zm-10.4-2.35a5.46 5.46 0 0 1 3.84-5.36 19.24 19.24 0 0 1 3.05-.84c.89-.16 2.06-.3 3.48-.5v-.58c.11-2.66-1.42-3.16-3.3-3.16a10.94 10.94 0 0 0-5 1.38l-.35-3.3a19.38 19.38 0 0 1 6.64-1.17 10.76 10.76 0 0 1 3.62.5 4.59 4.59 0 0 1 3.34 4 13 13 0 0 1 .07 1.87v11.45c-4.61 1.78-15.34 3-15.34-4.31zM243.56 34.52a2.49 2.49 0 0 1-2.16 1.06c-3.06 0-3.77-5-3.77-7.26a7.93 7.93 0 0 1 1.46-5.08 2.64 2.64 0 0 1 2.2-1 3 3 0 0 1 2.81 2.2 12.42 12.42 0 0 1 .78 4.69 9.31 9.31 0 0 1-1.32 5.37zm6.39-9.8a7.9 7.9 0 0 0-2.31-3.78c-1.81-1.72-8.2-3.14-11.29 1.47 0-4.86 2.06-7.26 6.18-8s6.39-1.08 6.39-1.08l-.39-3.94s-4.22.59-7.7 1.38a10.61 10.61 0 0 0-8.28 9.14c-.6 3.59-.53 9.78.53 12.68 1.24 3.34 3.73 5.86 8.28 5.86 6.25 0 9.12-3.84 9.12-9.84a16.81 16.81 0 0 0-.53-3.94zM288.98 38.05V19.66h5.26v8.46l5.89-8.46h5.19l-6.01 8.22 6.61 10.17h-5.86l-5.82-9.15v9.15h-5.26zM205.18 38.44a14.45 14.45 0 0 1-5-.73l.43-3.2a7.17 7.17 0 0 0 3.84 1.06c2.66 0 4.12-1.22 4-2.95a2.27 2.27 0 0 0-.82-1.92 3 3 0 0 0-1.85-.72c-.71-.05-1.28-.11-1.78-.11h-1.28v-2.76h.36c2 0 5-.08 5-2.61 0-2-2-2.4-3.05-2.4a9.06 9.06 0 0 0-4.47 1.17l-.28-3a15.7 15.7 0 0 1 5.9-1c4.26-.09 6.92 1.83 6.82 4.72.07 2.37-2 3.75-3.37 4.19a6.34 6.34 0 0 1 2.34.87 4.19 4.19 0 0 1 1.78 3.55 5.18 5.18 0 0 1-3.13 4.86 13.34 13.34 0 0 1-5.47 1zM157.84 38.44c-6.07 0-9.44-3.69-9.44-9.68s3.59-9.55 9.51-9.55a11.58 11.58 0 0 1 4.33.74l-.57 3.34a6.18 6.18 0 0 0-2.91-.78c-3.55 0-5.07 2.9-5.07 6.09s1.49 6.48 5.11 6.48a6 6 0 0 0 2.95-.72l.39 3.39a12.49 12.49 0 0 1-4.29.69zM216.04 38.05V19.66h5.25v5.8h2.09c2.41 0 4.23.39 5.33 1.22a5.64 5.64 0 0 1 2.13 4.67c-.14 6-6.21 7.13-9.52 7.13a27.61 27.61 0 0 1-5.25-.39zm5.22-3s4.76 1 4.76-3.53a3.16 3.16 0 0 0-.46-1.9c-.53-.94-1.74-1.1-3-1.1h-.77a2.55 2.55 0 0 0-.53.06v6.48zM170.13 27.33v-5.06s.53-.05 1.85-.05c2.52 0 3 1.47 3 2.42 0 1.81-1.1 2.7-3.66 2.7h-1.21zm1.31 2.86c.5 0 1 0 1.67.06a2.72 2.72 0 0 1 1.67.64 2.07 2.07 0 0 1 .75 1.81c0 2-1.78 2.75-4.08 2.75h-1.31v-5.26h1.31zm5.22-1.92c2.2-.69 3.3-2.07 3.3-4.17a4.32 4.32 0 0 0-.6-2.33 4.15 4.15 0 0 0-2-1.61 15.63 15.63 0 0 0-6-.94 39.15 39.15 0 0 0-6.32.44v18.39a46.89 46.89 0 0 0 6.32.39c3.69 0 9.3-.92 9.45-5.61v-.2c.11-2-1.17-4-4.12-4.37zM192.29 27.63h-1.31c-2.52 0-3.55-.83-3.55-2.91s1.63-2.59 2.95-2.59a15.12 15.12 0 0 1 1.91.06v5.41zm-1.17-8.44c-3.87 0-8.7.64-8.7 5.61a4.66 4.66 0 0 0 3.83 4.92l-4.96 8.33h5.47l3.94-7.33h1.59v7.33h5.18V19.66a40.5 40.5 0 0 0-6.36-.44zM63.5 38.05V12.68h19.32v25.37h-5.61V16.27h-8.06v21.78H63.5zM97.8 28.19c0-6.89-4.8-6.29-6.57-5.86v12c.71.16 6.57 2.41 6.57-6.14zM85.91 45.45V20.19c4.61-.94 17.11-3.54 17.11 7.67a10.94 10.94 0 0 1-2.31 7.26c-3 3.61-7.88 3.21-9.48 2.58v7.81h-5.32zM113.99 35.55c1.53 0 2.56-1.24 3-2.85a16.48 16.48 0 0 0 .46-4.09 12 12 0 0 0-.71-4.42 3 3 0 0 0-2.74-2.06 3.29 3.29 0 0 0-3.09 2.59 12.23 12.23 0 0 0-.6 3.89c0 2.27.53 6.94 3.69 6.94zm-.39 2.89c-6.07 0-8.7-3.83-8.7-9.59 0-6 3.13-9.64 9.23-9.64a8.55 8.55 0 0 1 5.26 1.49 6.66 6.66 0 0 1 2.59 3.67 14.35 14.35 0 0 1 .68 4.33c0 6.19-2.63 9.73-9.05 9.73zM123.76 38.05l1.92-18.39h6.11l3.8 12.53 3.76-12.53h6.04l1.77 18.39h-4.86l-1.03-13.23-3.98 13.23h-4.23l-4.04-13.34-1.03 13.34h-4.23z"/></svg>',
-  refresh: '<svg width="15" height="15"><path d="M14.62.674c-.268-.11-.495-.065-.684.136l-1.27 1.26A7.58 7.58 0 0 0 10.278.542 7.357 7.357 0 0 0 7.5 0a7.298 7.298 0 0 0-2.91.596 7.565 7.565 0 0 0-2.393 1.601A7.567 7.567 0 0 0 .596 4.59 7.298 7.298 0 0 0 0 7.5c0 1.015.199 1.986.596 2.91a7.567 7.567 0 0 0 1.601 2.393 7.57 7.57 0 0 0 2.393 1.601A7.298 7.298 0 0 0 7.5 15c1.12 0 2.185-.236 3.194-.708a7.333 7.333 0 0 0 2.578-1.997.32.32 0 0 0 .073-.22.27.27 0 0 0-.093-.2l-1.338-1.348a.376.376 0 0 0-.244-.087c-.104.013-.179.052-.224.117a4.904 4.904 0 0 1-1.748 1.436A4.925 4.925 0 0 1 7.5 12.5a4.87 4.87 0 0 1-1.938-.395 5.034 5.034 0 0 1-1.597-1.07A5.038 5.038 0 0 1 2.896 9.44 4.87 4.87 0 0 1 2.5 7.5c0-.677.132-1.323.396-1.938a5.036 5.036 0 0 1 1.07-1.597c.449-.45.98-.806 1.596-1.07A4.87 4.87 0 0 1 7.5 2.5c1.309 0 2.445.446 3.409 1.338L9.56 5.186c-.202.195-.248.42-.137.674.11.26.303.39.576.39h4.375a.6.6 0 0 0 .44-.185.6.6 0 0 0 .185-.44V1.25a.584.584 0 0 0-.38-.576z"/></svg>'
+  refresh: '<svg width="15" height="15"><path d="M14.62.674c-.268-.11-.495-.065-.684.136l-1.27 1.26A7.58 7.58 0 0 0 10.278.542 7.357 7.357 0 0 0 7.5 0a7.298 7.298 0 0 0-2.91.596 7.565 7.565 0 0 0-2.393 1.601A7.567 7.567 0 0 0 .596 4.59 7.298 7.298 0 0 0 0 7.5c0 1.015.199 1.986.596 2.91a7.567 7.567 0 0 0 1.601 2.393 7.57 7.57 0 0 0 2.393 1.601A7.298 7.298 0 0 0 7.5 15c1.12 0 2.185-.236 3.194-.708a7.333 7.333 0 0 0 2.578-1.997.32.32 0 0 0 .073-.22.27.27 0 0 0-.093-.2l-1.338-1.348a.376.376 0 0 0-.244-.087c-.104.013-.179.052-.224.117a4.904 4.904 0 0 1-1.748 1.436A4.925 4.925 0 0 1 7.5 12.5a4.87 4.87 0 0 1-1.938-.395 5.034 5.034 0 0 1-1.597-1.07A5.038 5.038 0 0 1 2.896 9.44 4.87 4.87 0 0 1 2.5 7.5c0-.677.132-1.323.396-1.938a5.036 5.036 0 0 1 1.07-1.597c.449-.45.98-.806 1.596-1.07A4.87 4.87 0 0 1 7.5 2.5c1.309 0 2.445.446 3.409 1.338L9.56 5.186c-.202.195-.248.42-.137.674.11.26.303.39.576.39h4.375a.6.6 0 0 0 .44-.185.6.6 0 0 0 .185-.44V1.25a.584.584 0 0 0-.38-.576z"/></svg>',
+  border: '<svg width="600" height="7.04" viewBox="0 0 600 7.04"><path fill="#fe5300" d="M582 0H0v4.83l1.06.1C7 4.93 7 7 12.68 7c6 0 6-2.11 12-2.11 5.6.04 5.6 2.11 11.59 2.11s6-2.11 12-2.11c5.6.04 5.6 2.11 11.59 2.11s6-2.11 11.62-2.11c6 0 6 2.11 12 2.11 5.63 0 5.63-2.11 11.62-2.11 5.6.04 5.6 2.11 11.59 2.11s6-2.11 12-2.11C124.3 4.93 124.3 7 130.28 7s6-2.11 12-2.11c5.63 0 5.63 2.11 12 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11s6-2.11 12-2.11c5.63 0 5.63 2.11 12 2.11 5.63 0 5.63-2.11 11.62-2.11C241.9 4.93 241.9 7 247.89 7c5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11s6-2.11 12-2.11c5.63 0 5.63 2.11 12 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11C324 7 324 4.89 329.99 4.89c5.63 0 5.63 2.11 11.62 2.11s6-2.11 13-2.11c5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 12.32-2.11 5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11C512 7 512 4.93 518 4.93c5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 12.32-2.11 5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 11.62-2.11 5.63 0 5.63 2.11 11.62 2.11 5.63 0 5.63-2.11 11.62-2.11C594 4.93 594 7 600 7V0h-18z"/></svg>'
 };
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -3302,7 +3414,7 @@ utils.each(services, function (service, key) {
 module.exports = services;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3313,7 +3425,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyMiddleware", function() { return applyMiddleware; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "compose", function() { return compose; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__DO_NOT_USE__ActionTypes", function() { return ActionTypes; });
-/* harmony import */ var symbol_observable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
+/* harmony import */ var symbol_observable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
 
 
 /**
@@ -3939,11 +4051,11 @@ if (false) {}
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
 /* global window */
 
 
@@ -3962,10 +4074,10 @@ if (typeof self !== 'undefined') {
 var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
 /* harmony default export */ __webpack_exports__["a"] = (result);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(13), __webpack_require__(27)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14), __webpack_require__(27)(module)))
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 var g;
@@ -3991,19 +4103,19 @@ module.exports = g;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _CSSTransition = _interopRequireDefault(__webpack_require__(31));
+var _CSSTransition = _interopRequireDefault(__webpack_require__(30));
 
-var _ReplaceTransition = _interopRequireDefault(__webpack_require__(37));
+var _ReplaceTransition = _interopRequireDefault(__webpack_require__(36));
 
-var _TransitionGroup = _interopRequireDefault(__webpack_require__(18));
+var _TransitionGroup = _interopRequireDefault(__webpack_require__(19));
 
-var _Transition = _interopRequireDefault(__webpack_require__(15));
+var _Transition = _interopRequireDefault(__webpack_require__(16));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4015,7 +4127,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4030,9 +4142,9 @@ var _react = _interopRequireDefault(__webpack_require__(5));
 
 var _reactDom = _interopRequireDefault(__webpack_require__(5));
 
-var _reactLifecyclesCompat = __webpack_require__(16);
+var _reactLifecyclesCompat = __webpack_require__(17);
 
-var _PropTypes = __webpack_require__(17);
+var _PropTypes = __webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4482,7 +4594,7 @@ var _default = (0, _reactLifecyclesCompat.polyfill)(Transition);
 exports.default = _default;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4649,7 +4761,7 @@ function polyfill(Component) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4704,7 +4816,7 @@ var classNamesShape = _propTypes.default.oneOfType([_propTypes.default.string, _
 exports.classNamesShape = classNamesShape;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4717,9 +4829,9 @@ var _propTypes = _interopRequireDefault(__webpack_require__(2));
 
 var _react = _interopRequireDefault(__webpack_require__(5));
 
-var _reactLifecyclesCompat = __webpack_require__(16);
+var _reactLifecyclesCompat = __webpack_require__(17);
 
-var _ChildMapping = __webpack_require__(38);
+var _ChildMapping = __webpack_require__(37);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4855,7 +4967,75 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 19 */
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * Convert data object to FormData object
+ *
+ * @param {Object} data
+ * @returns {FormData}
+ */
+var convertToFormData = function convertToFormData(data) {
+  var formdata = new FormData();
+  var keys = Object.keys(data);
+
+  keys.forEach(function (key) {
+    return formdata.append(key, data[key]);
+  });
+
+  return formdata;
+};
+
+/**
+ * XMLHttpRequest
+ *
+ * @param {String} url
+ * @param {String} type - GET or POST
+ * @param {Object} data - data object
+ * @returns {Promise}
+ */
+
+exports.default = function (url) {
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'GET';
+  var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+  return new Promise(function (resolve, reject) {
+    var request = new XMLHttpRequest();
+
+    request.open(type, url);
+
+    /** Special headers for cmtt sites */
+    request.setRequestHeader('X-This-Is-CSRF', 'THIS IS SPARTA!');
+
+    if (window.__static_version) {
+      request.setRequestHeader('X-JS-Version', window.__static_version);
+    }
+
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 400) {
+        resolve(request.response);
+      } else {
+        reject(request.statusText);
+      }
+    };
+
+    request.onerror = function () {
+      return reject(request.statusText);
+    };
+
+    request.send(convertToFormData(data));
+  });
+};
+
+/***/ }),
+/* 21 */
 /***/ (function(module, exports) {
 
 var isAvailable = function() {
@@ -4926,65 +5106,7 @@ var storage = {
 module.exports = storage;
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.sendPageView = exports.sendEvent = undefined;
-
-var _config = __webpack_require__(71);
-
-var _config2 = _interopRequireDefault(_config);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var CONSOLE_STYLE = 'color: #E87E04';
-
-/**
- * Send analytics events via GTM
- * @param {String} label - event label
- * @param {String} action - event action ("Click" by default)
- */
-var sendEvent = exports.sendEvent = function sendEvent(label) {
-    var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Click';
-
-    var value = _config2.default.analyticsCategory + ' \u2014 ' + label + ' \u2014 ' + action;
-
-    if (false) {}
-
-    if (window.dataLayer !== undefined && _config2.default.analyticsCategory) {
-        window.dataLayer.push({
-            event: 'data_event',
-            data_description: value
-        });
-    }
-};
-
-/**
- * Send pageview event via GTM
- */
-var sendPageView = exports.sendPageView = function sendPageView() {
-    if (false) {}
-
-    if (window.dataLayer !== undefined) {
-        window.dataLayer.push({
-            event: 'Page — View',
-            post_details: {},
-            section: 'special',
-            tags: [],
-            title: document.title,
-            url: window.location.pathname
-        });
-    }
-};
-
-/***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5009,13 +5131,13 @@ function symbolObservablePonyfill(root) {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _special = __webpack_require__(23);
+var _special = __webpack_require__(24);
 
 var _special2 = _interopRequireDefault(_special);
 
@@ -5026,7 +5148,7 @@ module.exports.Special = _special2.default; /**
                                              */
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5038,7 +5160,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(24);
+__webpack_require__(25);
 
 var _preact = __webpack_require__(0);
 
@@ -5048,11 +5170,15 @@ var _app = __webpack_require__(28);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _store = __webpack_require__(7);
+var _store = __webpack_require__(8);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _analytics = __webpack_require__(20);
+var _request = __webpack_require__(20);
+
+var _request2 = _interopRequireDefault(_request);
+
+var _analytics = __webpack_require__(7);
 
 var Analytics = _interopRequireWildcard(_analytics);
 
@@ -5139,9 +5265,6 @@ var Special = function () {
       }, {
         img: 'https://leonardo.osnova.io/62c5e9a0-e4be-9901-44b9-65201f2365aa/',
         img2x: 'https://leonardo.osnova.io/87b6e3d7-02db-6faa-6afa-17ef57d7a320/'
-      }, {
-        img: 'https://leonardo.osnova.io/1306e7b6-e62e-16d6-45a8-2c5f952bf96c/',
-        img2x: 'https://leonardo.osnova.io/bdbb58d8-0a8d-393b-8c40-403ee9f6ce94/'
       }];
 
       images.forEach(function (item) {
@@ -5152,6 +5275,16 @@ var Special = function () {
         }
         IMAGES.push(img);
       });
+
+      (0, _request2.default)('/special/psb/getPoints', 'GET').then(function (r) {
+        var resp = JSON.parse(r);
+        if (resp.rc === 200 && resp.data.length) {
+          _store2.default.dispatch({
+            type: 'TEST_POINTS',
+            points: resp.data
+          });
+        }
+      });
     }
   }]);
 
@@ -5161,13 +5294,12 @@ var Special = function () {
 exports.default = Special;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
-/* 25 */,
 /* 26 */,
 /* 27 */
 /***/ (function(module, exports) {
@@ -5215,11 +5347,7 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(6);
 
-var _bg = __webpack_require__(29);
-
-var _bg2 = _interopRequireDefault(_bg);
-
-var _enter = __webpack_require__(30);
+var _enter = __webpack_require__(29);
 
 var _enter2 = _interopRequireDefault(_enter);
 
@@ -5297,55 +5425,33 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _preact = __webpack_require__(0);
-
-var _preactRedux = __webpack_require__(6);
-
-var Bg = function Bg(props) {
-  var style = {
-    backgroundImage: props.test.bg ? "url(" + props.test.bg + ")" : null
-  };
-  return (0, _preact.h)("div", { className: "psb__bg", style: style });
-};
-
-var mapStateToProps = function mapStateToProps(store) {
-  return {
-    test: store.testState
-  };
-};
-
-exports.default = (0, _preactRedux.connect)(mapStateToProps)(Bg);
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _preact = __webpack_require__(0);
 
-var _reactTransitionGroup = __webpack_require__(14);
+var _reactTransitionGroup = __webpack_require__(15);
 
-var _store = __webpack_require__(7);
+var _store = __webpack_require__(8);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _data = __webpack_require__(8);
+var _data = __webpack_require__(9);
 
 var _data2 = _interopRequireDefault(_data);
 
-var _svg = __webpack_require__(9);
+var _svg = __webpack_require__(10);
 
 var _svg2 = _interopRequireDefault(_svg);
+
+var _analytics = __webpack_require__(7);
+
+var Analytics = _interopRequireWildcard(_analytics);
+
+var _preactRedux = __webpack_require__(6);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5387,6 +5493,8 @@ var Enter = function (_Component) {
   }, {
     key: 'start',
     value: function start() {
+      Analytics.sendEvent('Start');
+
       _store2.default.dispatch({
         type: 'TEST_STATUS',
         status: 'START'
@@ -5423,7 +5531,7 @@ var Enter = function (_Component) {
         (0, _preact.h)(
           'div',
           { className: 'psb-enter__body' },
-          (0, _preact.h)('div', { className: 'psb-enter__title', dangerouslySetInnerHTML: { __html: _data2.default.title } }),
+          props.test.params.isFeed ? (0, _preact.h)('div', { className: 'psb-enter__title', dangerouslySetInnerHTML: { __html: _data2.default.title } }) : (0, _preact.h)('a', { href: '/special/psb', className: 'psb-enter__title', dangerouslySetInnerHTML: { __html: _data2.default.title } }),
           (0, _preact.h)(
             'div',
             { className: 'psb-enter__text' },
@@ -5442,10 +5550,16 @@ var Enter = function (_Component) {
   return Enter;
 }(_preact.Component);
 
-exports.default = Enter;
+var mapStateToProps = function mapStateToProps(store) {
+  return {
+    test: store.testState
+  };
+};
+
+exports.default = (0, _preactRedux.connect)(mapStateToProps)(Enter);
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5456,15 +5570,15 @@ exports.default = void 0;
 
 var PropTypes = _interopRequireWildcard(__webpack_require__(2));
 
-var _addClass = _interopRequireDefault(__webpack_require__(34));
+var _addClass = _interopRequireDefault(__webpack_require__(33));
 
-var _removeClass = _interopRequireDefault(__webpack_require__(36));
+var _removeClass = _interopRequireDefault(__webpack_require__(35));
 
 var _react = _interopRequireDefault(__webpack_require__(5));
 
-var _Transition = _interopRequireDefault(__webpack_require__(15));
+var _Transition = _interopRequireDefault(__webpack_require__(16));
 
-var _PropTypes = __webpack_require__(17);
+var _PropTypes = __webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5654,7 +5768,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5667,7 +5781,7 @@ module.exports = exports["default"];
 
 
 
-var ReactPropTypesSecret = __webpack_require__(33);
+var ReactPropTypesSecret = __webpack_require__(32);
 
 function emptyFunction() {}
 
@@ -5720,7 +5834,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5739,7 +5853,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5750,7 +5864,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = addClass;
 
-var _hasClass = __webpack_require__(35);
+var _hasClass = __webpack_require__(34);
 
 var _hasClass2 = _interopRequireDefault(_hasClass);
 
@@ -5762,7 +5876,7 @@ function addClass(element, className) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5778,7 +5892,7 @@ function hasClass(element, className) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5793,7 +5907,7 @@ module.exports = function removeClass(element, className) {
 };
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5808,7 +5922,7 @@ var _react = _interopRequireDefault(__webpack_require__(5));
 
 var _reactDom = __webpack_require__(5);
 
-var _TransitionGroup = _interopRequireDefault(__webpack_require__(18));
+var _TransitionGroup = _interopRequireDefault(__webpack_require__(19));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5945,7 +6059,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6101,6 +6215,23 @@ function getNextChildMapping(nextProps, prevChildMapping, onExited) {
 }
 
 /***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  name: 'PSB', // уникальное имя спецпроекта. Оно же — название главного класса. Используется на странице, куда интегрируется спецпроект
+  analyticsCategory: 'PSB',
+  sendPageView: false, // отключаем, если спецпроект не на отдельной странице
+  listenedEvents: ['click', 'input'] // слушаем события (click, input, change, etc.). Обычно нужен только click
+};
+
+/***/ }),
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6111,19 +6242,25 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(6);
 
-var _store = __webpack_require__(7);
+var _store = __webpack_require__(8);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _svg = __webpack_require__(9);
+var _svg = __webpack_require__(10);
 
 var _svg2 = _interopRequireDefault(_svg);
+
+var _analytics = __webpack_require__(7);
+
+var Analytics = _interopRequireWildcard(_analytics);
 
 var _heatmap = __webpack_require__(40);
 
@@ -6132,6 +6269,12 @@ var _heatmap2 = _interopRequireDefault(_heatmap);
 var _smoothscrollPolyfill = __webpack_require__(41);
 
 var _smoothscrollPolyfill2 = _interopRequireDefault(_smoothscrollPolyfill);
+
+var _request = __webpack_require__(20);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6153,6 +6296,44 @@ function getOffsetY(el) {
   return rect.top + scrollTop;
 }
 
+var Option = function Option(props, state) {
+  var optionClass = 'psb-option';
+  if (props.isSelected) {
+    optionClass += ' is-selected';
+  }
+  if (props.isAnswered) {
+    optionClass += props.item.isCorrect ? ' is-correct' : ' is-incorrect';
+  }
+  return (0, _preact.h)(
+    'div',
+    { className: 'psb-options__item' },
+    (0, _preact.h)(
+      'div',
+      { className: optionClass, onClick: function onClick(e) {
+          return props.onClick(e, props.index);
+        } },
+      (0, _preact.h)('div', { className: 'psb-option__btn' }),
+      (0, _preact.h)('div', { className: 'psb-option__label', dangerouslySetInnerHTML: { __html: props.item.text } })
+    )
+  );
+};
+
+var OptionList = function OptionList(props, state) {
+  var getOptions = function getOptions() {
+    var isSelected = false;
+    return props.items.map(function (item, i) {
+      isSelected = props.selectedOptions && props.selectedOptions.includes(i);
+      return (0, _preact.h)(Option, { key: i, index: i, item: item, isAnswered: props.isAnswered, isSelected: isSelected, onClick: props.onClick });
+    });
+  };
+
+  return (0, _preact.h)(
+    'div',
+    { className: 'psb-options' + (props.isAnswered ? ' is-answered' : '') },
+    getOptions()
+  );
+};
+
 var Question = function (_Component) {
   _inherits(Question, _Component);
 
@@ -6161,16 +6342,48 @@ var Question = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Question.__proto__ || Object.getPrototypeOf(Question)).call(this));
 
+    _this.points = [];
+
+    _this.setTestOption = _this.setTestOption.bind(_this);
     _this.answer = _this.answer.bind(_this);
     _this.answerUI = _this.answerUI.bind(_this);
+    _this.answerTest = _this.answerTest.bind(_this);
     _this.next = _this.next.bind(_this);
     _this.result = _this.result.bind(_this);
     return _this;
   }
 
   _createClass(Question, [{
+    key: 'setTestOption',
+    value: function setTestOption(e, value) {
+      if (this.state.answered) {
+        return;
+      }
+
+      var selectedOptions = this.state.selectedTestOptions || [];
+
+      var i = selectedOptions.indexOf(value);
+      if (i === -1) {
+        selectedOptions.push(value);
+      } else {
+        selectedOptions.splice(i, 1);
+      }
+
+      this.setState({
+        selectedTestOptions: selectedOptions
+      });
+    }
+  }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
+      var _this2 = this;
+
+      if (this.props.test.question.type === 'test') {
+        return;
+      }
+
+      console.log('did update');
+
       if (this.state.answered) {
 
         this.heatmapInstance = _heatmap2.default.create({
@@ -6178,13 +6391,22 @@ var Question = function (_Component) {
           radius: 60
         });
 
+        this.points[this.props.test.activeIndex] = _extends({ index: this.props.test.activeIndex }, this.answeredDot);
+
+        if (this.props.test.points[this.props.test.activeIndex]) {
+          this.props.test.points.forEach(function (item) {
+            if (parseInt(item.index) === _this2.props.test.activeIndex) {
+              _this2.heatmapInstance.addData(item.points);
+              return true;
+            }
+          });
+        }
+
         this.heatmapInstance.addData({
           x: this.answeredDot.x,
           y: this.answeredDot.y,
           value: 1
         });
-
-        // console.log(this.heatmapInstance);
 
         if (this.props.test.question.type === 'ui') {
           var a = document.createElement('div');
@@ -6224,6 +6446,8 @@ var Question = function (_Component) {
       if (this.state.answered) return;
 
       if (e.target.tagName.toLowerCase() === 'span') {
+        Analytics.sendEvent('Answer - ' + this.props.test.activeIndex);
+
         var layout = e.currentTarget;
         var rect = layout.getBoundingClientRect();
         var x = e.clientX - rect.left;
@@ -6298,7 +6522,8 @@ var Question = function (_Component) {
 
         _store2.default.dispatch({
           type: 'TEST_ANSWER',
-          isCorrect: isCorrect
+          isCorrect: isCorrect,
+          isReal: this.props.test.question.isReal
         });
       }
     }
@@ -6306,6 +6531,8 @@ var Question = function (_Component) {
     key: 'answerUI',
     value: function answerUI(e) {
       if (this.state.answered) return;
+
+      Analytics.sendEvent('Answer - ' + this.props.test.activeIndex);
 
       var layout = e.currentTarget;
       var rect = layout.getBoundingClientRect();
@@ -6318,15 +6545,29 @@ var Question = function (_Component) {
         x: x,
         y: y
       };
+      // console.log(this.answeredDot);
       this.isCorrect = isCorrect;
 
       var rectBody = this.body.getBoundingClientRect();
       var bx = e.clientX - rectBody.left;
       var by = e.clientY - rectBody.top;
-      this.msgStyle = {
-        top: by + 'px',
-        left: bx + 'px'
-      };
+
+      if (isCorrect) {
+        this.msgStyle = {
+          top: rect.top - rectBody.top + correctCoords.y2 + 'px',
+          left: rect.left - rectBody.left + 'px'
+        };
+      } else {
+        this.msgStyle = {
+          top: by + 'px',
+          left: bx + 'px',
+          transform: by >= rectBody.height / 3 && by < rect.top - rectBody.top + correctCoords.y2 ? 'translateY(-100%)' : ''
+        };
+      }
+
+      if (isCorrect || by > rect.top - rectBody.top + correctCoords.y2) {
+        this.body.style.minHeight = this.body.offsetHeight + 100 + 'px';
+      }
 
       this.setState({
         answered: true
@@ -6334,7 +6575,43 @@ var Question = function (_Component) {
 
       _store2.default.dispatch({
         type: 'TEST_ANSWER',
-        isCorrect: isCorrect
+        isCorrect: isCorrect,
+        isReal: this.props.test.question.isReal
+      });
+    }
+  }, {
+    key: 'answerTest',
+    value: function answerTest() {
+      var _this3 = this;
+
+      if (this.state.answered) {
+        return;
+      }
+
+      this.points[this.props.test.activeIndex] = _extends({ index: this.props.test.activeIndex }, { x: 0, y: 0 });
+
+      var isCorrect = false;
+
+      Analytics.sendEvent('Answer - ' + this.props.test.activeIndex);
+
+      if (this.state.selectedTestOptions && this.state.selectedTestOptions.length > 0) {
+        isCorrect = true;
+        this.props.test.question.options.forEach(function (item, i) {
+          if (_this3.state.selectedTestOptions.indexOf(i) !== -1 && !item.isCorrect) {
+            isCorrect = false;
+            return false;
+          }
+        });
+      }
+
+      this.setState({
+        answered: true
+      });
+
+      _store2.default.dispatch({
+        type: 'TEST_ANSWER',
+        isCorrect: isCorrect,
+        isReal: this.props.test.question.isReal
       });
     }
   }, {
@@ -6342,25 +6619,14 @@ var Question = function (_Component) {
     value: function next(e) {
       e.stopPropagation();
 
+      Analytics.sendEvent('Next');
+
       this.body.style.minHeight = '';
 
       if (this.heatmapInstance) {
         this.layout.removeChild(this.heatmapInstance._renderer.canvas);
         this.heatmapInstance = null;
       }
-
-      // window.scroll({
-      //   top: this.props.test.params.container.offsetTop,
-      //   left: 0,
-      //   behavior: 'smooth'
-      // });
-      // if (this.codeContainer) {
-      //   this.codeContainer.scroll({
-      //     top: 0,
-      //     left: 0,
-      //     behavior: 'smooth'
-      //   });
-      // }
 
       this.setState({
         answered: false
@@ -6374,6 +6640,10 @@ var Question = function (_Component) {
     key: 'result',
     value: function result(e) {
       e.stopPropagation();
+
+      Analytics.sendEvent('Result');
+
+      (0, _request2.default)('/special/psb/addPoints', 'POST', { data: JSON.stringify(this.points) });
 
       this.body.style.minHeight = '';
 
@@ -6407,25 +6677,25 @@ var Question = function (_Component) {
   }, {
     key: 'render',
     value: function render(props, state) {
-      var _this2 = this;
+      var _this4 = this;
 
       var question = props.test.question;
 
       var getMsg = function getMsg() {
-        if (_this2.state.answered) {
+        if (_this4.state.answered) {
           return (0, _preact.h)(
             'div',
-            { className: 'psb-q__msg ' + (_this2.isCorrect ? 'is-correct' : 'is-incorrect'), style: _this2.msgStyle, ref: function ref(msg) {
-                return _this2.msg = msg;
+            { className: 'psb-q__msg ' + (_this4.isCorrect ? 'is-correct' : 'is-incorrect'), style: _this4.msgStyle, ref: function ref(msg) {
+                return _this4.msg = msg;
               } },
-            (0, _preact.h)('div', { dangerouslySetInnerHTML: { __html: _this2.isCorrect ? question.correctMsg : question.incorrectMsg } }),
+            (0, _preact.h)('div', { dangerouslySetInnerHTML: { __html: _this4.isCorrect ? question.correctMsg : question.incorrectMsg } }),
             props.test.activeIndex < props.test.questionsCount - 1 ? (0, _preact.h)(
               'button',
-              { className: 'psb-q__btn', onClick: _this2.next },
+              { className: 'psb-q__btn', onClick: _this4.next },
               '\u0414\u0430\u043B\u0435\u0435'
             ) : (0, _preact.h)(
               'button',
-              { className: 'psb-q__btn', onClick: _this2.result },
+              { className: 'psb-q__btn', onClick: _this4.result },
               '\u0420\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442'
             )
           );
@@ -6448,11 +6718,26 @@ var Question = function (_Component) {
               (0, _preact.h)(
                 'div',
                 { className: 'psb-q-phone__img', ref: function ref(layout) {
-                    return _this2.layout = layout;
-                  }, onClick: _this2.answerUI },
+                    return _this4.layout = layout;
+                  }, onClick: _this4.answerUI },
                 (0, _preact.h)('img', { src: 'https://leonardo.osnova.io/62c5e9a0-e4be-9901-44b9-65201f2365aa/',
                   srcSet: 'https://leonardo.osnova.io/87b6e3d7-02db-6faa-6afa-17ef57d7a320/ 2x', alt: '' })
               )
+            )
+          );
+        } else if (question.type === 'test') {
+          return (0, _preact.h)(
+            'div',
+            { className: 'psb-q__test' },
+            (0, _preact.h)(
+              'div',
+              { className: 'psb-q__options' },
+              (0, _preact.h)(OptionList, { items: question.options, isAnswered: state.answered, selectedOptions: state.selectedTestOptions, onClick: _this4.setTestOption })
+            ),
+            (0, _preact.h)(
+              'button',
+              { className: 'psb-q__test-btn', onClick: state.answered ? _this4.next : _this4.answerTest },
+              state.answered ? 'Далее' : 'Ответить'
             )
           );
         }
@@ -6462,21 +6747,21 @@ var Question = function (_Component) {
         return [window.innerWidth >= 1025 ? getMsg() : null, (0, _preact.h)(
           'div',
           { className: 'psb-q__code', ref: function ref(codeContainer) {
-              return _this2.codeContainer = codeContainer;
+              return _this4.codeContainer = codeContainer;
             } },
           (0, _preact.h)(
             'div',
             { className: 'psb-q__code-wrapper', ref: function ref(codeWrapper) {
-                return _this2.codeWrapper = codeWrapper;
+                return _this4.codeWrapper = codeWrapper;
               } },
             (0, _preact.h)(
               'div',
               { className: 'psb-q__code-inner', ref: function ref(layout) {
-                  return _this2.layout = layout;
-                }, onClick: _this2.answer },
+                  return _this4.layout = layout;
+                }, onClick: _this4.answer },
               window.innerWidth < 1025 ? getMsg() : null,
               (0, _preact.h)('pre', { className: 'psb-q__code-pre', ref: function ref(code) {
-                  return _this2.code = code;
+                  return _this4.code = code;
                 }, dangerouslySetInnerHTML: { __html: code } })
             )
           )
@@ -6513,7 +6798,7 @@ var Question = function (_Component) {
         (0, _preact.h)(
           'div',
           { className: 'psb-q__body', ref: function ref(body) {
-              return _this2.body = body;
+              return _this4.body = body;
             } },
           getBody()
         )
@@ -7715,7 +8000,7 @@ var map = {
 	"./3.code": 45,
 	"./4.code": 46,
 	"./5.code": 47,
-	"./6.code": 48,
+	"./7.code": 48,
 	"./8.code": 49
 };
 
@@ -7744,37 +8029,37 @@ webpackContext.id = 42;
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span class=\"psb-code\">public enum Sex</span> <span class=\"psb-code\">{ MALE, FEMALE };</span>\n\n    <span class=\"psb-code\">public static void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.print</span> (\"Loan possible for female with age 50 and for period 2 years: \" +\n                <span class=\"psb-code\">isLoanPossible(Sex.FEMALE, 50, 2));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>\n        <span class=\"psb-code\">boolean retval = false;</span>\n        <span class=\"psb-code\">if (sex == Sex.FEMALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod)</span> <span class=\"psb-code\">< 65) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (sex == Sex.MALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod) < 60) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (age < 21) {</span>\n            <span class=\"psb-code\">retval = false;</span>\n        }\n        <span class=\"psb-code\">return retval;</span>\n\n}"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span class=\"psb-code\">public enum Sex</span> <span class=\"psb-code\">{ MALE, FEMALE };</span>\n\n    <span class=\"psb-code\">public static void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.print</span> (\"Loan possible for female with age 50 and for period 2 years: \" +\n                <span class=\"psb-code\">isLoanPossible(Sex.FEMALE, 50, 2));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>\n        <span class=\"psb-code\">boolean retval = false;</span>\n        <span class=\"psb-code\">if (sex == Sex.FEMALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod)</span> <span class=\"psb-code\">< 60) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (sex == Sex.MALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod) < 65) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (age < 21) {</span>\n            <span class=\"psb-code\">retval = false;</span>\n        }\n        <span class=\"psb-code\">return retval;</span>\n\n}"
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span> <span class=\"psb-code\">(\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int hospitalDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double hospitalAmount = 0;</span>\n        <span class=\"psb-code\">if (hospitalDays >= 3) {</span>\n            <span class=\"psb-code\">hospitalAmount = 0.8 * hospitalDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + hospitalAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
+module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append <span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
 
 /***/ }),
 /* 45 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<span class=\"psb-code\">SET @RUB_EUR_RATIO = 70.0;</span>\n\n<span class=\"psb-code\">SELECT</span> <span class=\"psb-code\">c.Id, c.Name, SUM(</span>\n       <span class=\"psb-code\">CASE</span>\n            <span class=\"psb-code\">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>\n            \t<span class=\"psb-code\">THEN Balance</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'USD'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_USD_RATIO</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'EUR'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_EUR_RATIO</span>\n       <span class=\"psb-code\">END)</span> <span class=\"psb-code\">as total</span>\n<span class=\"psb-code\">FROM customers AS c</span>\n<span class=\"psb-code\">INNER JOIN accounts AS a</span>\n    <span class=\"psb-code\">ON c.Id=a.CustomerId</span>\n<span class=\"psb-code\">GROUP BY a.CustomerId</span>\n"
+module.exports = "class Program\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">int year = 2020;</span>\n\t\t<span class=\"psb-code\">int holidays = 0;</span>\n\t\t<span class=\"psb-code\">DateTime day =</span> <span class=\"psb-code\">new DateTime(year, 1, 1);</span>\n\t\twhile <span class=\"psb-code\">(day.Year == year)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">if (isLastDayOfMonth(day))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">if (day.DayOfWeek == DayOfWeek.Sunday)</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">day = day.AddDays(1);</span>\n\t\t}\n\t\t<span class=\"psb-code\">Console.WriteLine(\"Number of holidays: \"</span> <span class=\"psb-code\">+ holidays)</span>;\n\t}\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">bool isLastDayOfMonth(DateTime dt)</span>\n\t{\n\t\t<span class=\"psb-code\">if (dt.AddDays(1).Day == 1)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">return true;</span>\n\t\t}\n\t\t<span class=\"psb-code\">return false;</span>\n\t}\n}"
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">class Program</span>\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">String str</span> = <span class=\"psb-code\">\"The Big Bang Theory\";</span>\n\t\t<span class=\"psb-code\">for(int i = 0; i < str.Length; i++)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">char c = str[i];</span>\n\t\t\t<span class=\"psb-code\">if (c != 'a' || c != 'A')</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsLower(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span> <span class=\"psb-code\">(Char.ToUpper(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else if</span> <span class=\"psb-code\">(Char.IsUpper(c))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write</span> <span class=\"psb-code\">(Char.ToLower(c));</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">else</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">Console.Out.Write(c);</span>\n\t\t\t}\n\t\t}\n\t}\n}\n"
+module.exports = "<span class=\"psb-code\">public class LoginPage {</span>\n\n    <span class=\"psb-code\">private</span> <span class=\"psb-code\">final</span> <span class=\"psb-code\">WebDriver driver;</span>\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage(WebDriver driver) {</span>\n        <span class=\"psb-code\">this.driver = driver;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage</span> <span class=\"psb-code\">typeUserName(String username) {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"username\"))</span> . <span class=\"psb-code\">sendKeys(username);</span>\n        <span class=\"psb-code\">return this;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage</span> <span class=\"psb-code\">typePassword(String password) {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"passwd\"))</span> . <span class=\"psb-code\">sendKeys(password);</span>\n        <span class=\"psb-code\">return this;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">HomePage</span> <span class=\"psb-code\">submitLogin() {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"login\"))</span> . <span class=\"psb-code\">sendKeys();</span>\n        <span class=\"psb-code\">return</span> <span class=\"psb-code\">new</span> <span class=\"psb-code\">HomePage(driver);</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">HomePage</span> <span class=\"psb-code\">loginAs(String username, String password) {</span>\n        <span class=\"psb-code\">typeUserName(username);</span>\n        <span class=\"psb-code\">typePassword(password);</span>\n        <span class=\"psb-code\">return submitLogin();</span>\n    }\n}\n"
 
 /***/ }),
 /* 47 */
 /***/ (function(module, exports) {
 
-module.exports = "class Program\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">int year = 2020;</span>\n\t\t<span class=\"psb-code\">int holidays = 0;</span>\n\t\t<span class=\"psb-code\">DateTime day =</span> <span class=\"psb-code\">new DateTime(year, 1, 1);</span>\n\t\twhile <span class=\"psb-code\">(day.Year == year)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">if (isLastDayOfMonth(day))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">if (day.DayOfWeek == DayOfWeek.Sunday)</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">day = day.AddDays(1);</span>\n\t\t}\n\t\t<span class=\"psb-code\">Console.WriteLine(\"Number of holidays: \"</span> <span class=\"psb-code\">+ holidays)</span>;\n\t}\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">bool isLastDayOfMonth(DateTime dt)</span>\n\t{\n\t\t<span class=\"psb-code\">if (dt.AddDays(1).Day == 1)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">return true;</span>\n\t\t}\n\t\t<span class=\"psb-code\">return false;</span>\n\t}\n}"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span> <span class=\"psb-code\">(\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int sickDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double sickAmount = 0;</span>\n        <span class=\"psb-code\">if (sickDays >= 3) {</span>\n            <span class=\"psb-code\">sickAmount = 0.8 * sickDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + sickAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
 
 /***/ }),
 /* 48 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append <span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
+module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<span class=\"psb-code\">SET @RUB_EUR_RATIO = 70.0;</span>\n\n<span class=\"psb-code\">SELECT</span> <span class=\"psb-code\">c.Id, c.Name, SUM(</span>\n       <span class=\"psb-code\">CASE</span>\n            <span class=\"psb-code\">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>\n            \t<span class=\"psb-code\">THEN Balance</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'USD'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_USD_RATIO</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'EUR'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_EUR_RATIO</span>\n       <span class=\"psb-code\">END)</span> <span class=\"psb-code\">as total</span>\n<span class=\"psb-code\">FROM customers AS c</span>\n<span class=\"psb-code\">INNER JOIN accounts AS a</span>\n    <span class=\"psb-code\">ON c.Id=a.CustomerId</span>\n<span class=\"psb-code\">GROUP BY a.CustomerId</span>\n"
 
 /***/ }),
 /* 49 */
@@ -7801,23 +8086,27 @@ var _preact = __webpack_require__(0);
 
 var _preactRedux = __webpack_require__(6);
 
-var _store = __webpack_require__(7);
+var _store = __webpack_require__(8);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _reactTransitionGroup = __webpack_require__(14);
+var _reactTransitionGroup = __webpack_require__(15);
 
 var _share = __webpack_require__(51);
 
 var Share = _interopRequireWildcard(_share);
 
-var _data = __webpack_require__(8);
+var _data = __webpack_require__(9);
 
 var _data2 = _interopRequireDefault(_data);
 
-var _svg = __webpack_require__(9);
+var _svg = __webpack_require__(10);
 
 var _svg2 = _interopRequireDefault(_svg);
+
+var _analytics = __webpack_require__(7);
+
+var Analytics = _interopRequireWildcard(_analytics);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -7875,6 +8164,8 @@ var Result = function (_Component) {
   }, {
     key: 'restart',
     value: function restart() {
+      Analytics.sendEvent('Restart');
+
       _store2.default.dispatch({
         type: 'TEST_RESTART'
       });
@@ -7901,7 +8192,7 @@ var Result = function (_Component) {
       };
 
       var getOffer = function getOffer() {
-        if (props.test.correctAnswers < 6) {
+        if (props.test.correctRealAnswers < 2) {
           return null;
         }
 
@@ -7911,17 +8202,21 @@ var Result = function (_Component) {
           'div',
           { className: 'psb-result__offer' },
           (0, _preact.h)(
-            'p',
-            null,
-            (0, _preact.h)(
-              'b',
-              null,
-              '\u041A\u0440\u0443\u0442\u043E\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442!'
-            )
+            'div',
+            { className: 'psb-result__offer-bd' },
+            (0, _preact.h)('div', { dangerouslySetInnerHTML: { __html: _svg2.default.border } }),
+            (0, _preact.h)('div', { dangerouslySetInnerHTML: { __html: _svg2.default.border } }),
+            (0, _preact.h)('div', { dangerouslySetInnerHTML: { __html: _svg2.default.border } }),
+            (0, _preact.h)('div', { dangerouslySetInnerHTML: { __html: _svg2.default.border } })
           ),
           (0, _preact.h)(
-            'p',
-            null,
+            'div',
+            { className: 'psb-result__offer-title' },
+            '\u041E\u0442\u043B\u0438\u0447\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442!'
+          ),
+          (0, _preact.h)(
+            'div',
+            { className: 'psb-result__offer-text' },
             '\u041C\u044B \u0437\u0430\u0442\u0435\u044F\u043B\u0438 \u044D\u0442\u043E \u0432\u0441\u0451 \u043F\u043E\u0442\u043E\u043C\u0443, \u0447\u0442\u043E \xAB\u041F\u0440\u043E\u043C\u0441\u0432\u044F\u0437\u044C\u0431\u0430\u043D\u043A\xBB \u0438\u0449\u0435\u0442 \u0441\u0435\u0431\u0435 \u0442\u0435\u0441\u0442\u0438\u0440\u043E\u0432\u0449\u0438\u043A\u043E\u0432. \u041E\u0442\u043F\u0440\u0430\u0432\u043B\u044F\u0439\u0442\u0435 \u0440\u0435\u0437\u044E\u043C\u0435 \u043D\u0430 \u043F\u043E\u0447\u0442\u0443 ',
             (0, _preact.h)(
               'a',
@@ -7947,29 +8242,34 @@ var Result = function (_Component) {
         (0, _preact.h)(
           'div',
           { className: 'psb-result__body' },
-          (0, _preact.h)('img', { src: _data2.default.result.img, srcset: _data2.default.result.img2x + ' 2x', alt: '', className: 'psb-result__img' }),
           (0, _preact.h)(
             'div',
-            { className: 'psb-result__title' },
-            '\u042F \u0438\u0441\u043F\u0440\u0430\u0432\u0438\u043B ',
-            props.test.correctAnswers,
-            (0, _preact.h)('br', null),
-            ' ',
-            this.declOfNum(props.test.correctAnswers, ['кусок', 'куска', 'кусков']),
-            ' \u043A\u043E\u0434\u0430'
-          ),
-          (0, _preact.h)('div', { className: 'psb-result__share', ref: function ref(share) {
-              return _this2.share = share;
-            } }),
-          (0, _preact.h)(
-            'div',
-            { className: 'psb-result__restart', onClick: this.restart },
+            { className: 'psb-result__main' },
+            (0, _preact.h)('img', { src: _data2.default.result.images[props.test.correctAnswers].img, alt: '', className: 'psb-result__img' }),
             (0, _preact.h)(
-              'span',
-              null,
-              '\u041F\u0440\u043E\u0439\u0442\u0438 \u0435\u0449\u0435 \u0440\u0430\u0437'
+              'div',
+              { className: 'psb-result__title' },
+              '\u042F \u0438\u0441\u043F\u0440\u0430\u0432\u0438\u043B',
+              (0, _preact.h)('br', null),
+              props.test.correctAnswers,
+              ' \u0438\u0437 ',
+              _data2.default.questions.length,
+              (0, _preact.h)('br', null),
+              '\u043A\u0443\u0441\u043A\u043E\u0432 \u043A\u043E\u0434\u0430'
             ),
-            (0, _preact.h)('span', { dangerouslySetInnerHTML: { __html: _svg2.default.refresh } })
+            (0, _preact.h)('div', { className: 'psb-result__share', ref: function ref(share) {
+                return _this2.share = share;
+              } }),
+            (0, _preact.h)(
+              'div',
+              { className: 'psb-result__restart', onClick: this.restart },
+              (0, _preact.h)(
+                'span',
+                null,
+                '\u041F\u0440\u043E\u0439\u0442\u0438 \u0435\u0449\u0435 \u0440\u0430\u0437'
+              ),
+              (0, _preact.h)('span', { dangerouslySetInnerHTML: { __html: _svg2.default.refresh } })
+            )
           ),
           getOffer()
         )
@@ -8006,7 +8306,7 @@ var _cmttLikely2 = _interopRequireDefault(_cmttLikely);
 
 var _dom = __webpack_require__(70);
 
-var _analytics = __webpack_require__(20);
+var _analytics = __webpack_require__(7);
 
 var Analytics = _interopRequireWildcard(_analytics);
 
@@ -8117,11 +8417,11 @@ module.exports = likely;
 
 var Button = __webpack_require__(54);
 
-var services = __webpack_require__(10),
+var services = __webpack_require__(11),
     config   = __webpack_require__(1),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3),
-    storage = __webpack_require__(19);
+    storage = __webpack_require__(21);
 
 /**
  * Main widget view
@@ -8267,12 +8567,12 @@ module.exports = Likely;
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var services = __webpack_require__(10),
+var services = __webpack_require__(11),
     config = __webpack_require__(1),
     fetch = __webpack_require__(68),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3),
-    storage = __webpack_require__(19);
+    storage = __webpack_require__(21);
 
 var htmlSpan = '<span class="{className}">{content}</span>';
 
@@ -8803,7 +9103,7 @@ module.exports = {
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var services = __webpack_require__(10),
+var services = __webpack_require__(11),
     Factory  = __webpack_require__(69),
     utils    = __webpack_require__(4),
     dom      = __webpack_require__(3);
@@ -9013,23 +9313,6 @@ var prepend = exports.prepend = function prepend(parent, el) {
 /** Quick check if element is in DOM */
 var isElementInDom = exports.isElementInDom = function isElementInDom(el) {
     return el.parentNode;
-};
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  name: 'PSB', // уникальное имя спецпроекта. Оно же — название главного класса. Используется на странице, куда интегрируется спецпроект
-  analyticsCategory: 'PSB',
-  sendPageView: false, // отключаем, если спецпроект не на отдельной странице
-  listenedEvents: ['click', 'input'] // слушаем события (click, input, change, etc.). Обычно нужен только click
 };
 
 /***/ })
