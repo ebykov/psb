@@ -3263,54 +3263,6 @@ exports.default = {
   title: 'Cможете ли вы<br />стать тестировщиком',
   description: 'Вас случайно приняли на работу тестировщиком, не проверив скиллы. Чтобы никто ничего не заподозрил — попробуйте продержаться на новой работе как можно дольше. Внимательно читайте задания и ищите ошибки в коде.',
   questions: [{
-    text: '<p>Эта программа определяет, есть ли у человека право запросить кредит. Вот правила, по которым она работает:</p><p>человек должен быть не моложе 21 года.<br/>мужчина должен быть моложе 65 лет на момент прекращения срока кредита.<br/>женщина должна быть моложе 60 лет на момент прекращения срока кредита.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
-    correct: 16,
-    correctMsg: '<span>Правильно</span> — эта строчка разрешает давать кредит человеку младше 21 года. А это совсем не то, что вам нужно.',
-    incorrectMsg: '<span>Ну нет.</span> Ошибка в строчке, выделенной черным, — она разрешает давать кредит человеку младше 21 года. Правильно было бы написать «if (age < 21)».'
-  }, {
-    text: '<p>Вы тестируете HTTP-сервер, который должен рисовать котика в браузере. Ниже приведен код функции, который подготавливает ответ для HTTP-сервера. Однако котик в браузере не появился.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
-    correct: 7,
-    correctMsg: '<span>Мяу, да.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».',
-    incorrectMsg: '<span>Мяу, нет.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».'
-  }, {
-    type: 'test',
-    text: '<p>Найдите все определения, в которых отражены принципы ООП.</p>',
-    isReal: true,
-    options: [{
-      text: '<span style="color:#DCC600;">Абстрагирование</span> — это способ выделить набор значимых характеристик объекта, исключая из рассмотрения не значимые.',
-      isCorrect: true
-    }, {
-      text: '<span style="color:#4B72FF;">Декомпозиция</span> — разбиение на части сложные методы с целью последующей реализации в виде отдельных небольших подпрограмм.'
-    }, {
-      text: '<span style="color:#38AE00;">Единый родитель</span> — все классы в проекте должны быть порождены от одного корневого объекта (не обязательно напрямую) и выстроены в единую иерархию.'
-    }, {
-      text: '<span style="color:#FE5300;">Инкапсуляция</span> — это свойство системы, позволяющее объединить данные и методы, работающие с ними в классе, и скрыть детали реализации от пользователя.',
-      isCorrect: true
-    }, {
-      text: '<span style="color:#DCC600;">Исключение избыточности</span> — это свойство системы, подразумевающее исключение наличия дубликатов данных, классов и методов во всех ее компонентах.'
-    }, {
-      text: '<span style="color:#4B72FF;">Компонетизация</span> — построение программного обеспечения из отдельных компонентов физически отдельно существующих частей программного обеспечения, которые взаимодействуют между собой через стандартизованные двоичные или http-интерфейсы.'
-    }, {
-      text: '<span style="color:#38AE00;">Наследование</span> — это свойство системы, позволяющее описать новый класс на основе уже существующего с частично или полностью заимствующейся функциональностью. Класс, от которого производится наследование, называется базовым, родительским или суперклассом. Новый класс — потомком, наследником или производным классом',
-      isCorrect: true
-    }, {
-      text: '<span style="color:#FE5300;">Полиморфизм</span> — это свойство системы использовать объекты с одинаковым интерфейсом без информации о типе и внутренней структуре объекта.',
-      isCorrect: true
-    }, {
-      text: '<span style="color:#DCC600;">Укрупнение сущностей</span> — принцип объединения простых классов в более крупные с целью уменьшить сложность системы за счет сокращения количества классов.'
-    }]
-  }, {
-    text: '<p>У вас есть автоматизированный тестовый сценарий, проверяющий вход в личный кабинет банка. Он должен на веб-странице вводить логин и пароль в соответствующие поля, а потом нажимать на кнопку "Login". Однако при запуске тестового сценария автоматический логин не происходит. Найдите ошибку в классе LoginPage, представляющий собой объект автотеста.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
-    correct: 23,
-    isReal: true,
-    correctMsg: '<span>Да</span>, здесь нельзя использовать метод sendkeys() при нажатии на кнопку.',
-    incorrectMsg: '<span>Нет</span>, ошибка в строке, выделенной чёрным. Там нельзя использовать метод sendkeys() при нажатии на кнопку.'
-  }, {
-    text: '<p>Эта программа вычисляет сумму заработка работника исходя из следующих параметров: месячная зарплата, кол-во рабочих дней в месяце, кол-во дней отсутствия на работе, кол-во дней на больничном.</p><p>Если работник болел менее трех дней в месяц, то компенсация за больничный ему не полагается, а если три дня или более — то оплачивается только 80% от его зарплаты в дни, проведенные на больничном. Итоговую сумму необходимо округлить до двух знаков после запятой.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
-    correct: 13,
-    correctMsg: '<span>Верно.</span> Эта строчка не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше.',
-    incorrectMsg: '<span>Нет.</span> Ошибка в строчке, выделенной чёрным, — она не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше, чем нужно.'
-  }, {
     type: 'ui',
     text: '<p>Найдите ошибку в интерфейсе мобильного приложения.</p>',
     correct: {
@@ -3325,12 +3277,55 @@ exports.default = {
     text: '<p>Найдите ошибку в коде.</p><p><b>В базе данных есть две таблицы.</b></p><p><b>Первая таблица — «Клиенты» (Customers):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;Name (Text)<br>&nbsp;&nbsp;Phone (Text)<br>&nbsp;&nbsp;Birthday (Date)</b></p><p><b>Вторая таблица — «Счета» (Accounts):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;CustomerId (int, foreign key to table Customers)<br>&nbsp;&nbsp;Currency (Text)<br>&nbsp;&nbsp;Balance (Double)</b></p><p><b>Поле Currency может принимать три значения: RUB, USD, EUR.</b></p><p>Требуется вывести Id, имя и капитализацию клиента (сумма всех счетов клиента) в рублях в соответствии с текущими курсами обмена валют.</p>',
     correct: 5,
     correctMsg: '<span>Так точно.</span> В этой строке вместо OR должно быть AND, чтобы учитывались все счета.',
-    incorrectMsg: '<span>Нет, ошиблись.</span> В строке, выделенной чёрным, вместо OR должно быть AND, чтобы учитывались счета во всех валютах.'
+    incorrectMsg: '<span>Нет, ошиблись.</span> В строке, выделенной чёрным, вместо OR должно быть AND, чтобы учитывались счета во всех валютах.',
+    filename: 'sql_currency'
   }, {
     text: '<p>Имеется список пользователей в таблице users. В ней два поля:</p><p>&nbsp;&nbsp;userId INT (Primary key) — идентификатор пользователя;<br>&nbsp;&nbsp;username (TEXT) — имя пользователя;</p><p>И имеется реестр посещений уроков пользователями в таблице lesson_details. В ней четыре поля:</p><p>&nbsp;&nbsp;id INT (Primary Key) — идентификатор посещения;<br>&nbsp;&nbsp;userId INT (ссылается на userId в таблице users) — идентификатор пользователя;<br>&nbsp;&nbsp;lessonId INT — идентификатор урока;<br>&nbsp;&nbsp;lessonDate DATE — дата урока;</p><p>Существует запрос, который создает список пользователей, посетивших один и тот же урок более чем один раз в один и тот же день, сгруппированный по пользователям и урокам, отсортированный от наиболее недавней даты. Однако этот запрос дает неправильный результат. В какой строчке ошибка?</p>',
     correct: 11,
     correctMsg: '<span>Именно!</span> Ошибка здесь. Знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».',
-    incorrectMsg: '<span>Увы, нет.</span> Ошибка в строке, выделенной чёрным — знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».'
+    incorrectMsg: '<span>Увы, нет.</span> Ошибка в строке, выделенной чёрным — знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».',
+    filename: 'sql_register'
+  }, {
+    type: 'test',
+    text: '<p>Найдите все определения, в которых отражены принципы ООП.</p>',
+    isReal: true,
+    options: [{
+      text: '<span style="color:#DCC600;">Абстрагирование</span> – это способ выделить набор значимых характеристик объекта, исключая из рассмотрения не значимые.',
+      isCorrect: true
+    }, {
+      text: '<span style="color:#4B72FF;">Инкапсуляция</span> – это свойство системы, позволяющее объединить данные и методы, работающие с ним классе, и скрыть детали реализации от пользователя.',
+      isCorrect: true
+    }, {
+      text: '<span style="color:#38AE00;">Наследование</span> – принцип объединения простых классов в более крупные с целью уменьшить сложность системы за счет сокращения количества классов.'
+    }, {
+      text: '<span style="color:#FE5300;">Полиморфизм</span> – это свойство системы использовать объект с одинаковым интерфейсом без информации о типе и внутренней структуре объекта.',
+      isCorrect: true
+    }]
+  }, {
+    text: '<p>У вас есть автоматизированный тестовый сценарий, проверяющий вход в личный кабинет банка. Он должен на веб-странице вводить логин и пароль в соответствующие поля, а потом нажимать на кнопку "Login". Однако при запуске тестового сценария автоматический логин не происходит. Найдите ошибку в классе LoginPage, представляющий собой объект автотеста.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
+    correct: 23,
+    isReal: true,
+    correctMsg: '<span>Да</span>, здесь нельзя использовать метод sendkeys() при нажатии на кнопку.',
+    incorrectMsg: '<span>Нет</span>, ошибка в строке, выделенной чёрным. Там нельзя использовать метод sendkeys() при нажатии на кнопку.',
+    filename: 'java_testing'
+  }, {
+    text: '<p>Эта программа определяет, есть ли у человека право запросить кредит. Вот правила, по которым она работает:</p><p>человек должен быть не моложе 21 года;<br/>мужчина должен быть моложе 65 лет на момент прекращения срока кредита;<br/>женщина должна быть моложе 60 лет на момент прекращения срока кредита.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
+    correct: 16,
+    correctMsg: '<span>Правильно</span> — эта строчка разрешает давать кредит человеку младше 21 года. А это совсем не то, что вам нужно.',
+    incorrectMsg: '<span>Ну нет.</span> Ошибка в строчке, выделенной черным, — она разрешает давать кредит человеку младше 21 года. Правильно было бы написать «if (age < 21)».',
+    filename: 'loan'
+  }, {
+    text: '<p>Эта программа вычисляет сумму заработка работника исходя из следующих параметров: месячная зарплата, кол-во рабочих дней в месяце, кол-во дней отсутствия на работе, кол-во дней на больничном.</p><p>Если работник болел менее трех дней в месяц, то компенсация за больничный ему не полагается, а если три дня или более — то оплачивается только 80% от его зарплаты в дни, проведенные на больничном. Итоговую сумму необходимо округлить до двух знаков после запятой.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
+    correct: 13,
+    correctMsg: '<span>Верно.</span> Эта строчка не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше.',
+    incorrectMsg: '<span>Нет.</span> Ошибка в строчке, выделенной чёрным, — она не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше, чем нужно.',
+    filename: 'wages'
+  }, {
+    text: '<p>Вы тестируете HTTP-сервер, который должен рисовать котика в браузере. Ниже приведен код функции, который подготавливает ответ для HTTP-сервера. Однако котик в браузере не появился.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
+    correct: 7,
+    correctMsg: '<span>Мяу, да.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».',
+    incorrectMsg: '<span>Мяу, нет.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».',
+    filename: 'cats'
   }],
   result: {
     img: 'https://leonardo.osnova.io/1306e7b6-e62e-16d6-45a8-2c5f952bf96c/',
@@ -3386,22 +3381,22 @@ exports.default = {
  * Social network services
  */
 
-var Service = __webpack_require__(55),
+var Service = __webpack_require__(54),
     utils   = __webpack_require__(4),
-    svg     = __webpack_require__(56);
+    svg     = __webpack_require__(55);
 
 var services = {
-    odnoklassniki: __webpack_require__(57),
-    vkontakte:     __webpack_require__(58),
-    facebook:      __webpack_require__(59),
-    twitter:       __webpack_require__(60),
-    gplus:         __webpack_require__(61),
-    pocket:        __webpack_require__(62),
-    telegram:      __webpack_require__(63),
-    whatsapp:      __webpack_require__(64),
-    viber:         __webpack_require__(65),
-    email:         __webpack_require__(66),
-    more:          __webpack_require__(67)
+    odnoklassniki: __webpack_require__(56),
+    vkontakte:     __webpack_require__(57),
+    facebook:      __webpack_require__(58),
+    twitter:       __webpack_require__(59),
+    gplus:         __webpack_require__(60),
+    pocket:        __webpack_require__(61),
+    telegram:      __webpack_require__(62),
+    whatsapp:      __webpack_require__(63),
+    viber:         __webpack_require__(64),
+    email:         __webpack_require__(65),
+    more:          __webpack_require__(66)
 };
 
 utils.each(services, function (service, key) {
@@ -5355,7 +5350,7 @@ var _question = __webpack_require__(39);
 
 var _question2 = _interopRequireDefault(_question);
 
-var _result = __webpack_require__(50);
+var _result = __webpack_require__(49);
 
 var _result2 = _interopRequireDefault(_result);
 
@@ -6742,7 +6737,7 @@ var Question = function (_Component) {
           );
         }
 
-        var code = __webpack_require__(42)("./" + (props.test.activeIndex + 1) + '.code');
+        var code = __webpack_require__(42)("./" + question.filename + '.code');
 
         return [window.innerWidth >= 1025 ? getMsg() : null, (0, _preact.h)(
           'div',
@@ -7995,13 +7990,12 @@ return heatmapFactory;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./1.code": 43,
-	"./2.code": 44,
-	"./3.code": 45,
-	"./4.code": 46,
-	"./5.code": 47,
-	"./7.code": 48,
-	"./8.code": 49
+	"./cats.code": 43,
+	"./java_testing.code": 44,
+	"./loan.code": 45,
+	"./sql_currency.code": 46,
+	"./sql_register.code": 47,
+	"./wages.code": 48
 };
 
 
@@ -8029,46 +8023,40 @@ webpackContext.id = 42;
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span class=\"psb-code\">public enum Sex</span> <span class=\"psb-code\">{ MALE, FEMALE };</span>\n\n    <span class=\"psb-code\">public static void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.print</span> (\"Loan possible for female with age 50 and for period 2 years: \" +\n                <span class=\"psb-code\">isLoanPossible(Sex.FEMALE, 50, 2));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>\n        <span class=\"psb-code\">boolean retval = false;</span>\n        <span class=\"psb-code\">if (sex == Sex.FEMALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod)</span> <span class=\"psb-code\">< 60) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (sex == Sex.MALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod) < 65) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (age < 21) {</span>\n            <span class=\"psb-code\">retval = false;</span>\n        }\n        <span class=\"psb-code\">return retval;</span>\n\n}"
+module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append <span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">static</span> <span class=\"psb-code\">String createCatResponse()</span>\n{\n\t<span class=\"psb-code\">StringBuilder sb =</span> <span class=\"psb-code\">new StringBuilder();</span>\n\n\tsb.Append <span class=\"psb-code\">(\"HTTP/1.1 200 OK\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Server: MyUltimateServerForCoolCats\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Date: Sun, 01 Jan 1999 00:00:00 GMT\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Content-Type: text/html\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Cache-Control: max-age=3600, public\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Vary: Accept-Encoding\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"Connection: close\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"  |\\\\_ /|\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" / @ @ \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"( > º < )\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"`>> x <<´\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\" /  O  \\\\\\r\\n\");</span>\n\tsb.Append <span class=\"psb-code\">(\"\\r\\n\\r\\n\");</span>\n\t<span class=\"psb-code\">return sb.ToString();</span>\n}"
+module.exports = "<span class=\"psb-code\">public class LoginPage {</span>\n\n    <span class=\"psb-code\">private</span> <span class=\"psb-code\">final</span> <span class=\"psb-code\">WebDriver driver;</span>\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage(WebDriver driver) {</span>\n        <span class=\"psb-code\">this.driver = driver;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage</span> <span class=\"psb-code\">typeUserName(String username) {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"username\"))</span> . <span class=\"psb-code\">sendKeys(username);</span>\n        <span class=\"psb-code\">return this;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage</span> <span class=\"psb-code\">typePassword(String password) {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"passwd\"))</span> . <span class=\"psb-code\">sendKeys(password);</span>\n        <span class=\"psb-code\">return this;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">HomePage</span> <span class=\"psb-code\">submitLogin() {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"login\"))</span> . <span class=\"psb-code\">sendKeys();</span>\n        <span class=\"psb-code\">return</span> <span class=\"psb-code\">new</span> <span class=\"psb-code\">HomePage(driver);</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">HomePage</span> <span class=\"psb-code\">loginAs(String username, String password) {</span>\n        <span class=\"psb-code\">typeUserName(username);</span>\n        <span class=\"psb-code\">typePassword(password);</span>\n        <span class=\"psb-code\">return submitLogin();</span>\n    }\n}\n"
 
 /***/ }),
 /* 45 */
 /***/ (function(module, exports) {
 
-module.exports = "class Program\n{\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">void Main(string[] args)</span>\n\t{\n\t\t<span class=\"psb-code\">int year = 2020;</span>\n\t\t<span class=\"psb-code\">int holidays = 0;</span>\n\t\t<span class=\"psb-code\">DateTime day =</span> <span class=\"psb-code\">new DateTime(year, 1, 1);</span>\n\t\twhile <span class=\"psb-code\">(day.Year == year)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">if (isLastDayOfMonth(day))</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">if (day.DayOfWeek == DayOfWeek.Sunday)</span>\n\t\t\t{\n\t\t\t\t<span class=\"psb-code\">holidays++;</span>\n\t\t\t}\n\t\t\t<span class=\"psb-code\">day = day.AddDays(1);</span>\n\t\t}\n\t\t<span class=\"psb-code\">Console.WriteLine(\"Number of holidays: \"</span> <span class=\"psb-code\">+ holidays)</span>;\n\t}\n\n\t<span class=\"psb-code\">static</span> <span class=\"psb-code\">bool isLastDayOfMonth(DateTime dt)</span>\n\t{\n\t\t<span class=\"psb-code\">if (dt.AddDays(1).Day == 1)</span>\n\t\t{\n\t\t\t<span class=\"psb-code\">return true;</span>\n\t\t}\n\t\t<span class=\"psb-code\">return false;</span>\n\t}\n}"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n    <span class=\"psb-code\">public enum Sex</span> <span class=\"psb-code\">{ MALE, FEMALE };</span>\n\n    <span class=\"psb-code\">public static void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.print</span> (\"Loan possible for female with age 50 and for period 2 years: \" +\n                <span class=\"psb-code\">isLoanPossible(Sex.FEMALE, 50, 2));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">boolean isLoanPossible(Sex sex, int age, int loanPeriod) {</span>\n        <span class=\"psb-code\">boolean retval = false;</span>\n        <span class=\"psb-code\">if (sex == Sex.FEMALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod)</span> <span class=\"psb-code\">< 60) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (sex == Sex.MALE) {</span>\n            <span class=\"psb-code\">if ((age + loanPeriod) < 65) {</span>\n                <span class=\"psb-code\">retval = true;</span>\n            }\n        <span class=\"psb-code\">} else if (age < 21) {</span>\n            <span class=\"psb-code\">retval = false;</span>\n        }\n        <span class=\"psb-code\">return retval;</span>\n\n}"
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">public class LoginPage {</span>\n\n    <span class=\"psb-code\">private</span> <span class=\"psb-code\">final</span> <span class=\"psb-code\">WebDriver driver;</span>\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage(WebDriver driver) {</span>\n        <span class=\"psb-code\">this.driver = driver;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage</span> <span class=\"psb-code\">typeUserName(String username) {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"username\"))</span> . <span class=\"psb-code\">sendKeys(username);</span>\n        <span class=\"psb-code\">return this;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">LoginPage</span> <span class=\"psb-code\">typePassword(String password) {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"passwd\"))</span> . <span class=\"psb-code\">sendKeys(password);</span>\n        <span class=\"psb-code\">return this;</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">HomePage</span> <span class=\"psb-code\">submitLogin() {</span>\n        <span class=\"psb-code\">driver.findElement(By.id(\"login\"))</span> . <span class=\"psb-code\">sendKeys();</span>\n        <span class=\"psb-code\">return</span> <span class=\"psb-code\">new</span> <span class=\"psb-code\">HomePage(driver);</span>\n    }\n\n    <span class=\"psb-code\">public</span> <span class=\"psb-code\">HomePage</span> <span class=\"psb-code\">loginAs(String username, String password) {</span>\n        <span class=\"psb-code\">typeUserName(username);</span>\n        <span class=\"psb-code\">typePassword(password);</span>\n        <span class=\"psb-code\">return submitLogin();</span>\n    }\n}\n"
+module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<span class=\"psb-code\">SET @RUB_EUR_RATIO = 70.0;</span>\n\n<span class=\"psb-code\">SELECT</span> <span class=\"psb-code\">c.Id, c.Name, SUM(</span>\n       <span class=\"psb-code\">CASE</span>\n            <span class=\"psb-code\">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>\n            \t<span class=\"psb-code\">THEN Balance</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'USD'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_USD_RATIO</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'EUR'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_EUR_RATIO</span>\n       <span class=\"psb-code\">END)</span> <span class=\"psb-code\">as total</span>\n<span class=\"psb-code\">FROM customers AS c</span>\n<span class=\"psb-code\">INNER JOIN accounts AS a</span>\n    <span class=\"psb-code\">ON c.Id=a.CustomerId</span>\n<span class=\"psb-code\">GROUP BY a.CustomerId</span>\n"
 
 /***/ }),
 /* 47 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span> <span class=\"psb-code\">(\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int sickDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double sickAmount = 0;</span>\n        <span class=\"psb-code\">if (sickDays >= 3) {</span>\n            <span class=\"psb-code\">sickAmount = 0.8 * sickDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + sickAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
+module.exports = "<span class=\"psb-code\">SELECT</span>\n    <span class=\"psb-code\">u.userId,</span>\n    <span class=\"psb-code\">u.username,</span>\n    <span class=\"psb-code\">t.lessonId,</span>\n    <span class=\"psb-code\">t.lessonDate,</span>\n    <span class=\"psb-code\">count( t.id ) AS count</span>\n  <span class=\"psb-code\">FROM users u JOIN lesson_details t ON t.userId = u.userId</span>\n  <span class=\"psb-code\">GROUP BY u.userId,</span>\n         <span class=\"psb-code\">u.username,</span>\n         <span class=\"psb-code\">t.lessonId,</span>\n         <span class=\"psb-code\">t.lessonDate</span>\n  <span class=\"psb-code\">HAVING count( t.id ) >= 1</span>\n  <span class=\"psb-code\">ORDER BY t.lessonDate DESC;</span>"
 
 /***/ }),
 /* 48 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"psb-code\">SET @RUB_USD_RATIO = 60.0;</span>\n<span class=\"psb-code\">SET @RUB_EUR_RATIO = 70.0;</span>\n\n<span class=\"psb-code\">SELECT</span> <span class=\"psb-code\">c.Id, c.Name, SUM(</span>\n       <span class=\"psb-code\">CASE</span>\n            <span class=\"psb-code\">WHEN a.Currency <> 'USD' OR a.Currency <> 'EUR'</span>\n            \t<span class=\"psb-code\">THEN Balance</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'USD'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_USD_RATIO</span>\n            <span class=\"psb-code\">WHEN a.Currency</span> <span class=\"psb-code\">= 'EUR'</span>\n               <span class=\"psb-code\">THEN a.Balance *</span> <span class=\"psb-code\">@RUB_EUR_RATIO</span>\n       <span class=\"psb-code\">END)</span> <span class=\"psb-code\">as total</span>\n<span class=\"psb-code\">FROM customers AS c</span>\n<span class=\"psb-code\">INNER JOIN accounts AS a</span>\n    <span class=\"psb-code\">ON c.Id=a.CustomerId</span>\n<span class=\"psb-code\">GROUP BY a.CustomerId</span>\n"
+module.exports = "<span class=\"psb-code\">public class Main {</span>\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">void main(String[] args) {</span>\n        <span class=\"psb-code\">System.out.println</span> <span class=\"psb-code\">(\"Calculated salary = \"</span> <span class=\"psb-code\">+ salaryCalculator(12000, 21, 5, 4));</span>\n    }\n\n    <span class=\"psb-code\">public static</span> <span class=\"psb-code\">double salaryCalculator(double baseSalary, int monthWorkDays, int daysOff</span>, int sickDays) {\n        <span class=\"psb-code\">int actualWorkDays = monthWorkDays - daysOff;</span>\n        <span class=\"psb-code\">double earnedAmount =</span> <span class=\"psb-code\">baseSalary * actualWorkDays / monthWorkDays;</span>\n        <span class=\"psb-code\">double sickAmount = 0;</span>\n        <span class=\"psb-code\">if (sickDays >= 3) {</span>\n            <span class=\"psb-code\">sickAmount = 0.8 * sickDays * baseSalary;</span>\n        }\n        <span class=\"psb-code\">double totalPay = earnedAmount + sickAmount;</span>\n        <span class=\"psb-code\">double totalPayRound = Math.round (totalPay * 100)</span> / <span class=\"psb-code\">100.0;</span>\n\n        <span class=\"psb-code\">return totalPayRound;</span>\n    }\n}"
 
 /***/ }),
 /* 49 */
-/***/ (function(module, exports) {
-
-module.exports = "<span class=\"psb-code\">SELECT</span>\n    <span class=\"psb-code\">u.userId,</span>\n    <span class=\"psb-code\">u.username,</span>\n    <span class=\"psb-code\">t.lessonId,</span>\n    <span class=\"psb-code\">t.lessonDate,</span>\n    <span class=\"psb-code\">count( t.id ) AS count</span>\n  <span class=\"psb-code\">FROM users u JOIN lesson_details t ON t.userId = u.userId</span>\n  <span class=\"psb-code\">GROUP BY u.userId,</span>\n         <span class=\"psb-code\">u.username,</span>\n         <span class=\"psb-code\">t.lessonId,</span>\n         <span class=\"psb-code\">t.lessonDate</span>\n  <span class=\"psb-code\">HAVING count( t.id ) >= 1</span>\n  <span class=\"psb-code\">ORDER BY t.lessonDate DESC;</span>"
-
-/***/ }),
-/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8092,7 +8080,7 @@ var _store2 = _interopRequireDefault(_store);
 
 var _reactTransitionGroup = __webpack_require__(15);
 
-var _share = __webpack_require__(51);
+var _share = __webpack_require__(50);
 
 var Share = _interopRequireWildcard(_share);
 
@@ -8289,7 +8277,7 @@ var mapStateToProps = function mapStateToProps(store) {
 exports.default = (0, _preactRedux.connect)(mapStateToProps)(Result);
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8300,11 +8288,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.make = exports.init = undefined;
 
-var _cmttLikely = __webpack_require__(52);
+var _cmttLikely = __webpack_require__(51);
 
 var _cmttLikely2 = _interopRequireDefault(_cmttLikely);
 
-var _dom = __webpack_require__(70);
+var _dom = __webpack_require__(69);
 
 var _analytics = __webpack_require__(7);
 
@@ -8356,12 +8344,12 @@ var make = exports.make = function make(parentContainer) {
 };
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 'use strict';
 
-var Likely = __webpack_require__(53),
+var Likely = __webpack_require__(52),
     config = __webpack_require__(1),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3);
@@ -8412,10 +8400,10 @@ likely.defaults = {
 module.exports = likely;
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Button = __webpack_require__(54);
+var Button = __webpack_require__(53);
 
 var services = __webpack_require__(11),
     config   = __webpack_require__(1),
@@ -8564,12 +8552,12 @@ Likely.prototype = {
 module.exports = Likely;
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var services = __webpack_require__(11),
     config = __webpack_require__(1),
-    fetch = __webpack_require__(68),
+    fetch = __webpack_require__(67),
     utils = __webpack_require__(4),
     dom = __webpack_require__(3),
     storage = __webpack_require__(21);
@@ -8837,7 +8825,7 @@ LikelyButton.prototype = {
 module.exports = LikelyButton;
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dom = __webpack_require__(3);
@@ -8870,13 +8858,13 @@ module.exports = function (options) {
 };
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module) {
 
 module.exports = {"facebook":"5.9 16h3.3V8h2.2l.3-2.8H9.2V3.8c0-.7.1-1.1 1.1-1.1h1.4V0H9.5C6.9 0 5.9 1.3 5.9 3.6v1.7H4.3V8H6v8","twitter":"15.96 3.42c-.04.153-.144.31-.237.414l-.118.058v.118l-.59.532-.237.295c-.05.036-.398.21-.413.237V6.49h-.06v.473h-.058v.294h-.058v.296h-.06v.235h-.06v.237h-.058c-.1.355-.197.71-.295 1.064h-.06v.116h-.06c-.02.1-.04.197-.058.296h-.06c-.04.118-.08.237-.118.355h-.06c-.038.118-.078.236-.117.353l-.118.06-.06.235-.117.06v.116l-.118.06v.12h-.06c-.02.057-.038.117-.058.175l-.118.06v.117c-.06.04-.118.08-.177.118v.118l-.237.177v.118l-.59.53-.532.592h-.117c-.06.078-.118.156-.177.236l-.177.06-.06.117h-.118l-.06.118-.176.06v.058h-.118l-.06.118-.353.12-.06.117c-.078.02-.156.04-.235.058v.06c-.118.038-.236.078-.354.118v.058H8.76v.06h-.12v.06h-.176v.058h-.118v.06H8.17v.058H7.99v.06l-.413.058v.06h-.237c-.667.22-1.455.293-2.36.293h-.886v-.058h-.53v-.06H3.27v-.06h-.295v-.06H2.68v-.057h-.177v-.06h-.236v-.058H2.09v-.06h-.177v-.058h-.177v-.06H1.56v-.058h-.12v-.06l-.294-.06v-.057c-.118-.04-.236-.08-.355-.118v-.06H.674v-.058H.555v-.06H.437v-.058H.32l-.06-.12H.142v-.058c-.13-.08-.083.026-.177-.118H1.56v-.06c.294-.04.59-.077.884-.117v-.06h.177v-.058h.237v-.06h.118v-.06h.177v-.057h.118v-.06h.177v-.058l.236-.06v-.058l.236-.06c.02-.038.04-.078.058-.117l.237-.06c.02-.04.04-.077.058-.117h.118l.06-.118h.118c.036-.025.047-.078.118-.118V12.1c-1.02-.08-1.84-.54-2.303-1.183-.08-.058-.157-.118-.236-.176v-.117l-.118-.06v-.117c-.115-.202-.268-.355-.296-.65.453.004.987.008 1.354-.06v-.06c-.254-.008-.47-.08-.65-.175v-.058H2.32v-.06c-.08-.02-.157-.04-.236-.058l-.06-.118h-.117l-.118-.178h-.12c-.077-.098-.156-.196-.235-.294l-.118-.06v-.117l-.177-.12c-.35-.502-.6-1.15-.59-2.006h.06c.204.234.948.377 1.357.415v-.06c-.257-.118-.676-.54-.827-.768V5.9l-.118-.06c-.04-.117-.08-.236-.118-.354h-.06v-.118H.787c-.04-.196-.08-.394-.118-.59-.06-.19-.206-.697-.118-1.005h.06V3.36h.058v-.177h.06v-.177h.057V2.83h.06c.04-.118.078-.236.117-.355h.118v.06c.12.097.237.196.355.295v.118l.118.058c.08.098.157.197.236.295l.176.06.354.413h.118l.177.236h.118l.06.117h.117c.04.06.08.118.118.177h.118l.06.118.235.06.06.117.356.12.06.117.53.176v.06h.118v.058l.236.06v.06c.118.02.236.04.355.058v.06h.177v.058h.177v.06h.176v.058h.236v.06l.472.057v.06l1.417.18v-.237c-.1-.112-.058-.442-.057-.65 0-.573.15-.99.354-1.358v-.117l.118-.06.06-.235.176-.118v-.118c.14-.118.276-.236.414-.355l.06-.117h.117l.12-.177.235-.06.06-.117h.117v-.058H9.7v-.058h.177v-.06h.177v-.058h.177v-.06h.296v-.058h1.063v.058h.294v.06h.177v.058h.178v.06h.177v.058h.118v.06h.118l.06.117c.08.018.158.038.236.058.04.06.08.118.118.177h.118l.06.117c.142.133.193.163.472.178.136-.12.283-.05.472-.118v-.06h.177v-.058h.177v-.06l.236-.058v-.06h.177l.59-.352v.176h-.058l-.06.295h-.058v.117h-.06v.118l-.117.06v.118l-.177.118v.117l-.118.06-.354.412h-.117l-.177.236h.06c.13-.112.402-.053.59-.117l1.063-.353","vkontakte":"15.4 12.8h-1.8c-.7 0-.9-.5-2.1-1.7-1-1-1.5-1.1-1.7-1.1-.4 0-.5.1-.5.6v1.6c0 .4-.1.7-1.3.7-1.9 0-3.9-1.1-5.3-3.2C.6 6.5 0 4.2 0 3.7c0-.3.1-.5.6-.5h1.8c.4 0 .6.2.8.7C4 6.4 5.4 8.6 6 8.6c.2 0 .3-.1.3-.7V5.4c0-1.2-.6-1.3-.6-1.7 0-.2.2-.4.4-.4h2.8c.4 0 .5.2.5.6v3.5c0 .4.2.5.3.5.2 0 .4-.1.8-.5 1.3-1.4 2.2-3.6 2.2-3.6.1-.3.3-.5.8-.5h1.8c.5 0 .6.3.5.6-.2 1-2.4 4-2.4 4-.2.3-.3.4 0 .8.2.3.8.8 1.2 1.3.8.8 1.3 1.6 1.5 2.1 0 .4-.2.7-.7.7","gplus":"8,6.5v3h4.291c-0.526,2.01-2.093,3.476-4.315,3.476C5.228,12.976,3,10.748,3,8c0-2.748,2.228-4.976,4.976-4.976c1.442,0,2.606,0.623,3.397,1.603L13.52,2.48C12.192,0.955,10.276,0,8,0C3.582,0,0,3.582,0,8s3.582,8,8,8s7.5-3.582,7.5-8V6.5H8","odnoklassniki":"8 2.6c.9 0 1.7.7 1.7 1.7C9.7 5.2 9 6 8 6c-.9 0-1.7-.7-1.7-1.7S7.1 2.6 8 2.6zm0 5.7c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm1.6 3.2c.8-.2 1.6-.5 2.3-1 .5-.3.7-1.1.4-1.6-.3-.6-1.1-.7-1.6-.4-1.6 1-3.8 1-5.4 0-.6-.3-1.3-.1-1.6.4-.4.6-.2 1.3.3 1.7.7.5 1.5.8 2.3 1l-2.2 2.2c-.5.5-.5 1.2 0 1.7.2.2.5.3.8.3.3 0 .6-.1.8-.3L8 13.2l2.2 2.2c.5.5 1.2.5 1.7 0s.5-1.2 0-1.7l-2.3-2.2","pocket":"12.533 6.864L8.77 10.4c-.213.2-.486.3-.76.3-.273 0-.547-.1-.76-.3L3.488 6.865c-.437-.41-.45-1.09-.032-1.52.42-.428 1.114-.443 1.55-.032l3.006 2.823 3.004-2.823c.438-.41 1.132-.396 1.55.032.42.43.406 1.11-.03 1.52zm3.388-4.928c-.207-.56-.755-.936-1.363-.936H1.45C.854 1 .31 1.368.096 1.917.032 2.08 0 2.25 0 2.422v4.73l.055.94c.232 2.14 1.366 4.01 3.12 5.314.03.024.063.047.094.07l.02.013c.94.673 1.992 1.13 3.128 1.353.524.104 1.06.157 1.592.157.492 0 .986-.045 1.472-.133.058-.01.116-.022.175-.034.016-.003.033-.01.05-.018 1.088-.233 2.098-.677 3.003-1.326l.02-.015c.032-.022.064-.045.096-.07 1.753-1.303 2.887-3.173 3.12-5.312l.054-.94v-4.73c0-.165-.02-.327-.08-.487","telegram":"12.4 4.2L6.6 9.6c-.2.2-.3.4-.4.7L6 11.8c0 .2-.3.2-.3 0l-.8-2.6c-.1-.4.1-.7.3-.8l7-4.3c.2-.2.4 0 .2.1zm2.9-3L.5 6.9c-.4.1-.4.7 0 .8L4.1 9l1.4 4.5c.1.3.4.4.7.2l2-1.6c.2-.2.5-.2.7 0l3.6 2.6c.3.2.6 0 .7-.3l2.6-12.8c.1-.2-.2-.5-.5-.4","whatsapp":"15.8 7.8c0 4.2-3.4 7.6-7.6 7.6-1.3 0-2.6-.3-3.7-.9L.3 15.8l1.4-4.1C1 10.6.6 9.2.6 7.8.6 3.6 4 .2 8.2.2c4.2 0 7.6 3.4 7.6 7.6M8.1 1.4c-3.5 0-6.4 2.9-6.4 6.4 0 1.4.5 2.7 1.2 3.7l-.8 2.4 2.5-.8c1 .7 2.2 1.1 3.5 1.1 3.5 0 6.4-2.9 6.4-6.4.1-3.5-2.8-6.4-6.4-6.4M12 9.5c0-.1-.2-.1-.4-.2s-1.1-.5-1.3-.6c-.2-.1-.3-.1-.4.1-.1.2-.4.6-.6.7-.1.1-.2.1-.4 0-.1 0-.8-.2-1.5-.8-.6-.5-.9-1.1-1-1.3-.1-.2 0-.3.1-.4l.3-.3c.1-.1.1-.2.2-.3 0-.2 0-.3-.1-.4 0-.1-.4-1-.6-1.4-.1-.3-.3-.2-.4-.2h-.4c-.1 0-.3 0-.5.2-.1.2-.6.6-.6 1.5s.7 1.8.8 1.9c.1.1 1.3 2.1 3.2 2.8 1.9.7 1.9.5 2.2.5.3 0 1.1-.4 1.3-.9.1-.4.1-.8.1-.9","viber":"13.7 6.7c0 .3.1.7-.3.8-.6.1-.5-.4-.5-.8-.4-2.3-1.2-3.2-3.5-3.7-.4-.1-.9 0-.8-.5.1-.5.5-.4.9-.3 2.3.3 4.2 2.3 4.2 4.5zM8.8 1.2c3.7.6 5.5 2.4 5.9 6.1 0 .3-.1.9.4.9s.4-.5.4-.9c0-3.6-3.1-6.8-6.7-7-.2.1-.8-.1-.8.5 0 .4.4.3.8.4zm5.7 10.2c-.5-.4-1-.7-1.5-1.1-1-.7-1.9-.7-2.6.4-.4.6-1 .6-1.6.4-1.7-.8-2.9-1.9-3.7-3.6-.3-.7-.3-1.4.5-1.9.4-.3.8-.6.8-1.2 0-.8-2-3.5-2.7-3.7-.3-.1-.6-.1-1 0C.9 1.2.2 2.7.9 4.4c2.1 5.2 5.8 8.8 11 11 .3.1.6.2.8.2 1.2 0 2.5-1.1 2.9-2.2.3-1-.5-1.5-1.1-2zM9.7 4c-.2 0-.5 0-.6.3-.1.4.2.5.5.5.9.2 1.4.7 1.5 1.7 0 .3.2.5.4.4.3 0 .4-.3.4-.6 0-1.1-1.2-2.3-2.2-2.3","email":"12.7 1c1 .5 1.8 1.2 2.3 2.2.5.9.8 1.9.8 3.1 0 .9-.1 1.8-.5 2.7-.3.9-.8 1.6-1.4 2.2-.6.6-1.4.9-2.3.9-.6 0-1.1-.2-1.5-.5-.4-.3-.6-.7-.7-1.2-.6 1.1-1.5 1.6-2.5 1.6-.8 0-1.5-.3-1.9-.8-.5-.6-.7-1.3-.7-2.2 0-.8.1-1.6.4-2.5S5.5 5 6.1 4.4c.7-.6 1.5-.8 2.6-.8.5 0 1 .1 1.4.2.5.1.9.3 1.3.6l-.7 4.9v.3c0 .2 0 .4.1.5.1.1.3.2.5.2.4 0 .8-.2 1.1-.7.3-.4.5-1 .7-1.6.1-.7.2-1.3.2-1.9 0-1.3-.4-2.3-1.1-3-.8-.7-1.9-1-3.4-1s-2.7.4-3.7 1.1c-.9.7-1.6 1.6-2 2.6S2.6 7.9 2.6 9c0 .9.2 1.8.6 2.5.4.7 1 1.3 1.7 1.7.7.4 1.7.6 2.7.6.5 0 1-.1 1.6-.2.6-.1 1.1-.3 1.5-.4l.4 1.9c-.6.2-1.2.4-1.8.5-.7.1-1.3.2-1.9.2-1.4 0-2.7-.3-3.8-.9s-1.9-1.4-2.5-2.4S.2 10.3.2 9c0-1.3.3-2.7 1-4 .6-1.4 1.6-2.5 3-3.4C5.5.7 7.2.2 9.2.2c1.3 0 2.5.3 3.5.8zm-4 8.4l.6-3.9c-.3-.1-.5-.2-.7-.2-.7 0-1.2.4-1.5 1.2-.3.8-.5 1.7-.5 2.6 0 .8.3 1.2.8 1.2s.9-.3 1.3-.9","more":"14.725 6.667H9.333V1.275C9.333.57 8.738 0 8 0S6.667.57 6.667 1.275v5.392H1.275C.57 6.667 0 7.262 0 8s.57 1.334 1.275 1.334h5.392v5.393C6.667 15.43 7.262 16 8 16s1.333-.57 1.333-1.273V9.334h5.392C15.43 9.334 16 8.738 16 8s-.57-1.333-1.275-1.333"};
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8911,7 +8899,7 @@ utils.set(window, 'ODKL.updateCount', function (index, counter) {
 module.exports = odnoklassniki;
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8945,7 +8933,7 @@ module.exports = vkontakte;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports) {
 
 /**
@@ -8963,7 +8951,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8989,7 +8977,7 @@ module.exports = twitter;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9011,7 +8999,7 @@ var gplus = {
 module.exports = gplus;
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9029,7 +9017,7 @@ var pocket = {
 module.exports = pocket;
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports) {
 
 /**
@@ -9043,7 +9031,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports) {
 
 /**
@@ -9057,7 +9045,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports) {
 
 /**
@@ -9071,7 +9059,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9089,7 +9077,7 @@ var email = {
 module.exports = email;
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var config = __webpack_require__(1);
@@ -9100,11 +9088,11 @@ module.exports = {
 };
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var services = __webpack_require__(11),
-    Factory  = __webpack_require__(69),
+    Factory  = __webpack_require__(68),
     utils    = __webpack_require__(4),
     dom      = __webpack_require__(3);
 
@@ -9144,7 +9132,7 @@ module.exports = function (service, url, options) {
 };
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports) {
 
 /**
@@ -9184,7 +9172,7 @@ module.exports = function (value) {
 };
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
