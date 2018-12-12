@@ -3198,7 +3198,7 @@ var initialTestState = {
   questionsCount: _data2.default.questions.length,
   activeIndex: 0,
   correctAnswers: 0,
-  correctRealAnswers: 0,
+  correctList: [],
   bg: ''
 };
 
@@ -3207,7 +3207,7 @@ var restartTestState = {
   activeIndex: 0,
   question: _data2.default.questions[0],
   correctAnswers: 0,
-  correctRealAnswers: 0,
+  correctList: [],
   bg: _data2.default.questions[0].bg
 };
 
@@ -3225,11 +3225,15 @@ var testReducer = function testReducer() {
       return _extends({}, state, { status: action.status, bg: bg });
     case 'TEST_ANSWER':
       var correctAnswers = action.isCorrect ? state.correctAnswers + 1 : state.correctAnswers;
-      var correctRealAnswers = action.isReal && action.isCorrect ? state.correctRealAnswers + 1 : state.correctRealAnswers;
+      var correctList = state.correctList;
+
+      if (action.isCorrect) {
+        correctList.push(state.question.id);
+      }
 
       return _extends({}, state, {
         correctAnswers: correctAnswers,
-        correctRealAnswers: correctRealAnswers
+        correctList: correctList
       });
     case 'TEST_NEXT':
       var index = state.activeIndex + 1;
@@ -3261,8 +3265,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
   title: 'Cможете ли вы<br />стать тестировщиком',
-  description: 'Вас случайно приняли на работу тестировщиком, не проверив скиллы. Чтобы никто ничего не заподозрил — попробуйте продержаться на новой работе как можно дольше. Внимательно читайте задания и ищите ошибки в коде.',
+  description: 'Вас без проверки приняли на работу тестировщиком, но вы вовсе не уверены в своих силах. Чтобы никто ничего не заподозрил — попробуйте продержаться на новой работе как можно дольше. Внимательно читайте задания и ищите ошибки в коде.',
   questions: [{
+    id: 'ui',
     type: 'ui',
     text: '<p>Найдите ошибку в интерфейсе мобильного приложения.</p>',
     correct: {
@@ -3274,21 +3279,23 @@ exports.default = {
     correctMsg: '<span>Да.</span> Дизайнер зачем-то нарисовал «срок действия» на карте получателя, а разработчик зачем-то закодил. Теперь деньги не перевести: пользователи понятия не имеют о сроке действия чужой карты.',
     incorrectMsg: '<span>Нет,</span> ошибка в «сроке действия» на карте получателя. Ни у кого не получится перевести деньги: пользователи понятия не имеют о сроке действия чужой карты.'
   }, {
+    id: 'sql_currency',
     text: '<p>Найдите ошибку в коде.</p><p><b>В базе данных есть две таблицы.</b></p><p><b>Первая таблица — «Клиенты» (Customers):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;Name (Text)<br>&nbsp;&nbsp;Phone (Text)<br>&nbsp;&nbsp;Birthday (Date)</b></p><p><b>Вторая таблица — «Счета» (Accounts):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;CustomerId (int, foreign key to table Customers)<br>&nbsp;&nbsp;Currency (Text)<br>&nbsp;&nbsp;Balance (Double)</b></p><p><b>Поле Currency может принимать три значения: RUB, USD, EUR.</b></p><p>Требуется вывести Id, имя и капитализацию клиента (сумма всех счетов клиента) в рублях в соответствии с текущими курсами обмена валют.</p>',
     correct: 5,
     correctMsg: '<span>Так точно.</span> В этой строке вместо OR должно быть AND, чтобы учитывались все счета.',
     incorrectMsg: '<span>Нет, ошиблись.</span> В строке, выделенной чёрным, вместо OR должно быть AND, чтобы учитывались счета во всех валютах.',
     filename: 'sql_currency'
   }, {
+    id: 'sql_register',
     text: '<p>Имеется список пользователей в таблице users. В ней два поля:</p><p>&nbsp;&nbsp;userId INT (Primary key) — идентификатор пользователя;<br>&nbsp;&nbsp;username (TEXT) — имя пользователя;</p><p>И имеется реестр посещений уроков пользователями в таблице lesson_details. В ней четыре поля:</p><p>&nbsp;&nbsp;id INT (Primary Key) — идентификатор посещения;<br>&nbsp;&nbsp;userId INT (ссылается на userId в таблице users) — идентификатор пользователя;<br>&nbsp;&nbsp;lessonId INT — идентификатор урока;<br>&nbsp;&nbsp;lessonDate DATE — дата урока;</p><p>Существует запрос, который создает список пользователей, посетивших один и тот же урок более чем один раз в один и тот же день, сгруппированный по пользователям и урокам, отсортированный от наиболее недавней даты. Однако этот запрос дает неправильный результат. В какой строчке ошибка?</p>',
     correct: 11,
     correctMsg: '<span>Именно!</span> Ошибка здесь. Знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».',
     incorrectMsg: '<span>Увы, нет.</span> Ошибка в строке, выделенной чёрным — знак «=» учитывает единократное посещение урока, а в условиях говорится про «более чем один раз».',
     filename: 'sql_register'
   }, {
+    id: 'oop',
     type: 'test',
     text: '<p>Найдите все определения, в которых отражены принципы ООП.</p>',
-    isReal: true,
     options: [{
       text: '<span style="color:#DCC600;">Абстрагирование</span> – это способ выделить набор значимых характеристик объекта, исключая из рассмотрения не значимые.',
       isCorrect: true
@@ -3302,25 +3309,28 @@ exports.default = {
       isCorrect: true
     }]
   }, {
+    id: 'java_testing',
     text: '<p>У вас есть автоматизированный тестовый сценарий, проверяющий вход в личный кабинет банка. Он должен на веб-странице вводить логин и пароль в соответствующие поля, а потом нажимать на кнопку "Login". Однако при запуске тестового сценария автоматический логин не происходит. Найдите ошибку в классе LoginPage, представляющий собой объект автотеста.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
     correct: 23,
-    isReal: true,
     correctMsg: '<span>Да</span>, здесь нельзя использовать метод sendkeys() при нажатии на кнопку.',
     incorrectMsg: '<span>Нет</span>, ошибка в строке, выделенной чёрным. Там нельзя использовать метод sendkeys() при нажатии на кнопку.',
     filename: 'java_testing'
   }, {
+    id: 'loan',
     text: '<p>Эта программа определяет, есть ли у человека право запросить кредит. Вот правила, по которым она работает:</p><p>человек должен быть не моложе 21 года;<br/>мужчина должен быть моложе 65 лет на момент прекращения срока кредита;<br/>женщина должна быть моложе 60 лет на момент прекращения срока кредита.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
     correct: 16,
     correctMsg: '<span>Правильно</span> — эта строчка разрешает давать кредит человеку младше 21 года. А это совсем не то, что вам нужно.',
     incorrectMsg: '<span>Ну нет.</span> Ошибка в строчке, выделенной черным, — она разрешает давать кредит человеку младше 21 года. Правильно было бы написать «if (age < 21)».',
     filename: 'loan'
   }, {
+    id: 'wages',
     text: '<p>Эта программа вычисляет сумму заработка работника исходя из следующих параметров: месячная зарплата, кол-во рабочих дней в месяце, кол-во дней отсутствия на работе, кол-во дней на больничном.</p><p>Если работник болел менее трех дней в месяц, то компенсация за больничный ему не полагается, а если три дня или более — то оплачивается только 80% от его зарплаты в дни, проведенные на больничном. Итоговую сумму необходимо округлить до двух знаков после запятой.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
     correct: 13,
     correctMsg: '<span>Верно.</span> Эта строчка не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше.',
     incorrectMsg: '<span>Нет.</span> Ошибка в строчке, выделенной чёрным, — она не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше, чем нужно.',
     filename: 'wages'
   }, {
+    id: 'cats',
     text: '<p>Вы тестируете HTTP-сервер, который должен рисовать котика в браузере. Ниже приведен код функции, который подготавливает ответ для HTTP-сервера. Однако котик в браузере не появился.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
     correct: 7,
     correctMsg: '<span>Мяу, да.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».',
@@ -6517,8 +6527,7 @@ var Question = function (_Component) {
 
         _store2.default.dispatch({
           type: 'TEST_ANSWER',
-          isCorrect: isCorrect,
-          isReal: this.props.test.question.isReal
+          isCorrect: isCorrect
         });
       }
     }
@@ -6570,8 +6579,7 @@ var Question = function (_Component) {
 
       _store2.default.dispatch({
         type: 'TEST_ANSWER',
-        isCorrect: isCorrect,
-        isReal: this.props.test.question.isReal
+        isCorrect: isCorrect
       });
     }
   }, {
@@ -6583,19 +6591,22 @@ var Question = function (_Component) {
         return;
       }
 
+      Analytics.sendEvent('Answer - ' + this.props.test.activeIndex);
+
       this.points[this.props.test.activeIndex] = _extends({ index: this.props.test.activeIndex }, { x: 0, y: 0 });
 
       var isCorrect = false;
 
-      Analytics.sendEvent('Answer - ' + this.props.test.activeIndex);
-
       if (this.state.selectedTestOptions && this.state.selectedTestOptions.length > 0) {
-        isCorrect = true;
+        var correctOptions = [];
         this.props.test.question.options.forEach(function (item, i) {
-          if (_this3.state.selectedTestOptions.indexOf(i) !== -1 && !item.isCorrect) {
-            isCorrect = false;
-            return false;
+          if (item.isCorrect) {
+            correctOptions.push(i);
           }
+        });
+
+        isCorrect = !correctOptions.some(function (i) {
+          return _this3.state.selectedTestOptions.indexOf(i) === -1;
         });
       }
 
@@ -6605,8 +6616,7 @@ var Question = function (_Component) {
 
       _store2.default.dispatch({
         type: 'TEST_ANSWER',
-        isCorrect: isCorrect,
-        isReal: this.props.test.question.isReal
+        isCorrect: isCorrect
       });
     }
   }, {
@@ -8180,7 +8190,17 @@ var Result = function (_Component) {
       };
 
       var getOffer = function getOffer() {
-        if (props.test.correctRealAnswers < 2) {
+        var vacancy = void 0;
+
+        if (props.test.correctList.indexOf('cats') !== -1 || props.test.correctList.indexOf('wages') !== -1) {
+          if (props.test.correctList.indexOf('sql_register') !== -1 && props.test.correctList.indexOf('oop') !== -1) {
+            vacancy = 'автотестировщика';
+          } else {
+            vacancy = 'ручного тестировщика';
+          }
+        } else if (props.test.correctList.indexOf('loan') !== -1) {
+          vacancy = 'ручного тестировщика';
+        } else {
           return null;
         }
 
@@ -8205,7 +8225,9 @@ var Result = function (_Component) {
           (0, _preact.h)(
             'div',
             { className: 'psb-result__offer-text' },
-            '\u041C\u044B \u0437\u0430\u0442\u0435\u044F\u043B\u0438 \u044D\u0442\u043E \u0432\u0441\u0451 \u043F\u043E\u0442\u043E\u043C\u0443, \u0447\u0442\u043E \xAB\u041F\u0440\u043E\u043C\u0441\u0432\u044F\u0437\u044C\u0431\u0430\u043D\u043A\xBB \u0438\u0449\u0435\u0442 \u0441\u0435\u0431\u0435 \u0442\u0435\u0441\u0442\u0438\u0440\u043E\u0432\u0449\u0438\u043A\u043E\u0432. \u041E\u0442\u043F\u0440\u0430\u0432\u043B\u044F\u0439\u0442\u0435 \u0440\u0435\u0437\u044E\u043C\u0435 \u043D\u0430 \u043F\u043E\u0447\u0442\u0443 ',
+            '\u041C\u044B \u0437\u0430\u0442\u0435\u044F\u043B\u0438 \u044D\u0442\u043E \u0432\u0441\u0451 \u043F\u043E\u0442\u043E\u043C\u0443, \u0447\u0442\u043E \xAB\u041F\u0440\u043E\u043C\u0441\u0432\u044F\u0437\u044C\u0431\u0430\u043D\u043A\xBB \u0438\u0449\u0435\u0442 \u0441\u0435\u0431\u0435 ',
+            vacancy,
+            '. \u041E\u0442\u043F\u0440\u0430\u0432\u043B\u044F\u0439\u0442\u0435 \u0440\u0435\u0437\u044E\u043C\u0435 \u043D\u0430 \u043F\u043E\u0447\u0442\u0443 ',
             (0, _preact.h)(
               'a',
               { href: 'mailto:hr_it@psbank.ru?subject=' + encodeURIComponent(subject) },
