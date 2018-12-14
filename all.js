@@ -3265,7 +3265,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
   title: 'Cможете ли вы<br />стать тестировщиком',
-  description: 'Вас без проверки приняли на работу тестировщиком, но вы вовсе не уверены в своих силах. Чтобы никто ничего не заподозрил — попробуйте продержаться на новой работе как можно дольше. Внимательно читайте задания и ищите ошибки в коде.',
+  description: 'Ваш штатный тестировщик улетел с женой на Мальдивы, а релизить проект надо было вчера. Сможете ли вы его заменить и спасти положение? Внимательно читайте задания и ищите ошибки в коде!',
   questions: [{
     id: 'ui',
     type: 'ui',
@@ -3276,14 +3276,14 @@ exports.default = {
       x2: 195,
       y2: 335
     },
-    correctMsg: '<span>Да.</span> Дизайнер зачем-то нарисовал «срок действия» на карте получателя, а разработчик зачем-то закодил. Теперь деньги не перевести: пользователи понятия не имеют о сроке действия чужой карты.',
-    incorrectMsg: '<span>Нет,</span> ошибка в «сроке действия» на карте получателя. Ни у кого не получится перевести деньги: пользователи понятия не имеют о сроке действия чужой карты.'
+    correctMsg: '<span>Да.</span> Дизайнер зачем-то нарисовал срок действия на карте получателя, а разработчик так и заверстал. Теперь деньги не перевести: пользователи не знают срок действия чужой карты.',
+    incorrectMsg: '<span>Нет,</span> ошибка в «сроке действия» на карте получателя. Ни у кого не получится перевести деньги: пользователи не знают срок действия чужой карты.'
   }, {
     id: 'sql_currency',
     text: '<p>Найдите ошибку в коде.</p><p><b>В базе данных есть две таблицы.</b></p><p><b>Первая таблица — «Клиенты» (Customers):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;Name (Text)<br>&nbsp;&nbsp;Phone (Text)<br>&nbsp;&nbsp;Birthday (Date)</b></p><p><b>Вторая таблица — «Счета» (Accounts):<br>&nbsp;&nbsp;Id (int, primary key)<br>&nbsp;&nbsp;CustomerId (int, foreign key to table Customers)<br>&nbsp;&nbsp;Currency (Text)<br>&nbsp;&nbsp;Balance (Double)</b></p><p><b>Поле Currency может принимать три значения: RUB, USD, EUR.</b></p><p>Требуется вывести Id, имя и капитализацию клиента (сумма всех счетов клиента) в рублях в соответствии с текущими курсами обмена валют.</p>',
     correct: 5,
     correctMsg: '<span>Так точно.</span> В этой строке вместо OR должно быть AND, чтобы учитывались все счета.',
-    incorrectMsg: '<span>Нет, ошиблись.</span> В строке, выделенной чёрным, вместо OR должно быть AND, чтобы учитывались счета во всех валютах.',
+    incorrectMsg: '<span>Нет, ошиблись.</span> В строке, выделенной чёрным, вместо OR должно быть AND, чтобы учитывались все счета.',
     filename: 'sql_currency'
   }, {
     id: 'sql_register',
@@ -3327,14 +3327,14 @@ exports.default = {
     text: '<p>Эта программа вычисляет сумму заработка работника исходя из следующих параметров: месячная зарплата, кол-во рабочих дней в месяце, кол-во дней отсутствия на работе, кол-во дней на больничном.</p><p>Если работник болел менее трех дней в месяц, то компенсация за больничный ему не полагается, а если три дня или более — то оплачивается только 80% от его зарплаты в дни, проведенные на больничном. Итоговую сумму необходимо округлить до двух знаков после запятой.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
     correct: 13,
     correctMsg: '<span>Верно.</span> Эта строчка не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше.',
-    incorrectMsg: '<span>Нет.</span> Ошибка в строчке, выделенной чёрным, — она не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше, чем нужно.',
+    incorrectMsg: '<span>Нет.</span> Ошибка в строчке, выделенной чёрным, — она не учитывает количество рабочих дней в месяце, и из-за этого сумма больничных намного больше.',
     filename: 'wages'
   }, {
     id: 'cats',
     text: '<p>Вы тестируете HTTP-сервер, который должен рисовать котика в браузере. Ниже приведен код функции, который подготавливает ответ для HTTP-сервера. Однако котик в браузере не появился.</p><p><b>Найдите блок кода с ошибкой и выберите его.</b></p>',
     correct: 7,
-    correctMsg: '<span>Мяу, да.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».',
-    incorrectMsg: '<span>Мяу, нет.</span> Здесь котик отдается в виде html-странички, — поэтому графика с ним не отобразится. Так что «html» нужно заменить на «plain».',
+    correctMsg: '<span>Мяу, да.</span> Здесь котик отдается в виде html-странички, поэтому графика в нем не отобразится. Так что «html» нужно заменить на «plain».',
+    incorrectMsg: '<span>Мяу, нет.</span> Здесь котик отдается в виде html-странички, поэтому графика в нем не отобразится. Так что «html» нужно заменить на «plain».',
     filename: 'cats'
   }],
   result: {
@@ -8128,6 +8128,11 @@ var transitionStyles = {
   exited: { opacity: 0 }
 };
 
+var declOfNum = function declOfNum(number, titles) {
+  var cases = [2, 0, 1, 1, 1, 2];
+  return titles[number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]];
+};
+
 var Result = function (_Component) {
   _inherits(Result, _Component);
 
@@ -8152,12 +8157,6 @@ var Result = function (_Component) {
         title: this.props.test.params.share.title,
         twitter: this.props.test.params.share.title
       });
-    }
-  }, {
-    key: 'declOfNum',
-    value: function declOfNum(number, titles) {
-      var cases = [2, 0, 1, 1, 1, 2];
-      return titles[number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]];
     }
   }, {
     key: 'restart',
@@ -8195,16 +8194,16 @@ var Result = function (_Component) {
         if (props.test.correctList.indexOf('cats') !== -1 || props.test.correctList.indexOf('wages') !== -1) {
           if (props.test.correctList.indexOf('sql_register') !== -1 && props.test.correctList.indexOf('oop') !== -1) {
             vacancy = 'автотестировщика';
-          } else {
+          } else if (props.test.correctList.indexOf('loan') !== -1) {
             vacancy = 'ручного тестировщика';
+          } else {
+            return null;
           }
-        } else if (props.test.correctList.indexOf('loan') !== -1) {
-          vacancy = 'ручного тестировщика';
         } else {
           return null;
         }
 
-        var subject = '\u042F \u0438\u0441\u043F\u0440\u0430\u0432\u0438\u043B ' + props.test.correctAnswers + ' \u043A\u0443\u0441\u043A\u043E\u0432 \u043A\u043E\u0434\u0430 \u043D\u0430 vc.ru';
+        var subject = '\u042F \u0438\u0441\u043F\u0440\u0430\u0432\u0438\u043B ' + props.test.correctAnswers + ' ' + declOfNum(props.test.correctAnswers, ['кусок', 'куска', 'кусков']) + ' \u043A\u043E\u0434\u0430 \u043D\u0430 vc.ru';
 
         return (0, _preact.h)(
           'div',
