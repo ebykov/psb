@@ -8178,7 +8178,7 @@ var Result = function (_Component) {
           return null;
         }
 
-        return [].concat(_toConsumableArray(Array(8))).map(function (item, i) {
+        return [].concat(_toConsumableArray(Array(props.test.questionsCount - props.test.correctAnswers))).map(function (item, i) {
           return (0, _preact.h)(
             _reactTransitionGroup.Transition,
             { 'in': state.animate, timeout: 150 * i },
