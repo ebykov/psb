@@ -1,0 +1,29 @@
+<span class="psb-code">public class LoginPage {</span>
+
+    <span class="psb-code">private</span> <span class="psb-code">final</span> <span class="psb-code">WebDriver driver;</span>
+
+    <span class="psb-code">public</span> <span class="psb-code">LoginPage(WebDriver driver) {</span>
+        <span class="psb-code">this.driver = driver;</span>
+    }
+
+    <span class="psb-code">public</span> <span class="psb-code">LoginPage</span> <span class="psb-code">typeUserName(String username) {</span>
+        <span class="psb-code">driver.findElement(By.id("username"))</span> . <span class="psb-code">sendKeys(username);</span>
+        <span class="psb-code">return this;</span>
+    }
+
+    <span class="psb-code">public</span> <span class="psb-code">LoginPage</span> <span class="psb-code">typePassword(String password) {</span>
+        <span class="psb-code">driver.findElement(By.id("passwd"))</span> . <span class="psb-code">sendKeys(password);</span>
+        <span class="psb-code">return this;</span>
+    }
+
+    <span class="psb-code">public</span> <span class="psb-code">HomePage</span> <span class="psb-code">submitLogin() {</span>
+        <span class="psb-code">driver.findElement(By.id("login"))</span> . <span class="psb-code">sendKeys();</span>
+        <span class="psb-code">return</span> <span class="psb-code">new</span> <span class="psb-code">HomePage(driver);</span>
+    }
+
+    <span class="psb-code">public</span> <span class="psb-code">HomePage</span> <span class="psb-code">loginAs(String username, String password) {</span>
+        <span class="psb-code">typeUserName(username);</span>
+        <span class="psb-code">typePassword(password);</span>
+        <span class="psb-code">return submitLogin();</span>
+    }
+}

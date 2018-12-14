@@ -16,20 +16,80 @@ function getOffsetY(el) {
   return rect.top + scrollTop;
 }
 
+const Option = (props, state) => {
+  let optionClass = 'psb-option';
+  if (props.isSelected) {
+    optionClass += ' is-selected';
+  }
+  if (props.isAnswered) {
+    optionClass += props.item.isCorrect ? ' is-correct' : ' is-incorrect';
+  }
+  return (
+    <div className="psb-options__item">
+      <div className={optionClass} onClick={e => props.onClick(e, props.index)}>
+        <div className="psb-option__btn" />
+        <div className="psb-option__label" dangerouslySetInnerHTML={{ __html: props.item.text }} />
+      </div>
+    </div>
+  );
+};
+
+const OptionList = (props, state) => {
+  const getOptions = () => {
+    let isSelected = false;
+    return props.items.map((item, i) => {
+      isSelected = props.selectedOptions && props.selectedOptions.includes(i);
+      return <Option key={i} index={i} item={item} isAnswered={props.isAnswered} isSelected={isSelected} onClick={props.onClick} />;
+    });
+  };
+
+  return (
+    <div className={`psb-options${props.isAnswered ? ' is-answered' : ''}`}>
+      {getOptions()}
+    </div>
+  );
+};
+
 class Question extends Component {
   constructor() {
     super();
 
     this.points = [];
 
+    this.setTestOption = this.setTestOption.bind(this);
     this.answer = this.answer.bind(this);
     this.answerUI = this.answerUI.bind(this);
+    this.answerTest = this.answerTest.bind(this);
     this.next = this.next.bind(this);
     this.result = this.result.bind(this);
   }
 
+  setTestOption(e, value) {
+    if (this.state.answered) {
+      return;
+    }
+
+    const selectedOptions = this.state.selectedTestOptions || [];
+
+    const i = selectedOptions.indexOf(value);
+    if (i === -1) {
+      selectedOptions.push(value);
+    } else {
+      selectedOptions.splice(i, 1);
+    }
+
+    this.setState({
+      selectedTestOptions: selectedOptions,
+    });
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.test.question.type === 'test') {
+      return;
+    }
+
     console.log('did update');
+
     if (this.state.answered) {
 
       this.heatmapInstance = h337.create({
@@ -92,7 +152,7 @@ class Question extends Component {
     if (this.state.answered) return;
 
     if (e.target.tagName.toLowerCase() === 'span') {
-      Analytics.sendEvent('Answer');
+      Analytics.sendEvent(`Answer - ${this.props.test.activeIndex}`);
 
       const layout = e.currentTarget;
       const rect = layout.getBoundingClientRect();
@@ -177,7 +237,7 @@ class Question extends Component {
   answerUI(e) {
     if (this.state.answered) return;
 
-    Analytics.sendEvent('Answer');
+    Analytics.sendEvent(`Answer - ${this.props.test.activeIndex}`);
 
     const layout = e.currentTarget;
     const rect = layout.getBoundingClientRect();
@@ -190,7 +250,7 @@ class Question extends Component {
       x: x,
       y: y,
     };
-    console.log(this.answeredDot);
+    // console.log(this.answeredDot);
     this.isCorrect = isCorrect;
 
     const rectBody = this.body.getBoundingClientRect();
@@ -220,7 +280,39 @@ class Question extends Component {
 
     store.dispatch({
       type: 'TEST_ANSWER',
-      isCorrect: isCorrect
+      isCorrect: isCorrect,
+    });
+  }
+
+  answerTest() {
+    if (this.state.answered) {
+      return;
+    }
+
+    Analytics.sendEvent(`Answer - ${this.props.test.activeIndex}`);
+
+    this.points[this.props.test.activeIndex] = {...{index: this.props.test.activeIndex}, ...{x: 0, y: 0}};
+
+    let isCorrect = false;
+
+    if (this.state.selectedTestOptions && this.state.selectedTestOptions.length > 0) {
+      let correctOptions = [];
+      this.props.test.question.options.forEach((item, i) => {
+        if (item.isCorrect) {
+          correctOptions.push(i);
+        }
+      });
+
+      isCorrect = !correctOptions.some(i => this.state.selectedTestOptions.indexOf(i) === -1);
+    }
+
+    this.setState({
+      answered: true,
+    });
+
+    store.dispatch({
+      type: 'TEST_ANSWER',
+      isCorrect: isCorrect,
     });
   }
 
@@ -316,9 +408,18 @@ class Question extends Component {
             </div>
           </div>
         );
+      } else if (question.type === 'test') {
+        return (
+          <div className="psb-q__test">
+            <div className="psb-q__options">
+              <OptionList items={question.options} isAnswered={state.answered} selectedOptions={state.selectedTestOptions} onClick={this.setTestOption} />
+            </div>
+            <button className="psb-q__test-btn" onClick={state.answered ? this.next : this.answerTest}>{state.answered ? 'Далее' : 'Ответить'}</button>
+          </div>
+        );
       }
 
-      const code = require(`../codes/${props.test.activeIndex + 1}.code`);
+      const code = require(`../codes/${question.filename}.code`);
 
       return ([
         window.innerWidth >= 1025 ? getMsg() : null,
@@ -362,6 +463,6 @@ const mapStateToProps = function(store) {
   return {
     test: store.testState
   };
-}
+};
 
 export default connect(mapStateToProps)(Question);

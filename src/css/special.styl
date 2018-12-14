@@ -363,6 +363,41 @@ $colors = {
       padding: 35px 0 60px
       background-color: #fff
 
+    &__test
+      padding: 20px 15px
+
+      @media $mq.not_mobile
+        padding: 40px 50px 40px 40px
+
+    &__test-btn
+      display: block
+      width: 200px
+      height: 60px
+      padding: 0
+      margin: 0
+      margin-top: 30px
+      font-size: 16px
+      font-weight: 700
+      line-height: 1
+      text-transform: uppercase
+      border: 3px solid #000
+      background-color: #fff
+      transition: opacity .2s
+
+      @media $mq.not_mobile
+        margin-top: 50px
+        font-size: 18px
+
+      &:hover
+        opacity: .6
+
+        @media (hover none), (hover on-demand)
+          opacity: 1
+
+    &__options
+      width: 645px
+      max-width: 100%
+
     &-phone
       position: relative
 
@@ -411,6 +446,86 @@ $colors = {
 
       &.is-incorrect > div > span
         color: $colors.red
+
+  &-options
+
+    &__item
+
+      &:not(:last-child)
+        margin-bottom: 20px
+
+  &-option
+    position: relative
+    padding-left: 35px
+    user-select: none
+    cursor: default
+
+    @media $mq.not_mobile
+      padding-left: 45px
+
+    &__btn
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      margin: auto 0
+      width: 20px
+      height: 20px
+      border: 2px solid #3E3E3E
+
+      ^[-1].is-correct &
+        border-color: #059E02
+
+      ^[-1].is-incorrect &
+        border-color: #FF5656
+
+      ^[-1].is-selected &
+        background-color: #3E3E3E
+
+        &::after
+          content: ''
+          position: absolute
+          top: 0
+          bottom: 0
+          left: 0
+          right: 0
+          margin: auto
+          width: 14px
+          height: 11px
+          background-image: url('https://leonardo.osnova.io/9ff40622-cab1-4043-81a8-3d753add26fa/')
+          background-size: cover
+
+      ^[-1].is-selected.is-correct &
+        background-color: #059E02
+
+      ^[-1].is-selected.is-incorrect &
+        background-color: #FF5656
+
+    &__label
+      color: #3F3F3F
+      line-height: 1.3em
+
+      @media $mq.not_mobile
+        line-height: 1.5em
+
+      ^[-1].is-selected &
+        font-weight: 700
+
+        & > span
+          color: #3F3F3F !important
+
+      ^[-1].is-correct &
+        font-weight: 400
+
+        & > span
+          color: #3F3F3F !important
+
+      ^[-1].is-incorrect &
+        color: #CACACA
+        font-weight: 400
+
+        & > span
+          color: #CACACA !important
 
   &-code
     position: relative
@@ -465,7 +580,7 @@ $colors = {
     &__frame
       position: absolute
       bottom: -30px
-      left: -80px
+      left: -100px
       display: flex
       justify-content: center
       align-items: center

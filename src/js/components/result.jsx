@@ -17,6 +17,11 @@ const transitionStyles = {
   exited:   { opacity: 0 },
 };
 
+const declOfNum = (number, titles) => {
+  let cases = [2, 0, 1, 1, 1, 2];
+  return titles[ (number % 100 > 4 && number % 100 < 20)? 2 : cases[(number % 10 < 5) ? number % 10 : 5] ];
+};
+
 class Result extends Component {
   constructor() {
     super();
@@ -36,11 +41,6 @@ class Result extends Component {
     });
   }
 
-  declOfNum(number, titles) {
-    let cases = [2, 0, 1, 1, 1, 2];
-    return titles[ (number % 100 > 4 && number % 100 < 20)? 2 : cases[(number % 10 < 5) ? number % 10 : 5] ];
-  }
-
   restart() {
     Analytics.sendEvent('Restart');
 
@@ -55,7 +55,7 @@ class Result extends Component {
         return null;
       }
 
-      return [...Array(8)].map((item, i) => {
+      return [...Array(props.test.questionsCount - props.test.correctAnswers)].map((item, i) => {
         return (
           <Transition in={state.animate} timeout={150 * i}>
             { state => <div style={{ ...defaultStyle, ...transitionStyles[state], ...{ transform: 'translate3d(-' + (15 * i) + 'px, -' + (15 * i) + 'px, 0)' } }} className="psb-result__frame" /> }
@@ -65,11 +65,21 @@ class Result extends Component {
     };
 
     const getOffer = () => {
-      if (props.test.correctAnswers < 6) {
+      let vacancy;
+
+      if (props.test.correctList.indexOf('cats') !== -1 || props.test.correctList.indexOf('wages') !== -1) {
+        if (props.test.correctList.indexOf('sql_register') !== -1 && props.test.correctList.indexOf('oop') !== -1) {
+          vacancy = 'автотестировщика';
+        } else if (props.test.correctList.indexOf('loan') !== -1) {
+          vacancy = 'ручного тестировщика';
+        } else {
+          return null;
+        }
+      } else {
         return null;
       }
 
-      const subject = `Я исправил ${props.test.correctAnswers} кусков кода на vc.ru`;
+      const subject = `Я исправил ${props.test.correctAnswers} ${declOfNum(props.test.correctAnswers, ['кусок', 'куска', 'кусков'])} кода на vc.ru`;
 
       return (
         <div className="psb-result__offer">
@@ -80,7 +90,7 @@ class Result extends Component {
             <div dangerouslySetInnerHTML={{ __html: Svg.border }} />
           </div>
           <div className="psb-result__offer-title">Отличный результат!</div>
-          <div className="psb-result__offer-text">Мы затеяли это всё потому, что «Промсвязьбанк» ищет себе тестировщиков. Отправляйте резюме на почту <a href={`mailto:hr_it@psbank.ru?subject=${encodeURIComponent(subject)}`}>hr_it@psbank.ru</a> с темой «{subject}», и вашу кандидатуру обязательно рассмотрят.</div>
+          <div className="psb-result__offer-text">Мы затеяли это всё потому, что «Промсвязьбанк» ищет себе {vacancy}. Отправляйте резюме на почту <a href={`mailto:hr_it@psbank.ru?subject=${encodeURIComponent(subject)}`}>hr_it@psbank.ru</a> с темой «{subject}», и вашу кандидатуру обязательно рассмотрят.</div>
         </div>
       );
     };

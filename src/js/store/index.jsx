@@ -9,15 +9,8 @@ const initialTestState = {
   questionsCount: Data.questions.length,
   activeIndex: 0,
   correctAnswers: 0,
+  correctList: [],
   bg: '',
-};
-
-const restartTestState = {
-  status: 'START',
-  activeIndex: 0,
-  question: Data.questions[0],
-  correctAnswers: 0,
-  bg: Data.questions[0].bg,
 };
 
 const testReducer = function(state = initialTestState, action) {
@@ -30,7 +23,19 @@ const testReducer = function(state = initialTestState, action) {
       const bg = action.status === 'START' ? state.question.bg : '';
       return { ...state, status: action.status, bg: bg };
     case 'TEST_ANSWER':
-      return { ...state, correctAnswers: action.isCorrect ? state.correctAnswers + 1 : state.correctAnswers };
+      let correctAnswers = action.isCorrect ? state.correctAnswers + 1 : state.correctAnswers;
+      let cList = state.correctList;
+
+      if (action.isCorrect) {
+        cList.push(state.question.id);
+      }
+
+      return { ...state,
+        ...{
+          correctAnswers: correctAnswers,
+          correctList: cList,
+        }
+      };
     case 'TEST_NEXT':
       let index = state.activeIndex + 1;
       return { ...state,
@@ -40,6 +45,15 @@ const testReducer = function(state = initialTestState, action) {
         }
       };
     case 'TEST_RESTART':
+      const restartTestState = {
+        status: 'START',
+        activeIndex: 0,
+        question: Data.questions[0],
+        correctAnswers: 0,
+        correctList: [],
+        bg: Data.questions[0].bg,
+      };
+
       return { ...state, ...restartTestState };
   }
   return state;
