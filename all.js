@@ -3202,15 +3202,6 @@ var initialTestState = {
   bg: ''
 };
 
-var restartTestState = {
-  status: 'START',
-  activeIndex: 0,
-  question: _data2.default.questions[0],
-  correctAnswers: 0,
-  correctList: [],
-  bg: _data2.default.questions[0].bg
-};
-
 var testReducer = function testReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialTestState;
   var action = arguments[1];
@@ -3225,15 +3216,15 @@ var testReducer = function testReducer() {
       return _extends({}, state, { status: action.status, bg: bg });
     case 'TEST_ANSWER':
       var correctAnswers = action.isCorrect ? state.correctAnswers + 1 : state.correctAnswers;
-      var correctList = state.correctList;
+      var cList = state.correctList;
 
       if (action.isCorrect) {
-        correctList.push(state.question.id);
+        cList.push(state.question.id);
       }
 
       return _extends({}, state, {
         correctAnswers: correctAnswers,
-        correctList: correctList
+        correctList: cList
       });
     case 'TEST_NEXT':
       var index = state.activeIndex + 1;
@@ -3242,6 +3233,15 @@ var testReducer = function testReducer() {
         activeIndex: index
       });
     case 'TEST_RESTART':
+      var restartTestState = {
+        status: 'START',
+        activeIndex: 0,
+        question: _data2.default.questions[0],
+        correctAnswers: 0,
+        correctList: [],
+        bg: _data2.default.questions[0].bg
+      };
+
       return _extends({}, state, restartTestState);
   }
   return state;
